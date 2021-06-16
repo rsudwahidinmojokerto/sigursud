@@ -1,10 +1,7 @@
-# Inventaris Barang
+# Sistem Informasi Gudang Logistik RSUD dr. Wahidin Sudiro Husodo
 
-Merupakan aplikasi untuk memudahkan dalam melakukan jual beli barang dan juga mengelola barang tersebut. Terdiri dari level admin,
-kasir, dan manager yang memliki tugas berbeda. 
-<p>Admin = mengelola barang, merek, dan distributor</p>
-<p>Manager = Kelola pegawai, kelola transaksi, laporan semua barang, laporan barang habis</p>
-<p>Kasir = Transaksi dan cetak struk</p>
+Merupakan aplikasi untuk memudahkan dalam melakukan managemen gudang logistik di RSUD dr. Wahidin Sudiro Husodo.
+
 # Login screen
 <p align="center">
   <img src="https://user-images.githubusercontent.com/33746018/56844550-39016f80-68dc-11e9-93ee-845f322e0471.PNG" align="middle" />
