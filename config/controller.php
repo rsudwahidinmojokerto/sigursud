@@ -139,7 +139,7 @@
 
         }
 
-        public function autokode($table,$field,$pre){
+        public function autokode($table, $field, $pre){
             global $con;
             $sqlc   = "SELECT COUNT($field) as jumlah FROM $table";
             $querys = mysqli_query($con,$sqlc);
@@ -152,15 +152,38 @@
                 $strnum = $strnum + 1;
                 if(strlen($strnum) == 3){ 
                     $kode = $pre.$strnum;
-                }else if(strlen($strnum) == 2){ 
+                } else if(strlen($strnum) == 2){ 
                     $kode = $pre."0".$strnum;
-                }else if(strlen($strnum) == 1){ 
+                } else if(strlen($strnum) == 1){ 
                     $kode = $pre."00".$strnum;
                 }
-            }else{
+            } else {
                 $kode = $pre."001";
             }
+            return $kode;
+        }
 
+        public function autokodeBarangBhp($table, $field, $pre){
+            global $con;
+            $sqlc   = "SELECT COUNT($field) as jumlah FROM $table";
+            $querys = mysqli_query($con, $sqlc);
+            $number = mysqli_fetch_assoc($querys);
+            if($number['jumlah'] > 0){
+                $sql    = "SELECT MAX($field) as kode FROM $table";
+                $query  = mysqli_query($con, $sql);
+                $number = mysqli_fetch_assoc($query);
+                $strnum = substr($number['kode'], 2,3);
+                $strnum = $strnum + 1;
+                if(strlen($strnum) == 3){ 
+                    $kode = $pre.$strnum;
+                } else if(strlen($strnum) == 2){ 
+                    $kode = $pre."0".$strnum;
+                } else if(strlen($strnum) == 1){ 
+                    $kode = $pre."00".$strnum;
+                }
+            } else {
+                $kode = $pre."001";
+            }
             return $kode;
         }
 
@@ -237,7 +260,19 @@
     	public function select($table){
             global $con;
             $sql = "SELECT * FROM $table";
-            $query = mysqli_query($con,$sql);
+            $query = mysqli_query($con, $sql);
+            $data = [];
+            while($bigData = mysqli_fetch_assoc($query)){
+                $data[] = $bigData;
+            }
+            return $data;
+        }
+
+        public function selectBhp($table1, $table2){
+            global $con;
+            // $sql2 = "SELECT * FROM $table1 JOIN $table2 WHERE ";
+            $sql = "SELECT * FROM $table1 LEFT JOIN $table2 ON $table1.id_kategori_bhp = $table2.id_kategori_bhp ORDER BY $table1.id_barang_bhp";
+            $query = mysqli_query($con, $sql);
             $data = [];
             while($bigData = mysqli_fetch_assoc($query)){
                 $data[] = $bigData;

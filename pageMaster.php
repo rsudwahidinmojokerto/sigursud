@@ -90,7 +90,7 @@ if (isset($_GET['logout'])) {
                         </li>
                         <li>
                             <a href="?page=viewBarang">
-                                <i class="fas fa-archive"></i>Barang</a>
+                                <i class="fas fa-archive"></i>Stock Barang</a>
                         </li>
                         <li>
                             <a href="?page=viewMasterBarang">

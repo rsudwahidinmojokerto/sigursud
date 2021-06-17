@@ -378,9 +378,6 @@ if (isset($_GET['logout'])) {
                     }
                 });
             });
-
-
-
         })
     </script>
     <script>

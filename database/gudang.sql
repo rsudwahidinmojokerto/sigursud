@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2021 at 09:28 AM
+-- Generation Time: Jun 17, 2021 at 09:43 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.10
 
@@ -86,8 +86,8 @@ CREATE TABLE `table_barang` (
 --
 
 INSERT INTO `table_barang` (`kd_barang`, `nama_barang`, `kd_jenisbarang`, `kd_distributor`, `tanggal_masuk`, `harga_barang`, `stok_barang`, `gambar`, `keterangan`) VALUES
-('BR001', 'lampu neon 15 watt', 'JB002', 'DS002', '2021-06-11', 15000, 14, '1623373335609.png', 'pcs'),
-('BR002', 'superpell', 'JB001', 'DS001', '2021-06-11', 20000, 50, '162337336731.jpg', 'pcs');
+('BR001', 'lampu neon 15 watt', 'JB002', 'DS002', '2021-06-11', 15000, 11, '1623373335609.png', 'pcs'),
+('BR002', 'superpell', 'JB001', 'DS001', '2021-06-11', 20000, 48, '162337336731.jpg', 'pcs');
 
 -- --------------------------------------------------------
 
@@ -166,7 +166,9 @@ INSERT INTO `table_pretransaksi` (`kd_pretransaksi`, `kd_transaksi`, `kd_barang`
 ('AN002', 'TR002', 'BR001', 7, 105000),
 ('AN003', 'TR002', 'BR004', 7, 10500),
 ('AN004', 'TR003', 'BR001', 1, 15000),
-('AN005', 'TR004', 'BR001', 5, 75000);
+('AN005', 'TR004', 'BR001', 5, 75000),
+('AN006', 'TR005', 'BR001', 3, 45000),
+('AN007', 'TR005', 'BR002', 2, 40000);
 
 --
 -- Triggers `table_pretransaksi`
@@ -231,7 +233,8 @@ INSERT INTO `table_transaksi` (`kd_transaksi`, `kd_user`, `jumlah_beli`, `total_
 ('TR001', 'US003', 5, 75000, '2021-06-07'),
 ('TR002', 'US003', 14, 115500, '2021-06-08'),
 ('TR003', 'US003', 1, 15000, '2021-06-15'),
-('TR004', 'US003', 5, 75000, '2021-06-15');
+('TR004', 'US003', 5, 75000, '2021-06-15'),
+('TR005', 'US003', 5, 85000, '2021-06-17');
 
 -- --------------------------------------------------------
 
@@ -266,119 +269,120 @@ INSERT INTO `table_user` (`kd_user`, `nama_user`, `username`, `password`, `foto_
 
 CREATE TABLE `tm_barang_bhp` (
   `id_barang_bhp` varchar(15) NOT NULL,
-  `id_kategori_bhp` int(15) NOT NULL,
+  `id_kategori_bhp` varchar(15) NOT NULL,
   `nama_barang_bhp` varchar(80) NOT NULL,
+  `stok` int(10) NOT NULL,
   `harga` int(10) NOT NULL,
-  `tanggal_update` date NOT NULL
+  `tanggal_update` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tm_barang_bhp`
 --
 
-INSERT INTO `tm_barang_bhp` (`id_barang_bhp`, `id_kategori_bhp`, `nama_barang_bhp`, `harga`, `tanggal_update`) VALUES
-('KB00001', 0, 'Kresek UK.15 Putih', 0, '0000-00-00'),
-('KB00002', 0, 'Kresek Uk.15 Hitam', 0, '0000-00-00'),
-('KB00003', 0, 'Kresek Uk.28 Putih', 0, '0000-00-00'),
-('KB00004', 0, 'Kresek Uk.28 Kuning', 0, '0000-00-00'),
-('KB00005', 0, 'Kresek Uk.40 Putih', 0, '0000-00-00'),
-('KB00006', 0, 'Kantong Uk.60x80 Hitam', 0, '0000-00-00'),
-('KB00007', 0, 'Kantong Uk.60x80 Kuning sablon', 0, '0000-00-00'),
-('KB00008', 0, 'Kantong Uk.60x80 Unggu sablon', 0, '0000-00-00'),
-('KB00009', 0, 'Kantong Uk.50x30 Biru ', 0, '0000-00-00'),
-('KB00010', 0, 'Kantong Uk.20x30 Hitam', 0, '0000-00-00'),
-('KB00011', 0, 'Plastik 1/2kg', 0, '0000-00-00'),
-('KB00012', 0, 'Plastik 1kg', 0, '0000-00-00'),
-('KB00013', 0, 'Plastik 2kg', 0, '0000-00-00'),
-('KB00014', 0, 'Plastik 3kg', 0, '0000-00-00'),
-('KB00015', 0, 'Plastik Klip 7x10', 0, '0000-00-00'),
-('KB00016', 0, 'Plastik Klip 8x12', 0, '0000-00-00'),
-('KB00017', 0, 'Plastik Kip 10x15', 0, '0000-00-00'),
-('KB00018', 0, 'Plastik Klip 16x24', 0, '0000-00-00'),
-('KB00019', 0, 'Plastik Klip 30x40', 0, '0000-00-00'),
-('KB00020', 0, 'Plastik Opp 30x40', 0, '0000-00-00'),
-('KB00021', 0, 'Kantong ROL 25 meter', 0, '0000-00-00'),
-('KB00022', 0, 'Kantong Uk.80x100 Hitam', 0, '0000-00-00'),
-('KB00023', 0, 'Kantong Uk.80x100 Kuning sablon', 0, '0000-00-00'),
-('KB00024', 0, 'Poles', 0, '0000-00-00'),
-('KB00025', 0, 'Soklin lantai', 0, '0000-00-00'),
-('KB00026', 0, 'Detergen', 0, '0000-00-00'),
-('KB00027', 0, 'Cling pembersih kaca', 0, '0000-00-00'),
-('KB00028', 0, 'Edel', 0, '0000-00-00'),
-('KB00029', 0, 'Bayclin', 0, '0000-00-00'),
-('KB00030', 0, 'Sabun cuci tangan. @5 liter', 0, '0000-00-00'),
-('KB00031', 0, 'Sabun batang Giv', 0, '0000-00-00'),
-('KB00032', 0, 'Sabun cair Giv', 0, '0000-00-00'),
-('KB00033', 0, 'Sabun cair anak', 0, '0000-00-00'),
-('KB00034', 0, 'Sampo dewasa', 0, '0000-00-00'),
-('KB00035', 0, 'Sampo anak', 0, '0000-00-00'),
-('KB00036', 0, 'Baby Oil', 0, '0000-00-00'),
-('KB00037', 0, 'Slek baby', 0, '0000-00-00'),
-('KB00038', 0, 'Sabun Pumppyuri', 0, '0000-00-00'),
-('KB00039', 0, 'Stela gantung', 0, '0000-00-00'),
-('KB00040', 0, 'Stela Badroom', 0, '0000-00-00'),
-('KB00041', 0, 'HIT/Baygon', 0, '0000-00-00'),
-('KB00042', 0, 'Byfress', 0, '0000-00-00'),
-('KB00043', 0, 'Obat rumput Roundap', 0, '0000-00-00'),
-('KB00044', 0, 'Obat rumput DMA', 0, '0000-00-00'),
-('KB00045', 0, 'Sapu lidi', 0, '0000-00-00'),
-('KB00046', 0, 'Sapu lidi tangkai', 0, '0000-00-00'),
-('KB00047', 0, 'Sapu lantai ', 0, '0000-00-00'),
-('KB00048', 0, 'sapu + cikrak lantai', 0, '0000-00-00'),
-('KB00049', 0, 'Cikrak', 0, '0000-00-00'),
-('KB00050', 0, 'Sapu Lowo2 maspion', 0, '0000-00-00'),
-('KB00051', 0, 'Sikat tangkai bulat', 0, '0000-00-00'),
-('KB00052', 0, 'Sikat tangkai kotak', 0, '0000-00-00'),
-('KB00053', 0, 'Tongkat kayu', 0, '0000-00-00'),
-('KB00054', 0, 'Tongkat pel panjang', 0, '0000-00-00'),
-('KB00055', 0, 'Tongkat pel sumbu', 0, '0000-00-00'),
-('KB00056', 0, 'Sorok Air', 0, '0000-00-00'),
-('KB00057', 0, 'Sorok kaca', 0, '0000-00-00'),
-('KB00058', 0, 'Kasa Hijau', 0, '0000-00-00'),
-('KB00059', 0, 'Kasa Spon', 0, '0000-00-00'),
-('KB00060', 0, 'Kasa Kawat', 0, '0000-00-00'),
-('KB00061', 0, 'Kain Lab kuning', 0, '0000-00-00'),
-('KB00062', 0, 'Kain Lab dapur', 0, '0000-00-00'),
-('KB00063', 0, 'Waslap', 0, '0000-00-00'),
-('KB00064', 0, 'Kanebo', 0, '0000-00-00'),
-('KB00065', 0, 'Kapur barus @.5', 0, '0000-00-00'),
-('KB00066', 0, 'Kapur Barus 300grm', 0, '0000-00-00'),
-('KB00067', 0, 'Wpc', 0, '0000-00-00'),
-('KB00068', 0, 'Timba Tanggung', 0, '0000-00-00'),
-('KB00069', 0, 'Timba Besar', 0, '0000-00-00'),
-('KB00070', 0, 'Gayung', 0, '0000-00-00'),
-('KB00071', 0, 'Minyak serimpi', 0, '0000-00-00'),
-('KB00072', 0, 'Coutton Bud', 0, '0000-00-00'),
-('KB00073', 0, 'Karung Baru', 0, '0000-00-00'),
-('KB00074', 0, 'Karung Bekas', 0, '0000-00-00'),
-('KB00075', 0, 'Cat Pilog', 0, '0000-00-00'),
-('KB00076', 0, 'Tali Rafia', 0, '0000-00-00'),
-('KB00077', 0, 'Jas hujan', 0, '0000-00-00'),
-('KB00078', 0, 'Hcl', 0, '0000-00-00'),
-('KB00079', 0, 'Soda api', 0, '0000-00-00'),
-('KB00080', 0, 'Kop wc', 0, '0000-00-00'),
-('KB00081', 0, 'Karet Pentil', 0, '0000-00-00'),
-('KB00082', 0, 'Silet goal', 0, '0000-00-00'),
-('KB00083', 0, 'Tisu See U', 0, '0000-00-00'),
-('KB00084', 0, 'Tisu Paseo', 0, '0000-00-00'),
-('KB00085', 0, 'Tisu Rol nice', 0, '0000-00-00'),
-('KB00086', 0, 'Refil pel sumbu', 0, '0000-00-00'),
-('KB00087', 0, 'Refil pel putih', 0, '0000-00-00'),
-('KB00088', 0, 'Refil pel biru', 0, '0000-00-00'),
-('KB00089', 0, 'Spayer kecil', 0, '0000-00-00'),
-('KB00090', 0, 'Spayer besar', 0, '0000-00-00'),
-('KB00091', 0, 'Slang Pompa ', 0, '0000-00-00'),
-('KB00092', 0, 'Gantungan Baju kawat', 0, '0000-00-00'),
-('KB00093', 0, 'Gantungan Baju tempel', 0, '0000-00-00'),
-('KB00094', 0, 'Stik tempat sampah ', 0, '0000-00-00'),
-('KB00095', 0, 'Onderdil tempat sampah', 0, '0000-00-00'),
-('KB00096', 0, 'Kotak Box', 0, '0000-00-00'),
-('KB00097', 0, 'Tong Tutup Residu', 0, '0000-00-00'),
-('KB00098', 0, 'Keset handuk', 0, '0000-00-00'),
-('KB00099', 0, 'Tempat sampah medis 36 + stiker ', 0, '0000-00-00'),
-('KB00100', 0, 'Tempat sampah medis 50 + stiker', 0, '0000-00-00'),
-('KB00101', 0, 'Tempat sampah non medis 36 + stiker', 0, '0000-00-00'),
-('KB00102', 0, 'Tempat sampah non medis 50 + stiker', 0, '0000-00-00');
+INSERT INTO `tm_barang_bhp` (`id_barang_bhp`, `id_kategori_bhp`, `nama_barang_bhp`, `stok`, `harga`, `tanggal_update`) VALUES
+('KB00001', 'HP001', 'Kresek UK.15 Putih', 0, 2100, '0000-00-00'),
+('KB00002', 'HP001', 'Kresek Uk.15 Hitam', 0, 2100, '0000-00-00'),
+('KB00003', 'HP001', 'Kresek Uk.28 Putih', 0, 2100, '0000-00-00'),
+('KB00004', 'HP001', 'Kresek Uk.28 Kuning', 0, 2100, '0000-00-00'),
+('KB00005', 'HP001', 'Kresek Uk.40 Putih', 0, 2200, '0000-00-00'),
+('KB00006', 'HP001', 'Kantong Uk.60x80 Hitam', 0, 2200, '0000-00-00'),
+('KB00007', 'HP001', 'Kantong Uk.60x80 Kuning sablon', 0, 2200, '0000-00-00'),
+('KB00008', 'HP001', 'Kantong Uk.60x80 Unggu sablon', 0, 2200, '0000-00-00'),
+('KB00009', 'HP001', 'Kantong Uk.50x30 Biru ', 0, 2200, '0000-00-00'),
+('KB00010', 'HP001', 'Kantong Uk.20x30 Hitam', 0, 2200, '0000-00-00'),
+('KB00011', 'HP001', 'Plastik 1/2kg', 0, 2200, '0000-00-00'),
+('KB00012', 'HP001', 'Plastik 1kg', 0, 2200, '0000-00-00'),
+('KB00013', 'HP001', 'Plastik 2kg', 0, 2200, '0000-00-00'),
+('KB00014', 'HP001', 'Plastik 3kg', 0, 2200, '0000-00-00'),
+('KB00015', 'HP001', 'Plastik Klip 7x10', 0, 2200, '0000-00-00'),
+('KB00016', 'HP001', 'Plastik Klip 8x12', 0, 3500, '0000-00-00'),
+('KB00017', 'HP001', 'Plastik Kip 10x15', 0, 3500, '0000-00-00'),
+('KB00018', 'HP001', 'Plastik Klip 16x24', 0, 3500, '0000-00-00'),
+('KB00019', 'HP001', 'Plastik Klip 30x40', 0, 3500, '0000-00-00'),
+('KB00020', 'HP001', 'Plastik Opp 30x40', 0, 3500, '0000-00-00'),
+('KB00021', 'HP001', 'Kantong ROL 25 meter', 0, 4000, '0000-00-00'),
+('KB00022', 'HP001', 'Kantong Uk.80x100 Hitam', 0, 4000, '0000-00-00'),
+('KB00023', 'HP001', 'Kantong Uk.80x100 Kuning sablon', 0, 4000, '0000-00-00'),
+('KB00024', 'HP001', 'Poles', 0, 4000, '0000-00-00'),
+('KB00025', 'HP001', 'Soklin lantai', 0, 4000, '0000-00-00'),
+('KB00026', 'HP001', 'Detergen', 0, 4000, '0000-00-00'),
+('KB00027', 'HP001', 'Cling pembersih kaca', 0, 4000, '0000-00-00'),
+('KB00028', 'HP001', 'Edel', 0, 4000, '0000-00-00'),
+('KB00029', 'HP001', 'Bayclin', 0, 4000, '0000-00-00'),
+('KB00030', 'HP001', 'Sabun cuci tangan. @5 liter', 0, 4000, '0000-00-00'),
+('KB00031', 'HP001', 'Sabun batang Giv', 0, 4000, '0000-00-00'),
+('KB00032', 'HP001', 'Sabun cair Giv', 0, 1500, '0000-00-00'),
+('KB00033', 'HP001', 'Sabun cair anak', 0, 1500, '0000-00-00'),
+('KB00034', 'HP001', 'Sampo dewasa', 0, 1500, '0000-00-00'),
+('KB00035', 'HP001', 'Sampo anak', 0, 1500, '0000-00-00'),
+('KB00036', 'HP001', 'Baby Oil', 0, 1500, '0000-00-00'),
+('KB00037', 'HP001', 'Slek baby', 0, 2400, '0000-00-00'),
+('KB00038', 'HP001', 'Sabun Pumppyuri', 0, 2400, '0000-00-00'),
+('KB00039', 'HP001', 'Stela gantung', 0, 2400, '0000-00-00'),
+('KB00040', 'HP001', 'Stela Badroom', 0, 2400, '0000-00-00'),
+('KB00041', 'HP001', 'HIT/Baygon', 0, 2400, '0000-00-00'),
+('KB00042', 'HP001', 'Byfress', 0, 2400, '0000-00-00'),
+('KB00043', 'HP001', 'Obat rumput Roundap', 0, 2400, '0000-00-00'),
+('KB00044', 'HP001', 'Obat rumput DMA', 0, 2400, '0000-00-00'),
+('KB00045', 'HP001', 'Sapu lidi', 0, 2400, '0000-00-00'),
+('KB00046', 'HP001', 'Sapu lidi tangkai', 0, 4500, '0000-00-00'),
+('KB00047', 'HP001', 'Sapu lantai ', 0, 4500, '0000-00-00'),
+('KB00048', 'HP001', 'sapu + cikrak lantai', 0, 4500, '0000-00-00'),
+('KB00049', 'HP001', 'Cikrak', 0, 4500, '0000-00-00'),
+('KB00050', 'HP001', 'Sapu Lowo2 maspion', 0, 4500, '0000-00-00'),
+('KB00051', 'HP001', 'Sikat tangkai bulat', 0, 4500, '0000-00-00'),
+('KB00052', 'HP001', 'Sikat tangkai kotak', 0, 4500, '0000-00-00'),
+('KB00053', 'HP001', 'Tongkat kayu', 0, 4500, '0000-00-00'),
+('KB00054', 'HP001', 'Tongkat pel panjang', 0, 4500, '0000-00-00'),
+('KB00055', 'HP001', 'Tongkat pel sumbu', 0, 4500, '0000-00-00'),
+('KB00056', 'HP001', 'Sorok Air', 0, 4500, '0000-00-00'),
+('KB00057', 'HP001', 'Sorok kaca', 0, 4500, '0000-00-00'),
+('KB00058', 'HP001', 'Kasa Hijau', 0, 4500, '0000-00-00'),
+('KB00059', 'HP001', 'Kasa Spon', 0, 4500, '0000-00-00'),
+('KB00060', 'HP001', 'Kasa Kawat', 0, 4500, '0000-00-00'),
+('KB00061', 'HP001', 'Kain Lab kuning', 0, 0, '0000-00-00'),
+('KB00062', 'HP001', 'Kain Lab dapur', 0, 5500, '0000-00-00'),
+('KB00063', 'HP001', 'Waslap', 0, 5500, '0000-00-00'),
+('KB00064', 'HP001', 'Kanebo', 0, 5500, '0000-00-00'),
+('KB00065', 'HP001', 'Kapur barus @.5', 0, 5500, '0000-00-00'),
+('KB00066', 'HP001', 'Kapur Barus 300grm', 0, 5500, '0000-00-00'),
+('KB00067', 'HP001', 'Wpc', 0, 5500, '0000-00-00'),
+('KB00068', 'HP001', 'Timba Tanggung', 0, 5500, '0000-00-00'),
+('KB00069', 'HP001', 'Timba Besar', 0, 5500, '0000-00-00'),
+('KB00070', 'HP001', 'Gayung', 0, 5500, '0000-00-00'),
+('KB00071', 'HP001', 'Minyak serimpi', 0, 5500, '0000-00-00'),
+('KB00072', 'HP001', 'Coutton Bud', 0, 5500, '0000-00-00'),
+('KB00073', 'HP001', 'Karung Baru', 0, 5500, '0000-00-00'),
+('KB00074', 'HP001', 'Karung Bekas', 0, 5500, '0000-00-00'),
+('KB00075', 'HP001', 'Cat Pilog', 0, 5500, '0000-00-00'),
+('KB00076', 'HP001', 'Tali Rafia', 0, 5500, '0000-00-00'),
+('KB00077', 'HP001', 'Jas hujan', 0, 5500, '0000-00-00'),
+('KB00078', 'HP001', 'Hcl', 0, 5500, '0000-00-00'),
+('KB00079', 'HP001', 'Soda api', 0, 5500, '0000-00-00'),
+('KB00080', 'HP001', 'Kop wc', 0, 5500, '0000-00-00'),
+('KB00081', 'HP001', 'Karet Pentil', 0, 5500, '0000-00-00'),
+('KB00082', 'HP001', 'Silet goal', 0, 5500, '0000-00-00'),
+('KB00083', 'HP001', 'Tisu See U', 0, 5500, '0000-00-00'),
+('KB00084', 'HP001', 'Tisu Paseo', 0, 2300, '0000-00-00'),
+('KB00085', 'HP001', 'Tisu Rol nice', 0, 2300, '0000-00-00'),
+('KB00086', 'HP001', 'Refil pel sumbu', 0, 2300, '0000-00-00'),
+('KB00087', 'HP001', 'Refil pel putih', 0, 2300, '0000-00-00'),
+('KB00088', 'HP001', 'Refil pel biru', 0, 2300, '0000-00-00'),
+('KB00089', 'HP001', 'Spayer kecil', 0, 2300, '0000-00-00'),
+('KB00090', 'HP001', 'Spayer besar', 0, 2300, '0000-00-00'),
+('KB00091', 'HP001', 'Slang Pompa ', 0, 2300, '0000-00-00'),
+('KB00092', 'HP001', 'Gantungan Baju kawat', 0, 2300, '0000-00-00'),
+('KB00093', 'HP001', 'Gantungan Baju tempel', 0, 2300, '0000-00-00'),
+('KB00094', 'HP001', 'Stik tempat sampah ', 0, 2300, '0000-00-00'),
+('KB00095', 'HP001', 'Onderdil tempat sampah', 0, 2300, '0000-00-00'),
+('KB00096', 'HP001', 'Kotak Box', 0, 2300, '0000-00-00'),
+('KB00097', 'HP001', 'Tong Tutup Residu', 0, 1200, '0000-00-00'),
+('KB00098', 'HP001', 'Keset handuk', 0, 1200, '0000-00-00'),
+('KB00099', 'HP001', 'Tempat sampah medis 36 + stiker ', 0, 1200, '0000-00-00'),
+('KB00100', 'HP001', 'Tempat sampah medis 50 + stiker', 0, 1200, '0000-00-00'),
+('KB00101', 'HP001', 'Tempat sampah non medis 36 + stiker', 0, 1200, '0000-00-00'),
+('KB00102', 'HP001', 'Tempat sampah non medis 50 + stiker', 0, 1200, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -415,11 +419,11 @@ CREATE TABLE `tm_kategori_bhp` (
 --
 
 INSERT INTO `tm_kategori_bhp` (`id_kategori_bhp`, `nama_kategori_bhp`) VALUES
-('KB001', 'Kebersihan'),
-('KB002', 'Listrik'),
-('KB003', 'ATK'),
-('KB004', 'Cetak'),
-('KB005', 'Pemeliharaan');
+('HP001', 'Kebersihan'),
+('HP002', 'Listrik'),
+('HP003', 'ATK'),
+('HP004', 'Cetak'),
+('HP005', 'Pemeliharaan');
 
 -- --------------------------------------------------------
 
@@ -460,14 +464,11 @@ CREATE TABLE `transaksi_terbaru` (
 CREATE TABLE `tr_stok_barang_bhp` (
   `id_trx_barang_bhp` varchar(30) NOT NULL,
   `id_barang_bhp` varchar(15) NOT NULL,
-  `harga_lama` int(10) NOT NULL,
   `harga_baru` int(10) NOT NULL,
-  `stok_lama` int(5) NOT NULL,
   `stok_baru` int(5) NOT NULL,
   `harga_rata` int(10) NOT NULL,
-  `harga_total` int(20) NOT NULL,
   `operator` varchar(35) NOT NULL,
-  `tanggal_trx` date NOT NULL
+  `tanggal_trx` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -565,7 +566,14 @@ ALTER TABLE `table_user`
 -- Indexes for table `tm_barang_bhp`
 --
 ALTER TABLE `tm_barang_bhp`
-  ADD PRIMARY KEY (`id_barang_bhp`);
+  ADD PRIMARY KEY (`id_barang_bhp`),
+  ADD KEY `id_kategori_bhp` (`id_kategori_bhp`);
+
+--
+-- Indexes for table `tm_kategori_aset`
+--
+ALTER TABLE `tm_kategori_aset`
+  ADD PRIMARY KEY (`id_kategori_aset`);
 
 --
 -- Indexes for table `tm_kategori_bhp`

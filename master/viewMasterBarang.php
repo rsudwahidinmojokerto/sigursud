@@ -1,6 +1,6 @@
 <?php 
     $qb = new lsp();
-    $dataMasterBarang = $qb->select("tm_barang_bhp");
+    $dataMasterBarang = $qb->selectBhp("tm_barang_bhp", "tm_kategori_bhp");
     if ($_SESSION['level'] != "Master") {
     header("location:../index.php");
     }
@@ -55,6 +55,7 @@
                                             <th>ID Barang</th>
                                             <th>Kategori</th>
                                             <th>Nama barang</th>
+                                            <th>Stok</th>
                                             <th>Harga</th>
                                             <th>Tanggal Update</th>
                                             <!-- <th>Harga</th>
@@ -70,8 +71,9 @@
                                          ?>
                                         <tr>
                                             <td><?= $dmb['id_barang_bhp'] ?></td>
-                                            <td></td>
+                                            <td><?= $dmb['nama_kategori_bhp'] ?></td>
                                             <td><?= $dmb['nama_barang_bhp'] ?></td>
+                                            <td><?= $dmb['stok'] ?></td>
                                             <td><?= $dmb['harga'] ?></td>
                                             <td><?= $dmb['tanggal_update'] ?></td>
                                             <!-- <td><?= number_format($dmb['harga_barang']) ?></td>
