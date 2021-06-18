@@ -1,47 +1,17 @@
 <?php
-include "helper/sessionCheck.php";
+include "helpers/sessionCheck.php";
 ?>
 
 <!DOCTYPE html>
 <html>
 
-<head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
-    <title>Admin</title>
-    <!-- Fontfaces CSS-->
-    <link href="assets/css/font-face.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
-    <link href="assets/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="assets/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-    <link href="assets/vendor/vector-map/jqvmap.min.css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="assets/css/sweet-alert.css">
-
-    <!-- Main CSS-->
-    <link href="assets/css/theme.css" rel="stylesheet" media="all">
-    <link rel="stylesheet" href="assets/css/datatable/css/dataTables.bootstrap4.min.css">
-</head>
+<!-- Header - Meta, Title, CSS,  -->
+<?php
+include "app/views/_layout/_meta.php";
+include "app/views/_layout/_css.php";
+?>
 
 <body>
-
     <div class="page-wrapper">
         <aside class="menu-sidebar2">
             <div class="logo">
@@ -185,13 +155,13 @@ include "helper/sessionCheck.php";
             <aside class="menu-sidebar2 js-right-sidebar d-block d-lg-none">
                 <div class="logo">
                     <a href="#">
-                        <img src="images/icon/logo-white.png" alt="Cool Admin" />
+                        <img src="assets/images/icon/logo-white.png" alt="Cool Admin" />
                     </a>
                 </div>
                 <div class="menu-sidebar2__content js-scrollbar2">
                     <div class="account2">
                         <div class="image img-cir img-120">
-                            <img src="img/<?= $auth['foto_user'] ?>" alt="John Doe" />
+                            <img src="assets/img/<?= $auth['foto_user'] ?>" alt="John Doe" />
                         </div>
                         <h4 class="name"><?= $auth['nama_user'] ?></h4>
                         <a href="#">Sign out</a>
@@ -265,44 +235,12 @@ include "helper/sessionCheck.php";
                     break;
             }
             ?>
-
         </div>
-
     </div>
 
-    <!-- Jquery JS-->
-    <script src="assets/vendor/jquery-3.2.1.min.js"></script>
-    <!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>!-->
-    <script src="assets/css/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="assets/css/datatable/js/dataTables.bootstrap4.min.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="assets/vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="assets/vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="assets/vendor/slick/slick.min.js">
-    </script>
-    <script src="assets/vendor/wow/wow.min.js"></script>
-    <script src="assets/vendor/animsition/animsition.min.js"></script>
-    <script src="assets/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="assets/vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="assets/vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="assets/vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="assets/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="assets/vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="assets/vendor/select2/select2.min.js">
-    </script>
-    <script src="assets/vendor/vector-map/jquery.vmap.js"></script>
-    <script src="assets/vendor/vector-map/jquery.vmap.min.js"></script>
-    <script src="assets/vendor/vector-map/jquery.vmap.sampledata.js"></script>
-    <script src="assets/vendor/vector-map/jquery.vmap.world.js"></script>
+    <!-- Footer - JS  -->
+    <?php include "app/views/_layout/_js.php" ?>
 
-    <!-- Main JS-->
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/sweetalert.min.js"></script>
-    <script src="assets/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function() {
             function preview(input) {
@@ -357,9 +295,6 @@ include "helper/sessionCheck.php";
                     }
                 });
             });
-
-
-
         })
     </script>
     <script>
@@ -367,7 +302,7 @@ include "helper/sessionCheck.php";
             $('#example').DataTable();
         });
     </script>
-    <?php include "config/alert.php"; ?>
+    <?php include "helpers/alert.php"; ?>
 </body>
 
 </html>
