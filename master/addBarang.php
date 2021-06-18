@@ -7,7 +7,7 @@
     $getJenisbarang         = $br->select("tm_kategori_bhp");
     $getDistributor         = $br->select("tm_distributor");
 
-    $autokodeBarangBhp      = $br->autokodeBarangBhp("tm_barang_bhp","id_barang_bhp","KB");
+    $autokodeBarangBhp      = $br->autokodeLimaDigit("tm_barang_bhp","id_barang_bhp","KB");
     $waktu                  = date("Y-m-d");
     if (isset($_POST['getSimpan'])) {
         $kode_barang  = $br->validateHtml($_POST['kode_barang']);

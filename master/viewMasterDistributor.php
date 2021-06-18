@@ -5,10 +5,10 @@
     }
     $table = "tm_distributor";
     $dataDis = $dis->select($table);
-    $autokode = $dis->autokode($table,"id_distributor","DS");
+    $autokode = $dis->autokodeDistributor($table, "id_distributor", "DS");
 
     if (isset($_GET['delete'])) {
-        $where = "id_distributor";
+        $where = "kd_distributor";
         $whereValues = $_GET['id'];
         $redirect = "?page=viewDistributor";
         $response = $dis->delete($table, $where, $whereValues, $redirect);
@@ -16,26 +16,26 @@
 
     if (isset($_GET['edit'])) {
         $id = $_GET['id'];
-        $editData = $dis->selectWhere($table,"id_distributor",$id);
-        $autokode = $editData['id_distributor'];
+        $editData = $dis->selectWhere($table,"kd_distributor",$id);
+        $autokode = $editData['kd_distributor'];
     }
     if (isset($_POST['getSave'])) {
-        $id_distributor   = $dis->validateHtml($_POST['kode_distributor']);
+        $kd_distributor   = $dis->validateHtml($_POST['kode_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
         $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
 
-        if ($id_distributor == " " || empty($id_distributor) || $nama_distributor == " " || empty($nama_distributor) || $nohp_distributor == " " || empty($nohp_distributor) || $alamat == " " || empty($alamat)) {
+        if ($kd_distributor == " " || empty($kd_distributor) || $nama_distributor == " " || empty($nama_distributor) || $nohp_distributor == " " || empty($nohp_distributor) || $alamat == " " || empty($alamat)) {
             $response = ['response'=>'negative','alert'=>'Lengkapi field'];
         }else{
             $validno = substr($nohp_distributor, 0,2);
             if ($validno != "08") {
-                $response = ['response'=>'negative','alert'=>'Masukan nomor HP yang valid'];
+                $response = ['response'=>'negative','alert'=>'Masukan nohp yang valid'];
             }else{
-                if (strlen($nohp_distributor) < 12) {
-                    $response = ['response'=>'negative','alert'=>'Masukan 12 digit nomor HP'];
+                if (strlen($nohp_distributor) < 11) {
+                    $response = ['response'=>'negative','alert'=>'Masukan 11 digit nohp'];
                 }else{
-                    $value = "'$id_distributor','$nama_distributor','$alamat','$nohp_distributor'";
+                    $value = "'$kd_distributor','$nama_distributor','$alamat','$nohp_distributor'";
                     $response = $dis->insert($table,$value,"?page=viewDistributor");
                 }
             }
@@ -43,12 +43,12 @@
     }
 
     if (isset($_POST['getUpdate'])) {
-        $id_distributor   = $dis->validateHtml($_POST['kode_distributor']);
+        $kd_distributor   = $dis->validateHtml($_POST['kode_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
         $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
 
-        if ($id_distributor == "" || $nama_distributor == "" || $nohp_distributor == "" || $alamat == "") {
+        if ($kd_distributor == "" || $nama_distributor == "" || $nohp_distributor == "" || $alamat == "") {
             $response = ['response'=>'negative','alert'=>'lengkapi field'];
         }else{
             $validno = substr($nohp_distributor, 0,2);
@@ -58,8 +58,8 @@
                 if (strlen($nohp_distributor) < 11) {
                     $response = ['response'=>'negative','alert'=>'Masukan 11 digit nohp'];
                 }else{
-                    $value = "id_distributor='$id_distributor', nama_distributor='$nama_distributor', alamat='$alamat', telp='$nohp_distributor'";
-                    $response = $dis->update($table, $value,"id_distributor",$_GET['id'], "?page=viewDistributor");
+                    $value = "kd_distributor='$kd_distributor',nama_distributor='$nama_distributor',no_telp='$nohp_distributor',alamat='$alamat'";
+                    $response = $dis->update($table,$value,"kd_distributor",$_GET['id'],"?page=viewDistributor");
                 }
             }
         }
@@ -96,12 +96,12 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header" >
-                            <strong class="card-title mb-3">Tambah Distributor</strong>
+                            <strong class="card-title mb-3">Input Distributor</strong>
                         </div>
                         <div class="card-body">
                             <form method="post">
                                 <div class="form-group">
-                                    <label for="">ID distributor</label>
+                                    <label for="">Kode distributor</label>
                                     <input type="text" class="form-control form-control-sm" name="kode_distributor" style="font-weight: bold; color: red;" value="<?php echo $autokode; ?>" readonly>
                                 </div>
                                 <div class="form-group">
@@ -109,8 +109,8 @@
                                     <input type="text" class="form-control form-control-sm" name="nama_distributor" value="<?php echo @$editData['nama_distributor'] ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">No.HP distributor</label>
-                                    <input type="text" class="form-control form-control-sm" name="nohp_distributor" value="<?php echo @$editData['telp']; ?>">
+                                    <label for="">Nohp distributor</label>
+                                    <input type="text" class="form-control form-control-sm" name="nohp_distributor" value="<?php echo @$editData['no_telp']; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Alamat</label>
@@ -140,7 +140,7 @@
                                        <tr>
                                             <th>Kode distributor</th>
                                             <th>Nama</th>
-                                            <th>No HP</th>
+                                            <th>Nohp</th>
                                             <th>Alamat</th>
                                             <th>Action</th>
                                        </tr>
@@ -151,18 +151,18 @@
                                             foreach($dataDis as $ds){
                                          ?>
                                        <tr>
-                                            <td><?= $ds['id_distributor'] ?></td>
+                                            <td><?= $ds['kd_distributor'] ?></td>
                                             <td><?= $ds['nama_distributor'] ?></td>
-                                            <td><?= $ds['telp'] ?></td>
+                                            <td><?= $ds['no_telp'] ?></td>
                                             <td><?= $ds['alamat'] ?></td>
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewDistributor&edit&id=<?= $ds['id_distributor'] ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewDistributor&edit&id=<?= $ds['kd_distributor'] ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                                     <a data-toggle="tooltip" data-placement="top" title="Delete" href="#" class="btn btn-danger"><i class="fa fa-trash" id="btnDelete<?php echo $no; ?>" ></i></a>
                                                 </div>
                                             </td>
                                        </tr>
-                                       <script src="assets/vendor/jquery-3.2.1.min.js"></script>
+                                       <script src="vendor/jquery-3.2.1.min.js"></script>
                                        <script>
                                         $('#btnDelete<?php echo $no; ?>').click(function(e){
                                                       e.preventDefault();
@@ -177,7 +177,7 @@
                                                         closeOnCancel: true
                                                       }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href="?page=viewDistributor&delete&id=<?php echo $ds['id_distributor'] ?>";
+                                                            window.location.href="?page=viewDistributor&delete&id=<?php echo $ds['kd_distributor'] ?>";
                                                         }
                                                       });
                                                     });

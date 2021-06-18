@@ -164,7 +164,7 @@
             return $kode;
         }
 
-        public function autokodeBarangBhp($table, $field, $pre){
+        public function autokodeLimaDigit($table, $field, $pre){
             global $con;
             $sqlc   = "SELECT COUNT($field) as jumlah FROM $table";
             $querys = mysqli_query($con, $sqlc);
