@@ -1,21 +1,7 @@
 <?php
-
-include "config/controller.php";
-$function = new lsp();
-session_start();
-
-$auth = $function->AuthUser($_SESSION['username']);
-
-
-$response = $function->sessionCheck();
-if ($response == "false") {
-    header("Location:index.php");
-}
-if (isset($_GET['logout'])) {
-    $function->logout();
-}
-
+include "helper/sessionCheck.php";
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -52,7 +38,6 @@ if (isset($_GET['logout'])) {
     <!-- Main CSS-->
     <link href="assets/css/theme.css" rel="stylesheet" media="all">
     <link rel="stylesheet" href="assets/css/datatable/css/dataTables.bootstrap4.min.css">
-
 </head>
 
 <body>
