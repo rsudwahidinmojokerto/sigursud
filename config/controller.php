@@ -9,7 +9,8 @@
     $rg = new lsp();
 
     class lsp{
-
+        
+        //index.php area
         public function login($username,$password){
             global $con;
             
@@ -44,17 +45,17 @@
             header("Location:index.php");
         }
 
-         public function selectSum($table,$namaField){
+        public function selectSum($table,$namaField){
             global $con;
             $sql = "SELECT SUM($namaField) as sum FROM $table";
             $query = mysqli_query($con,$sql);
             return $data = mysqli_fetch_assoc($query);
         }
 
-         public function selectSumWhere($table,$namaField,$where){
+        public function selectSumWhere($table,$namaField,$where){
             global $con;
             $sql = "SELECT SUM($namaField) as sum FROM $table WHERE $where";
-            $query = mysqli_query($con,$sql);
+            $query = mysqli_query($con, $sql);
             return $data = mysqli_fetch_assoc($query);
         }
 
@@ -172,17 +173,21 @@
                 $sql    = "SELECT MAX($field) as kode FROM $table";
                 $query  = mysqli_query($con, $sql);
                 $number = mysqli_fetch_assoc($query);
-                $strnum = substr($number['kode'], 2,3);
+                $strnum = substr($number['kode'], 2, 5);
                 $strnum = $strnum + 1;
-                if(strlen($strnum) == 3){ 
+                if(strlen($strnum) == 5){ 
                     $kode = $pre.$strnum;
-                } else if(strlen($strnum) == 2){ 
+                } else if(strlen($strnum) == 4){ 
                     $kode = $pre."0".$strnum;
-                } else if(strlen($strnum) == 1){ 
+                } else if(strlen($strnum) == 3){ 
                     $kode = $pre."00".$strnum;
+                } else if(strlen($strnum) == 2){ 
+                    $kode = $pre."000".$strnum;
+                } else if(strlen($strnum) == 1){ 
+                    $kode = $pre."0000".$strnum;
                 }
             } else {
-                $kode = $pre."001";
+                $kode = $pre."00001";
             }
             return $kode;
         }
