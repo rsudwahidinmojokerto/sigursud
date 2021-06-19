@@ -59,6 +59,14 @@ include "app/views/_layout/_css.php";
                             <a href="?page=viewRuangan">
                                 <i class="fas fa-users"></i>Ruangan</a>
                         </li>
+                        <li>
+                            <a href="?page=kelolaPegawai">
+                                <i class="fas fa-users"></i>Master User</a>
+                        </li>
+                        <li>
+                            <a href="?page=viewSatuan">
+                                <i class="fas fa-users"></i>Master Satuan</a>
+                        </li>
                         <!-- <li>
                             <a href="?page=viewJenisbarang">
                             <i class="fas fa-filter"></i>Jenis Barang</a>
@@ -198,6 +206,12 @@ include "app/views/_layout/_css.php";
             switch ($page) {
                 case 'viewBarang':
                     include "master/viewBarang.php";
+                    break;
+                case 'viewSatuan':
+                    include "master/viewSatuan.php";
+                    break;
+                case 'kelolaPegawai':
+                    include "master/kelolaPegawai.php";
                     break;
                 case 'viewMasterBarang':
                     include "master/viewMasterBarang.php";

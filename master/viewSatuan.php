@@ -3,28 +3,29 @@
     if ($_SESSION['level'] != "Admin") {
     header("location:../index.php");
     }
-    $table            = "tm_kategori_aset";
-    $dataKategoriaset  = $me->select($table);
-    $autokode         = $me->autokode($table,"id_kategori_aset","AS");
+    $table            = "tm_satuan";
+    $datasatuan  = $me->select($table);
+    $autokode         = $me->autokode($table,"id_satuan","ST");
 
     if (isset($_GET['delete'])) {
         $id       = $_GET['id'];
-        $cek      = $me->selectCountWhere($table, "id_kategori_aset", "nama_kategori_aset='$id'");
+        $cek      = $me->selectCountWhere($table, "id_satuan", "nama_satuan", "jumlah_satuan='$id'");
         // echo $cek['count'];
         if ($cek['count'] > 0) {
             $response = ['response'=>'negative','alert'=>'jenis barang ini sudah di pakai di barang tidak dapat di hapus'];
         }else{
-        $where    = "id_kategori_aset";
-        $response = $me->delete($table, $where, $id,"?page=viewKategoriAset");
+        $where    = "id_satuan";
+        $response = $me->delete($table, $where, $id,"?page=viewSatuan");
         }
     }
 
     if (isset($_POST['getSave'])) {
-        $id_kategori_aset        = $me->validateHtml($_POST['id_kategori_aset']);
-        $nama_kategori_aset      = $me->validateHtml($_POST['nama_kategori_aset']);
+        $id_satuan        = $me->validateHtml($_POST['id_satuan']);
+        $nama_satuan      = $me->validateHtml($_POST['nama_satuan']);
+        $jumlah_satuan      = $me->validateHtml($_POST['jumlah_satuan']);
 
-        $value    = "'$id_kategori_aset','$nama_kategori_aset'";
-        $response = $me->insert($table, $value, "?page=viewKategoriAset");
+        $value    = "'$id_satuan','$nama_satuan', '$jumlah_satuan '";
+        $response = $me->insert($table, $value, "?page=viewSatuan");
 
         // $foto = $_FILES['foto'];
 
@@ -41,11 +42,12 @@
     }
 
     if (isset($_POST['getUpdate'])) {
-        $id_kategori_aset        = $me->validateHtml($_POST['id_kategori_aset']);
-        $nama_kategori_aset      = $me->validateHtml($_POST['nama_kategori_aset']);
+        $id_satuan        = $me->validateHtml($_POST['id_satuan']);
+        $nama_satuan      = $me->validateHtml($_POST['nama_satuan']);
+        $jumlah_satuan      = $me->validateHtml($_POST['jumlah_satuan']);
 
-        $value = "id_kategori_aset='$id_kategori_aset',nama_kategori_aset='$nama_kategori_aset'";
-        $response = $me->update($table, $value,"id_kategori_aset",$_GET['id'],"?page=viewKategoriAset");
+        $value = "id_satuan='$id_satuan',nama_satuan='$nama_satuan', jumlah_satuan='$jumlah_satuan'";
+        $response = $me->update($table, $value,"id_satuan",$_GET['id'],"?page=viewSatuan");
 
         // if ($_FILES['foto']['name'] == "") {
         //      $value    = "kd_jenisbarang='$kode_jenisbarang',jenis_barang='$jenis_barang'";
@@ -62,7 +64,7 @@
     }
 
     if (isset($_GET['edit'])) {
-        $editData = $me->selectWhere($table,"id_kategori_aset",$_GET['id']);
+        $editData = $me->selectWhere($table,"id_satuan",$_GET['id']);
     }
     
  ?>
@@ -80,7 +82,7 @@
                                 <li class="list-inline-item seprate">
                                     <span>/</span>
                                 </li>
-                                <li class="list-inline-item">Data Kategori ASET</li>
+                                <li class="list-inline-item">Data Satuan</li>
                             </ul>
                         </div>
                     </div>
@@ -97,23 +99,28 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header" >
-                            <strong class="card-title mb-3">Input Kategori</strong>
+                            <strong class="card-title mb-3">Input Satuan</strong>
                         </div>
                         <div class="card-body">
                             <form method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="">Kode Kategori ASET</label>
+                                    <label for="">Kode Satuan </label>
                                     <?php if(!isset($_GET['edit'])) : ?>
-                                    <input type="text" class="form-control form-control-sm" name="id_kategori_aset" style="font-weight: bold; color: red;" value="<?php echo $autokode; ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm" name="id_satuan" style="font-weight: bold; color: red;" value="<?php echo $autokode; ?>" readonly>
                                     <?php endif ?>
                                     <?php if(isset($_GET['edit'])) : ?>
-                                    <input type="text" class="form-control form-control-sm" name="id_kategori_aset" style="font-weight: bold; color: red;" value="<?php echo @$editData['id_kategori_aset']; ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm" name="id_satuan" style="font-weight: bold; color: red;" value="<?php echo @$editData['id_satuan']; ?>" readonly>
                                     <?php endif ?>
+                                    
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Nama Kategori</label>
-                                    <input type="text" class="form-control form-control-sm" name="nama_kategori_aset" value="<?php echo @$editData['nama_kategori_aset'] ?>">
+                                    <label for="">Nama Satuan</label>
+                                    <input type="text" class="form-control form-control-sm" name="nama_satuan" value="<?php echo @$editData['nama_satuan'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Jumlah Satuan</label>
+                                    <input type="text" class="form-control form-control-sm" name="jumlah_satuan" value="<?php echo @$editData['jumlah_satuan'] ?>">
                                 </div>
                                 <!-- <div class="form-group">
                                     <label for="">Foto</label>
@@ -125,7 +132,7 @@
                                 <hr>
                                 <?php if (isset($_GET['edit'])): ?>
                                 <button type="submit" name="getUpdate" class="btn btn-warning"><i class="fa fa-check"></i> Update</button>
-                                <a href="?page=viewKategoriAset" class="btn btn-danger">Cancel</a>
+                                <a href="?page=viewSatuan" class="btn btn-danger">Cancel</a>
                                 <?php endif ?>
                                 <?php if (!isset($_GET['edit'])): ?>    
                                 <button type="submit" name="getSave" class="btn btn-primary"><i class="fa fa-download"></i> Simpan</button>
@@ -138,7 +145,7 @@
                     <div class="col-md-8">
                         <div class="card">
                         <div class="card-header">
-                            <strong class="card-title mb-3">Data Kategori</strong>
+                            <strong class="card-title mb-3">Data Satuan</strong>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -146,7 +153,8 @@
                                    <thead>
                                        <tr>
                                             <th>Kode</th>
-                                            <th>Nama</th>
+                                            <th>Nama satuan</th>
+                                            <th>jumlah satuan</th>
                                             <!-- <th>Logo</th> -->
                                             <th>Action</th>
                                        </tr>
@@ -154,15 +162,16 @@
                                    <tbody>
                                         <?php 
                                             $no = 1;
-                                            foreach($dataKategoriaset as $aset){
+                                            foreach($datasatuan as $bhp){
                                          ?>
                                        <tr>
-                                            <td><?= $aset['id_kategori_aset'] ?></td>
-                                            <td><?= $aset['nama_kategori_aset'] ?></td>
-                                            <!-- <td><img width="60" src="img/<?= $aset['foto_jenisbarang'] ?>" alt=""></td> -->
+                                            <td><?= $bhp['id_satuan'] ?></td>
+                                            <td><?= $bhp['nama_satuan'] ?></td>
+                                            <td><?= $bhp['jumlah_satuan'] ?></td>
+                                            <!-- <td><img width="60" src="img/<?= $bhp['foto_jenisbarang'] ?>" alt=""></td> -->
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewKategoriAset&edit&id=<?= $aset['id_kategori_aset'] ?>" class="btn btn-info"><i class="fa fa-edit"></i>
+                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewSatuan&edit&id=<?= $bhp['id_satuan'] ?>" class="btn btn-info"><i class="fa fa-edit"></i>
                                                     </a>
                                                     <a data-toggle="tooltip" data-placement="top" title="Delete" href="#" class="btn btn-danger"><i class="fa fa-trash" id="btnDelete<?php echo $no; ?>" ></i></a>
                                                 </div>
@@ -183,7 +192,7 @@
                                                 closeOnCancel: true
                                                 }, function(isConfirm) {
                                                     if (isConfirm) {
-                                                        window.location.href="?page=viewKategoriaset&delete&id=<?php echo $aset['id_kategori_aset'] ?>";
+                                                        window.location.href="?page=viewSatuan&delete&id=<?php echo $bhp['id_satuan'] ?>";
                                                     }
                                                 });
                                                 });

@@ -12,7 +12,7 @@ class lsp
     {
         global $con;
 
-        $sql = "SELECT * FROM table_user WHERE username ='$username'";
+        $sql = "SELECT * FROM tm_user WHERE username ='$username'";
         $query = mysqli_query($con, $sql);
         $rows  = mysqli_num_rows($query);
         $assoc = mysqli_fetch_assoc($query);
@@ -88,7 +88,7 @@ class lsp
     public function AuthUser($sessionUser)
     {
         global $con;
-        $sql = "SELECT * FROM table_user WHERE username = '$sessionUser'";
+        $sql = "SELECT * FROM tm_user WHERE username = '$sessionUser'";
         $query = mysqli_query($con, $sql);
         $bigData = mysqli_fetch_assoc($query);
         return $bigData;
@@ -104,7 +104,7 @@ class lsp
             return ['response' => 'negative', 'alert' => 'Lengkapi Form'];
         }
 
-        $sql     = "SELECT * FROM table_user WHERE username = '$username'";
+        $sql     = "SELECT * FROM tm_user WHERE username = '$username'";
         $query   = mysqli_query($con, $sql);
 
         $rows    = mysqli_num_rows($query);
@@ -126,7 +126,7 @@ class lsp
             if ($password == $confirm) {
                 $password = base64_encode($password);
                 $response = $rg->validateImage();
-                $sql = "INSERT INTO table_user VALUES('$kd_user','$name','$username','$password','$response[image]', '$level')";
+                $sql = "INSERT INTO tm_user VALUES('$kd_user','$name','$username','$password','$response[image]', '$level')";
                 $query   = mysqli_query($con, $sql);
                 if ($query) {
                     return ['response' => 'positive', 'alert' => 'Registrasi Berhasil', 'redirect' => $redirect];

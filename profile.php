@@ -1,18 +1,18 @@
 <?php
 $my   = new lsp();
-$auth = $my->selectWhere("table_user", "username", $_SESSION['username']);
+$auth = $my->selectWhere("tm_user", "username", $_SESSION['username']);
 
 if (isset($_POST['btnUpdate'])) {
 	$nama = $my->validateHtml($_POST['nama']);
 
 	if ($_FILES['foto']['name'] == "") {
 		$values    = "nama_user='$nama'";
-		$response = $my->update("table_user", $values, "username", $_SESSION['username'], "?page=profile");
+		$response = $my->update("tm_user", $values, "username", $_SESSION['username'], "?page=profile");
 	} else {
 		$response = $my->validateImage();
 		if ($response['types'] == "true") {
 			$value = "nama_user='$nama', foto_user='$response[image]'";
-			$response = $my->update("table_user", $value, "username", $_SESSION['username'], "?page=profile");
+			$response = $my->update("tm_user", $value, "username", $_SESSION['username'], "?page=profile");
 		}
 	}
 }
@@ -22,7 +22,7 @@ if (isset($_POST['ubahPassword'])) {
 	$passwordbaru = $_POST['passwordbaru'];
 	$confirm      = $_POST['confirm'];
 
-	$sql = "SELECT username,password FROM table_user WHERE username = '$_SESSION[username]'";
+	$sql = "SELECT username,password FROM tm_user WHERE username = '$_SESSION[username]'";
 	$exec = mysqli_query($con, $sql);
 	$asso = mysqli_fetch_assoc($exec);
 	if (mysqli_num_rows($exec) > 0) {
@@ -33,7 +33,7 @@ if (isset($_POST['ubahPassword'])) {
 				if ($passwordbaru == $confirm) {
 					$passwordbaru = base64_encode($passwordbaru);
 					$value    = "password='$passwordbaru'";
-					$response = $my->update("table_user", $value, "username", $_SESSION['username'], "?page=profile");
+					$response = $my->update("tm_user", $value, "username", $_SESSION['username'], "?page=profile");
 				} else {
 					$response = ['response' => 'negative', 'alert' => 'Password Berbeda'];
 				}
