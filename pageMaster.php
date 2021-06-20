@@ -57,7 +57,7 @@ include "app/views/_layout/_css.php";
                         </li>
                         <li>
                             <a href="?page=viewRuangan">
-                                <i class="fas fa-users"></i>Ruangan</a>
+                                <i class="fas fa-users"></i>Master Ruangan</a>
                         </li>
                         <li>
                             <a href="?page=kelolaPegawai">
