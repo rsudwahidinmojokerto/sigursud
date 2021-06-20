@@ -45,7 +45,7 @@ if (isset($_GET['delete'])) {
                             </h3>
                         </div>
                         <div class="card-body">
-                            <a href="?page=addBarang" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Barang</a>
+                            <a href="?page=addBarangBhp" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Barang</a>
                             </button>
                             <br>
                             <br>

@@ -48,7 +48,7 @@ include "app/views/_layout/_css.php";
                                 <i class="fas fa-archive"></i>Stock Barang</a>
                         </li>
                         <li>
-                            <a href="?page=viewMasterBarang">
+                            <a href="?page=viewMasterBarangBhp">
                                 <i class="fas fa-archive"></i>Master Barang</a>
                         </li>
                         <li>
@@ -213,8 +213,8 @@ include "app/views/_layout/_css.php";
                 case 'kelolaPegawai':
                     include "master/kelolaPegawai.php";
                     break;
-                case 'viewMasterBarang':
-                    include "master/viewMasterBarang.php";
+                case 'viewMasterBarangBhp':
+                    include "master/viewMasterBarangBhp.php";
                     break;
                 case 'viewDistributor':
                     include "master/viewDistributor.php";
@@ -231,8 +231,11 @@ include "app/views/_layout/_css.php";
                 case 'viewKategoriAset':
                     include "master/viewKategoriAset.php";
                     break;
-                case 'addBarang':
-                    include "master/addBarang.php";
+                case 'addBarangBhp':
+                    include "master/addBarangBhp.php";
+                    break;
+                case 'editBarangBhp':
+                    include "master/editBarangBhp.php";
                     break;
                 case 'viewBarangDetail':
                     include "master/viewBarangDetail.php";
