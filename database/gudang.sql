@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2021 at 09:43 AM
+-- Generation Time: Jun 19, 2021 at 08:32 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.10
 
@@ -29,19 +29,6 @@ SET time_zone = "+00:00";
 -- (See below for the actual view)
 --
 CREATE TABLE `detailbarang1` (
-`kd_barang` varchar(7)
-,`nama_barang` varchar(40)
-,`kd_jenisbarang` varchar(7)
-,`kd_distributor` varchar(7)
-,`tanggal_masuk` date
-,`harga_barang` int(7)
-,`stok_barang` int(4)
-,`gambar` varchar(255)
-,`keterangan` varchar(200)
-,`jenis_barang` varchar(30)
-,`foto_jenisbarang` varchar(50)
-,`nama_distributor` varchar(40)
-,`no_telp` varchar(13)
 );
 
 -- --------------------------------------------------------
@@ -88,27 +75,6 @@ CREATE TABLE `table_barang` (
 INSERT INTO `table_barang` (`kd_barang`, `nama_barang`, `kd_jenisbarang`, `kd_distributor`, `tanggal_masuk`, `harga_barang`, `stok_barang`, `gambar`, `keterangan`) VALUES
 ('BR001', 'lampu neon 15 watt', 'JB002', 'DS002', '2021-06-11', 15000, 11, '1623373335609.png', 'pcs'),
 ('BR002', 'superpell', 'JB001', 'DS001', '2021-06-11', 20000, 48, '162337336731.jpg', 'pcs');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `table_distributor`
---
-
-CREATE TABLE `table_distributor` (
-  `kd_distributor` varchar(7) NOT NULL,
-  `nama_distributor` varchar(40) NOT NULL,
-  `alamat` varchar(255) NOT NULL,
-  `no_telp` varchar(13) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `table_distributor`
---
-
-INSERT INTO `table_distributor` (`kd_distributor`, `nama_distributor`, `alamat`, `no_telp`) VALUES
-('DS001', 'nana', 'jl. raya', '085749168642'),
-('DS002', 'mimin', 'jl. raya indah', '08677709999');
 
 -- --------------------------------------------------------
 
@@ -195,25 +161,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `table_ruangan`
---
-
-CREATE TABLE `table_ruangan` (
-  `kd_ruangan` varchar(7) NOT NULL,
-  `nama_ruangan` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `table_ruangan`
---
-
-INSERT INTO `table_ruangan` (`kd_ruangan`, `nama_ruangan`) VALUES
-('RU001', 'keuangan'),
-('RU002', 'yanmed');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `table_transaksi`
 --
 
@@ -235,31 +182,6 @@ INSERT INTO `table_transaksi` (`kd_transaksi`, `kd_user`, `jumlah_beli`, `total_
 ('TR003', 'US003', 1, 15000, '2021-06-15'),
 ('TR004', 'US003', 5, 75000, '2021-06-15'),
 ('TR005', 'US003', 5, 85000, '2021-06-17');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `table_user`
---
-
-CREATE TABLE `table_user` (
-  `kd_user` varchar(7) NOT NULL,
-  `nama_user` varchar(20) NOT NULL,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(25) NOT NULL,
-  `foto_user` varchar(50) NOT NULL,
-  `level` enum('Master','Admin','Kasir','Manager') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `table_user`
---
-
-INSERT INTO `table_user` (`kd_user`, `nama_user`, `username`, `password`, `foto_user`, `level`) VALUES
-('US001', 'Sakuwan', 'manager', 'bWFuYWdlcjEyMw==', '1538303665653.png', 'Manager'),
-('US002', 'Ony', 'admin123', 'YWRtaW4xMjM=', '153777087384.png', 'Admin'),
-('US003', 'Puguh', 'kasir123', 'a2FzaXIxMjM=', '1537840377928.png', 'Kasir'),
-('US004', 'IT', 'it', 'YWRtaW4xMjM=', '1537840377928.png', 'Master');
 
 -- --------------------------------------------------------
 
@@ -387,6 +309,27 @@ INSERT INTO `tm_barang_bhp` (`id_barang_bhp`, `id_kategori_bhp`, `nama_barang_bh
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tm_distributor`
+--
+
+CREATE TABLE `tm_distributor` (
+  `id_distributor` varchar(7) NOT NULL,
+  `nama_distributor` varchar(40) NOT NULL,
+  `alamat` text NOT NULL,
+  `telp` varchar(13) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tm_distributor`
+--
+
+INSERT INTO `tm_distributor` (`id_distributor`, `nama_distributor`, `alamat`, `telp`) VALUES
+('DS00001', 'PT. Maju Mundur', 'Jalan Mawar RT. 02 RW. 04, Ds. Claket, Kec. Pacet, Kab. Mojokerto', '085749168642'),
+('DS00002', 'PT. Cahya Kinasih', 'jl. raya indah', '08677709999');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tm_kategori_aset`
 --
 
@@ -400,8 +343,8 @@ CREATE TABLE `tm_kategori_aset` (
 --
 
 INSERT INTO `tm_kategori_aset` (`id_kategori_aset`, `nama_kategori_aset`) VALUES
-('AS001', 'ALKES'),
-('AS002', 'NON ALKES');
+('AS001', 'MEDIS'),
+('AS002', 'NON MEDIS');
 
 -- --------------------------------------------------------
 
@@ -428,6 +371,74 @@ INSERT INTO `tm_kategori_bhp` (`id_kategori_bhp`, `nama_kategori_bhp`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tm_ruangan`
+--
+
+CREATE TABLE `tm_ruangan` (
+  `id_ruangan` varchar(7) NOT NULL,
+  `nama_ruangan` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tm_ruangan`
+--
+
+INSERT INTO `tm_ruangan` (`id_ruangan`, `nama_ruangan`) VALUES
+('RU001', 'keuangan'),
+('RU002', 'yanmed');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tm_satuan`
+--
+
+CREATE TABLE `tm_satuan` (
+  `id_satuan` varchar(7) NOT NULL,
+  `nama_satuan` varchar(50) NOT NULL,
+  `jumlah_satuan` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tm_satuan`
+--
+
+INSERT INTO `tm_satuan` (`id_satuan`, `nama_satuan`, `jumlah_satuan`) VALUES
+('ST001', 'box', 0),
+('ST002', 'unit', 1),
+('ST003', 'pcs', 1),
+('ST004', 'pacs', 20),
+('ST005', 'lusin', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tm_user`
+--
+
+CREATE TABLE `tm_user` (
+  `id_user` varchar(7) NOT NULL,
+  `id_ruangan` varchar(7) NOT NULL,
+  `nama_user` varchar(20) NOT NULL,
+  `username` varchar(25) NOT NULL,
+  `password` varchar(25) NOT NULL,
+  `foto_user` varchar(50) NOT NULL,
+  `level` enum('Master','Admin','Kasir','Manager') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tm_user`
+--
+
+INSERT INTO `tm_user` (`id_user`, `id_ruangan`, `nama_user`, `username`, `password`, `foto_user`, `level`) VALUES
+('US001', '', 'Sakuwan', 'manager', 'bWFuYWdlcjEyMw==', '1538303665653.png', 'Manager'),
+('US002', '', 'Ony', 'admin123', 'YWRtaW4xMjM=', '153777087384.png', 'Admin'),
+('US003', '', 'Puguh', 'kasir123', 'a2FzaXIxMjM=', '1537840377928.png', 'Kasir'),
+('US004', '', 'IT', 'it', 'YWRtaW4xMjM=', '1537840377928.png', 'Master');
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `transaksi`
 -- (See below for the actual view)
 --
@@ -447,12 +458,6 @@ CREATE TABLE `transaksi` (
 -- (See below for the actual view)
 --
 CREATE TABLE `transaksi_terbaru` (
-`kd_transaksi` varchar(7)
-,`kd_user` varchar(7)
-,`jumlah_beli` int(4)
-,`total_harga` int(8)
-,`tanggal_beli` date
-,`nama_user` varchar(20)
 );
 
 -- --------------------------------------------------------
@@ -520,12 +525,6 @@ ALTER TABLE `table_barang`
   ADD KEY `kd_merek` (`kd_jenisbarang`);
 
 --
--- Indexes for table `table_distributor`
---
-ALTER TABLE `table_distributor`
-  ADD PRIMARY KEY (`kd_distributor`);
-
---
 -- Indexes for table `table_jenisbarang`
 --
 ALTER TABLE `table_jenisbarang`
@@ -544,12 +543,6 @@ ALTER TABLE `table_pretransaksi`
   ADD PRIMARY KEY (`kd_pretransaksi`);
 
 --
--- Indexes for table `table_ruangan`
---
-ALTER TABLE `table_ruangan`
-  ADD PRIMARY KEY (`kd_ruangan`);
-
---
 -- Indexes for table `table_transaksi`
 --
 ALTER TABLE `table_transaksi`
@@ -557,17 +550,17 @@ ALTER TABLE `table_transaksi`
   ADD KEY `kd_user` (`kd_user`);
 
 --
--- Indexes for table `table_user`
---
-ALTER TABLE `table_user`
-  ADD PRIMARY KEY (`kd_user`);
-
---
 -- Indexes for table `tm_barang_bhp`
 --
 ALTER TABLE `tm_barang_bhp`
   ADD PRIMARY KEY (`id_barang_bhp`),
   ADD KEY `id_kategori_bhp` (`id_kategori_bhp`);
+
+--
+-- Indexes for table `tm_distributor`
+--
+ALTER TABLE `tm_distributor`
+  ADD PRIMARY KEY (`id_distributor`);
 
 --
 -- Indexes for table `tm_kategori_aset`
@@ -580,6 +573,19 @@ ALTER TABLE `tm_kategori_aset`
 --
 ALTER TABLE `tm_kategori_bhp`
   ADD PRIMARY KEY (`id_kategori_bhp`);
+
+--
+-- Indexes for table `tm_ruangan`
+--
+ALTER TABLE `tm_ruangan`
+  ADD PRIMARY KEY (`id_ruangan`);
+
+--
+-- Indexes for table `tm_user`
+--
+ALTER TABLE `tm_user`
+  ADD PRIMARY KEY (`id_user`),
+  ADD KEY `id_ruangan` (`id_ruangan`);
 
 --
 -- Indexes for table `tr_stok_barang_bhp`
@@ -595,7 +601,7 @@ ALTER TABLE `tr_stok_barang_bhp`
 -- Constraints for table `table_transaksi`
 --
 ALTER TABLE `table_transaksi`
-  ADD CONSTRAINT `table_transaksi_ibfk_1` FOREIGN KEY (`kd_user`) REFERENCES `table_user` (`kd_user`);
+  ADD CONSTRAINT `table_transaksi_ibfk_1` FOREIGN KEY (`kd_user`) REFERENCES `tm_user` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
