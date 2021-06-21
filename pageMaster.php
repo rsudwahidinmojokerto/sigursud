@@ -44,7 +44,7 @@ include "app/views/_layout/_css.php";
                             </ul>
                         </li>
                         <li>
-                            <a href="?page=viewBarang">
+                            <a href="?page=viewStokBarang">
                                 <i class="fas fa-archive"></i>Stock Barang</a>
                         </li>
                         <li>
@@ -207,6 +207,9 @@ include "app/views/_layout/_css.php";
                 case 'viewBarang':
                     include "master/viewBarang.php";
                     break;
+                case 'viewStokBarang':
+                    include "master/viewStokBarang.php";
+                    break;
                 case 'viewSatuan':
                     include "master/viewSatuan.php";
                     break;
@@ -233,6 +236,9 @@ include "app/views/_layout/_css.php";
                     break;
                 case 'addBarangBhp':
                     include "master/addBarangBhp.php";
+                    break;
+                case 'addStokBarangMasuk':
+                    include "master/addStokBarangMasuk.php";
                     break;
                 case 'editBarangBhp':
                     include "master/editBarangBhp.php";
