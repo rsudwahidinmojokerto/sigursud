@@ -22,7 +22,7 @@ include "app/views/_layout/_css.php";
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src="assets/img/<?= $auth['foto_user'] ?>" />
+                        <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" />
                     </div>
                     <h4 class="name"><?= $auth['nama_user']; ?></h4>
                 </div>
@@ -60,8 +60,8 @@ include "app/views/_layout/_css.php";
                                 <i class="fas fa-users"></i>Master Ruangan</a>
                         </li>
                         <li>
-                            <a href="?page=kelolaPegawai">
-                                <i class="fas fa-users"></i>Master User</a>
+                            <a href="?page=viewPegawai">
+                                <i class="fas fa-users"></i>Master Pegawai</a>
                         </li>
                         <li>
                             <a href="?page=viewSatuan">
@@ -213,8 +213,8 @@ include "app/views/_layout/_css.php";
                 case 'viewSatuan':
                     include "master/viewSatuan.php";
                     break;
-                case 'kelolaPegawai':
-                    include "master/kelolaPegawai.php";
+                case 'viewPegawai':
+                    include "master/viewPegawai.php";
                     break;
                 case 'viewMasterBarangBhp':
                     include "master/viewMasterBarangBhp.php";

@@ -113,12 +113,9 @@ class lsp
             return ['response' => 'negative', 'alert' => 'username minimal 6 Huruf'];
         }
 
-
-
         if ($rows == 0) {
 
             $name     = htmlspecialchars($name);
-
             $username = strtolower(htmlspecialchars($username));
             $password = htmlspecialchars($password);
             $confirm  = htmlspecialchars($confirm);
@@ -139,7 +136,6 @@ class lsp
                 return ['response' => 'negative', 'alert' => 'Password Tidak Cocok'];
             }
         } else if ($rows == 1) {
-
             return ['response' => 'negative', 'alert' => 'Username telah digunakan'];
         }
     }
