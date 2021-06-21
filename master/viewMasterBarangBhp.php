@@ -59,7 +59,11 @@ if (isset($_GET['delete'])) {
                                             <th>Nama barang</th>
                                             <!-- <th>Stok</th>
                                             <th>Harga</th> -->
-                                            <th>Tanggal Update</th>
+                                            <?php
+                                            if ($_SESSION['level'] == "Master") {
+                                            ?>
+                                                <th>Tanggal Update</th>
+                                            <?php } ?>
                                             <!-- <th>Harga</th>
                                             <th>Stok</th>
                                             <th>Distributor</th> -->
@@ -74,7 +78,7 @@ if (isset($_GET['delete'])) {
                                                 <td class="text-center">
                                                     <div class="btn-group">
                                                         <!-- <a href="?page=viewMasterBarangDetail&id=<?php echo $dmb['id_barang_bhp'] ?>" data-toggle="tooltip" data-placement="top" title="Detail" class="btn btn-warning"><i class="fa fa-search"></i></a> -->
-                                                        <a href="?page=viewMasterBarangEdit&edit&id=<?= $dmb['id_barang_bhp'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                        <a href="?page=editBarangBhp&edit&id=<?= $dmb['id_barang_bhp'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                                                         <button data-toggle="tooltip" data-placement="top" title="Delete" class="btn btn-danger">
                                                             <i class="fa fa-trash" id="btdelete<?php echo $no; ?>"></i>
                                                         </button>
