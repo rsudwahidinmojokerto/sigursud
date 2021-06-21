@@ -53,7 +53,7 @@ include "app/views/_layout/_css.php";
                         </li>
                         <li>
                             <a href="?page=viewDistributor">
-                                <i class="fas fa-truck"></i>Distributor</a>
+                                <i class="fas fa-truck"></i>Master Distributor</a>
                         </li>
                         <li>
                             <a href="?page=viewRuangan">

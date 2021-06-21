@@ -5,7 +5,7 @@ if ($_SESSION['level'] != "Master") {
     header("location:../index.php");
 }
 if (isset($_GET['delete'])) {
-    $response = $qb->delete("table_barang", "kd_barang", $_GET['id'], "?page=viewBarang");
+    $response = $qb->delete("tm_barang_bhp", "id_barang_bhp", $_GET['id'], "?page=viewMasterBarangBhp");
 }
 ?>
 <section class="au-breadcrumb m-t-75">
@@ -57,16 +57,11 @@ if (isset($_GET['delete'])) {
                                             <th>ID Barang</th>
                                             <th>Kategori</th>
                                             <th>Nama barang</th>
-                                            <!-- <th>Stok</th>
-                                            <th>Harga</th> -->
                                             <?php
                                             if ($_SESSION['level'] == "Master") {
                                             ?>
                                                 <th>Tanggal Update</th>
                                             <?php } ?>
-                                            <!-- <th>Harga</th>
-                                            <th>Stok</th>
-                                            <th>Distributor</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,26 +74,22 @@ if (isset($_GET['delete'])) {
                                                     <div class="btn-group">
                                                         <!-- <a href="?page=viewMasterBarangDetail&id=<?php echo $dmb['id_barang_bhp'] ?>" data-toggle="tooltip" data-placement="top" title="Detail" class="btn btn-warning"><i class="fa fa-search"></i></a> -->
                                                         <a href="?page=editBarangBhp&edit&id=<?= $dmb['id_barang_bhp'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                        <button data-toggle="tooltip" data-placement="top" title="Delete" class="btn btn-danger">
-                                                            <i class="fa fa-trash" id="btdelete<?php echo $no; ?>"></i>
+                                                        <button data-toggle="tooltip" id="btdelete<?php echo $no; ?>" data-placement="top" title="Delete" class="btn btn-danger">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                                 <td><?= $dmb['id_barang_bhp'] ?></td>
                                                 <td><?= $dmb['nama_kategori_bhp'] ?></td>
                                                 <td><?= $dmb['nama_barang_bhp'] ?></td>
-                                                <!-- <td><?= $dmb['stok'] ?></td>
-                                            <td><?= $dmb['harga'] ?></td> -->
                                                 <?php
                                                 if ($_SESSION['level'] == "Master") {
                                                 ?>
                                                     <td><?= $dmb['tanggal_update'] ?></td>
                                                 <?php } ?>
-                                                <!-- <td><?= number_format($dmb['harga_barang']) ?></td>
-                                            <td><?= $dmb['stok_barang'] ?></td>
-                                            <td><?= $dmb['nama_distributor'] ?></td> -->
+                                                <!-- <td><?= number_format($dmb['harga_barang']) ?></td> -->
                                             </tr>
-                                            <script src="vendor/jquery-3.2.1.min.js"></script>
+                                            <script src="assets/vendor/jquery-3.2.1.min.js"></script>
                                             <script>
                                                 $('#btdelete<?php echo $no; ?>').click(function(e) {
                                                     e.preventDefault();
@@ -113,7 +104,7 @@ if (isset($_GET['delete'])) {
                                                         closeOnCancel: true
                                                     }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href = "?page=viewBarang&delete&id=<?php echo $dmb['kd_barang'] ?>";
+                                                            window.location.href = "?page=viewMasterBarangBhp&delete&id=<?php echo $dmb['id_barang_bhp'] ?>";
                                                         }
                                                     });
                                                 });
