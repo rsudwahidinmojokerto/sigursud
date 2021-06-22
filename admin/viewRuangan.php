@@ -3,12 +3,12 @@
     if ($_SESSION['level'] != "Admin") {
     header("location:../index.php");
     }
-    $table = "table_ruangan";
+    $table = "tm_ruangan";
     $dataDis = $dis->select($table);
-    $autokode = $dis->autokode($table,"kd_ruangan","RU");
+    $autokode = $dis->autokode($table,"id_ruangan","RU");
 
     if (isset($_GET['delete'])) {
-        $where = "kd_ruangan";
+        $where = "id_ruangan";
         $whereValues = $_GET['id'];
         $redirect = "?page=viewRuangan";
         $response = $dis->delete($table,$where,$whereValues,$redirect);
@@ -16,33 +16,33 @@
 
     if (isset($_GET['edit'])) {
         $id = $_GET['id'];
-        $editData = $dis->selectWhere($table,"kd_ruangan",$id);
-        $autokode = $editData['kd_ruangan'];
+        $editData = $dis->selectWhere($table,"id_ruangan",$id);
+        $autokode = $editData['id_ruangan'];
     }
     if (isset($_POST['getSave'])) {
-        $kd_ruangan   = $dis->validateHtml($_POST['kode_ruangan']);
+        $id_ruangan   = $dis->validateHtml($_POST['kode_ruangan']);
         $nama_ruangan = $dis->validateHtml($_POST['nama_ruangan']);
         
 
-        if ($kd_ruangan == " " || empty($kd_ruangan) || $nama_ruangan == " " || empty($nama_ruangan)) {
+        if ($id_ruangan == " " || empty($id_ruangan) || $nama_ruangan == " " || empty($nama_ruangan)) {
              $response = ['response'=>'negative','alert'=>'Lengkapi field'];
              }else{
-             $value = "'$kd_ruangan','$nama_ruangan'";
+             $value = "'$id_ruangan','$nama_ruangan'";
              $response = $dis->insert($table,$value,"?page=viewRuangan");
         
         }
     }
 
     if (isset($_POST['getUpdate'])) {
-        $kd_ruangan   = $dis->validateHtml($_POST['kode_ruangan']);
+        $id_ruangan   = $dis->validateHtml($_POST['kode_ruangan']);
         $nama_ruangan = $dis->validateHtml($_POST['nama_ruangan']);
       
 
-        if ($kd_ruangan == "" || $nama_ruangan == "") {
+        if ($id_ruangan == "" || $nama_ruangan == "") {
             $response = ['response'=>'negative','alert'=>'lengkapi field'];
             }else{
-             $value = "kd_ruangan='$kd_ruangan',nama_ruangan='$nama_ruangan'";
-                    $response = $dis->update($table,$value,"kd_ruangan",$_GET['id'],"?page=viewRuangan");
+             $value = "id_ruangan='$id_ruangan',nama_ruangan='$nama_ruangan'";
+                    $response = $dis->update($table,$value,"id_ruangan",$_GET['id'],"?page=viewRuangan");
         
             
         }
@@ -126,12 +126,12 @@
                                             foreach($dataDis as $ds){
                                          ?>
                                        <tr>
-                                            <td><?= $ds['kd_ruangan'] ?></td>
+                                            <td><?= $ds['id_ruangan'] ?></td>
                                             <td><?= $ds['nama_ruangan'] ?></td>
                                            
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewRuangan&edit&id=<?= $ds['kd_ruangan'] ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" href="?page=viewRuangan&edit&id=<?= $ds['id_ruangan'] ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                                     <a data-toggle="tooltip" data-placement="top" title="Delete" href="#" class="btn btn-danger"><i class="fa fa-trash" id="btnDelete<?php echo $no; ?>" ></i></a>
                                                 </div>
                                             </td>
@@ -151,7 +151,7 @@
                                                         closeOnCancel: true
                                                       }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href="?page=viewRuangan&delete&id=<?php echo $ds['kd_ruangan'] ?>";
+                                                            window.location.href="?page=viewRuangan&delete&id=<?php echo $ds['id_ruangan'] ?>";
                                                         }
                                                       });
                                                     });

@@ -102,8 +102,8 @@ if (isset($_GET['logout'])) {
                             </ul>
                         </li>
                         <li>
-                            <a href="?page=viewBarang">
-                                <i class="fas fa-archive"></i>Barang</a>
+                            <a href="?page=viewMasterBarangBhp">
+                                <i class="fas fa-archive"></i>Master Barang</a>
                         </li>
                         <li>
                             <a href="?page=viewDistributor">
@@ -227,8 +227,8 @@ if (isset($_GET['logout'])) {
                                     <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             </li>
                             <li>
-                                <a href="?page=viewBarang">
-                                    <i class="fas fa-archive"></i>Barang</a>
+                                <a href="?page=viewMasterBarangBhp">
+                                    <i class="fas fa-archive"></i>Master Barang</a>
                             </li>
                             <li>
                                 <a href="?page=viewDistributor">
@@ -252,6 +252,9 @@ if (isset($_GET['logout'])) {
             switch ($page) {
                 case 'viewBarang':
                     include "admin/viewBarang.php";
+                    break;
+                case 'viewMasterBarangBhp':
+                    include "admin/viewMasterBarangBhp.php";
                     break;
                 case 'viewDistributor':
                     include "admin/viewDistributor.php";

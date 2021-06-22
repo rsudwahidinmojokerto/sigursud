@@ -9,13 +9,13 @@
 	$waktu    = date("Y-m-d");
 
 	if (isset($_POST['getSimpan'])) {
-		$id_barang_bhp  = $br->validateHtml($_POST['id_barang_bhp']);
+		$id_barang_bhp    = $br->validateHtml($_POST['id_barang_bhp']);
 		$id_kategori_bhp  = $br->validateHtml($_POST['id_kategori_bhp']);
-		$nama_barang_bhp = $br->validateHtml($_POST['nama_barang_bhp']);
+		$nama_barang_bhp  = $br->validateHtml($_POST['nama_barang_bhp']);
 
 		if ($id_barang_bhp == " " || $id_kategori_bhp == " " || $nama_barang_bhp == " ") {
 			$response = ['response'=>'negative','alert'=>'lengkapi field'];
-		}else{
+		} else {
 			$value = "id_barang_bhp='$id_barang_bhp', id_kategori_bhp='$id_kategori_bhp', nama_barang_bhp='$nama_barang_bhp', tanggal_update='$waktu'";
 			$response = $br->update($table, $value, "id_barang_bhp", $_GET['id'], "?page=viewMasterBarangBhp");
 		}

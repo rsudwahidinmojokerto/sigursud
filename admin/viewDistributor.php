@@ -3,12 +3,12 @@
     if ($_SESSION['level'] != "Admin") {
     header("location:../index.php");
     }
-    $table = "table_distributor";
+    $table = "tm_distributor";
     $dataDis = $dis->select($table);
-    $autokode = $dis->autokode($table,"kd_distributor","DS");
+    $autokode = $dis->autokode($table,"id_distributor","DS");
 
     if (isset($_GET['delete'])) {
-        $where = "kd_distributor";
+        $where = "id_distributor";
         $whereValues = $_GET['id'];
         $redirect = "?page=viewDistributor";
         $response = $dis->delete($table,$where,$whereValues,$redirect);
@@ -16,11 +16,11 @@
 
     if (isset($_GET['edit'])) {
         $id = $_GET['id'];
-        $editData = $dis->selectWhere($table,"kd_distributor",$id);
-        $autokode = $editData['kd_distributor'];
+        $editData = $dis->selectWhere($table,"id_distributor",$id);
+        $autokode = $editData['id_distributor'];
     }
     if (isset($_POST['getSave'])) {
-        $kd_distributor   = $dis->validateHtml($_POST['kode_distributor']);
+        $kd_distributor   = $dis->validateHtml($_POST['id_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
         $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
@@ -43,7 +43,7 @@
     }
 
     if (isset($_POST['getUpdate'])) {
-        $kd_distributor   = $dis->validateHtml($_POST['kode_distributor']);
+        $kd_distributor   = $dis->validateHtml($_POST['id_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
         $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
@@ -58,7 +58,7 @@
                 if (strlen($nohp_distributor) < 11) {
                     $response = ['response'=>'negative','alert'=>'Masukan 11 digit nohp'];
                 }else{
-                    $value = "kd_distributor='$kd_distributor',nama_distributor='$nama_distributor',no_telp='$nohp_distributor',alamat='$alamat'";
+                    $value = "kd_distributor='$kd_distributor',nama_distributor='$nama_distributor',telp='$nohp_distributor',alamat='$alamat'";
                     $response = $dis->update($table,$value,"kd_distributor",$_GET['id'],"?page=viewDistributor");
                 }
             }
@@ -102,7 +102,7 @@
                             <form method="post">
                                 <div class="form-group">
                                     <label for="">Kode distributor</label>
-                                    <input type="text" class="form-control form-control-sm" name="kode_distributor" style="font-weight: bold; color: red;" value="<?php echo $autokode; ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm" name="id_distributor" style="font-weight: bold; color: red;" value="<?php echo $autokode; ?>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nama distributor</label>
@@ -151,9 +151,9 @@
                                             foreach($dataDis as $ds){
                                          ?>
                                        <tr>
-                                            <td><?= $ds['kd_distributor'] ?></td>
+                                            <td><?= $ds['id_distributor'] ?></td>
                                             <td><?= $ds['nama_distributor'] ?></td>
-                                            <td><?= $ds['no_telp'] ?></td>
+                                            <td><?= $ds['telp'] ?></td>
                                             <td><?= $ds['alamat'] ?></td>
                                             <td class="text-center">
                                                 <div class="btn-group">
@@ -177,7 +177,7 @@
                                                         closeOnCancel: true
                                                       }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href="?page=viewDistributor&delete&id=<?php echo $ds['kd_distributor'] ?>";
+                                                            window.location.href="?page=viewDistributor&delete&id=<?php echo $ds['id_distributor'] ?>";
                                                         }
                                                       });
                                                     });

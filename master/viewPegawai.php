@@ -1,9 +1,12 @@
 <?php
 
 $rg = new lsp();
-$table = "tm_user";
-$autokode = $rg->autokodeLimaDigit($table, "id_user", "US");
-$data = $rg->select($table);
+$table_user = "tm_user";
+$table_level = "tm_level_user";
+
+$autokode = $rg->autokodeLimaDigit($table_user, "id_user", "US");
+$dataUser = $rg->select($table_user);
+$dataLevel = $rg->select($table_level);
 
 if (isset($_POST['btnInput'])) {
     $id_user = $_POST['id_user'];
@@ -24,7 +27,7 @@ if (isset($_POST['btnInput'])) {
 }
 
 if (isset($_GET['delete'])) {
-    $response = $rg->delete($table, "id_user", $_GET['id'], "?page=viewPegawai");
+    $response = $rg->delete($table_user, "id_user", $_GET['id'], "?page=viewPegawai");
 }
 
 ?>
@@ -99,9 +102,9 @@ if (isset($_GET['delete'])) {
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="preview_foto_karyawan" class="control-label mb-1">Preview Foto</label>
-                                                    <!-- <div style="padding-bottom: 5px;"> -->
+                                                    <div style="padding-bottom: 5px;">
                                                     <img alt="" width="90" class="img-responsive" id="pict">
-                                                    <!-- </div> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,10 +112,11 @@ if (isset($_GET['delete'])) {
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="level" class="control-label mb-1">Level</label>
-                                            <select name="level" class="form-control mb-1">
-                                                <option value="">Level</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Kasir">Kasir</option>
+                                            <select name="id_level" class="form-control mb-1">
+                                                <option value=" ">Pilih level</option>
+                                                <?php foreach ($dataLevel as $dl) { ?>
+                                                    <option value="<?= $dl['id_level_user'] ?>"><?= $dl['nama_level_user'] ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>
@@ -147,24 +151,28 @@ if (isset($_GET['delete'])) {
                                     <tbody>
                                         <?php
                                         $no = 1;
-                                        foreach ($data as $dataB) {
+                                        foreach ($dataUser as $du) {
                                         ?>
                                             <tr>
                                                 <td><?= $no; ?></td>
-                                                <td><?= $dataB['id_user']; ?></td>
-                                                <td><?= $dataB['nama_user'] ?></td>
-                                                <td><?= $dataB['username'] ?></td>
-                                                <td><?= $dataB['level'] ?></td>
-                                                <td><img width="60" src="img/<?= $dataB['foto_user'] ?>" alt=""></td>
+                                                <td><?= $du['id_user']; ?></td>
+                                                <td><?= $du['nama_user'] ?></td>
+                                                <td><?= $du['username'] ?></td>
+                                                <td><?= $du['level'] ?></td>
+                                                <td><img width="60" src="assets/img/avatar/<?= $du['foto_user'] ?>" alt=""></td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button id="btnDelete<?php echo $no; ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
+                                                    <a href="?page=editUser&edit&id=<?= $dmb['id_user'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                        <button data-toggle="tooltip" id="btnDelete<?php echo $no; ?>" data-placement="top" title="Delete" class="btn btn-danger">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
+                                                        <!-- <button id="btnDelete<?php echo $no; ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                            <i class="zmdi zmdi-delete"></i>
+                                                        </button> -->
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <script src="vendor/jquery-3.2.1.min.js"></script>
+                                            <script src="assets/vendor/jquery-3.2.1.min.js"></script>
                                             <script>
                                                 $('#btnDelete<?php echo $no; ?>').click(function(e) {
                                                     e.preventDefault();
@@ -179,7 +187,7 @@ if (isset($_GET['delete'])) {
                                                         closeOnCancel: true
                                                     }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href = "?page=viewPegawai&delete&id=<?php echo $dataB['id_user'] ?>";
+                                                            window.location.href = "?page=viewPegawai&delete&id=<?php echo $du['id_user'] ?>";
                                                         }
                                                     });
                                                 });
