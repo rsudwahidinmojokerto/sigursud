@@ -45,7 +45,7 @@ if (isset($_POST['btnLogin'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
+    <meta name="author" content="Ksatria Wahidin">
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
@@ -75,18 +75,19 @@ if (isset($_POST['btnLogin'])) {
 
 </head>
 
-<body style="background: url(assets/images/rsud.jpeg) no-repeat; background-size: cover;">
+<body class="animsition" style="background: url(assets/images/rsud.jpeg) no-repeat; background-size: cover;">
     <div class="page-wrapper">
-        <div class="">
+        <div class="page-content">
             <div class="container">
                 <br><br>
                 <div class="login-wrap">
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                                <img src="assets/images/icon/admin1.png" alt="CoolAdmin">
+                                <img src="assets/images/icon/logo-sigu.png" alt="Sistem Informasi Gudang Logistik">
                             </a>
                         </div>
+                        <br>
                         <div class="login-form">
                             <form action="" method="post">
                                 <div class="form-group">
@@ -97,17 +98,12 @@ if (isset($_POST['btnLogin'])) {
                                     <label>Password</label>
                                     <input required class="au-input au-input--full" type="password" name="password" placeholder="Password">
                                 </div>
-                                <!-- <div class="login-checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember">Remember Me
-                                    </label>
-                                    <label>
-                                        <a href="#">Forgotten Password?</a>
-                                    </label>
-                                </div> -->
                                 <br>
-                                <button name="btnLogin" class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                <button name="btnLogin" class="au-btn au-btn--block au-btn--green m-b-20" type="submit"><i class="zmdi zmdi-key"></i> LOGIN</button>
                             </form>
+                            <div class="register-link">
+                                <p>Copyright © <?php echo date('Y'); ?> Ksatria Wahidin</p><br>
+                            </div>
                         </div>
                     </div>
                 </div>

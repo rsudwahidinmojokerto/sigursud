@@ -16,7 +16,7 @@ include "app/views/_layout/_css.php";
         <aside class="menu-sidebar2">
             <div class="logo">
                 <a href="#">
-                    <img src="assets/images/icon/logo-rsud.png" alt="RSUD Wahidin" />
+                    <img src="assets/images/icon/logo-sigu-white.png" alt="RSUD Wahidin" />
                 </a>
             </div>
             <div class="menu-sidebar2__content js-scrollbar1">
@@ -25,7 +25,7 @@ include "app/views/_layout/_css.php";
                         <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" />
                     </div>
                     <h4 class="name"><?= $auth['nama_user']; ?></h4>
-                    <h6 class="email" style="color: #808080;"><?= $auth['nama_ruangan']; ?></h6>
+                    <h6 class="email" style="color: #FF8C00;"><?= $auth['nama_ruangan']; ?></h6>
                 </div>
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
@@ -328,7 +328,7 @@ include "app/views/_layout/_css.php";
             $('#example').DataTable();
         });
     </script>
-    
+
     <?php include "helpers/alert.php"; ?>
 </body>
 
