@@ -23,7 +23,6 @@ class lsp
                 return ['response' => 'negative', 'alert' => 'Password Salah'];
             }
         } else {
-
             return ['response' => 'negative', 'alert' => 'Username atau Password Salah'];
         }
     }
