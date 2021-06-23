@@ -253,6 +253,9 @@ if (isset($_GET['logout'])) {
                 case 'viewBarang':
                     include "admin/viewBarang.php";
                     break;
+                case 'addBarangBhp':
+                    include "admin/addBarangBhp.php";
+                    break;
                 case 'viewMasterBarangBhp':
                     include "admin/viewMasterBarangBhp.php";
                     break;

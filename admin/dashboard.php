@@ -1,9 +1,9 @@
 <?php 
   $dash = new lsp();
-  $dis  = $dash->getCountRows("table_distributor");
-  $ru  = $dash->getCountRows("table_ruangan");
-  $mer  = $dash->getCountRows("table_jenisbarang");
-  $bar  = $dash->selectCount("table_barang","kd_barang");
+  $dis  = $dash->getCountRows("tm_distributor");
+  $ru  = $dash->getCountRows("tm_ruangan");
+  $mer  = $dash->getCountRows("tm_kategori_bhp");
+  $bar  = $dash->selectCount("tm_barang_bhp","id_barang_bhp");
 
   if ($_SESSION['level'] != "Admin") {
     header("location:../index.php");
@@ -64,7 +64,7 @@
                                             </div>
                                             <div class="text">
                                                 <h2><?= $mer; ?></h2>
-                                                <span>Jenis Barang</span>
+                                                <span>Jenis Barang BHP</span>
                                             </div>
                                         </div>
                                         <div class="overview-chart">
