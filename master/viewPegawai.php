@@ -23,6 +23,7 @@ if (isset($_POST['btnInput'])) {
 
     if ($id_level == "" || $id_ruangan == "" || $nama_user == "" || $username == "" || $password == "" || $confirm == "") {
         $response = ['response' => 'negative', 'alert' => 'Lengkapi Field !!!'];
+        // var_dump($foto);
     } else {
         $response = $rg->register($id_user, $id_ruangan, $id_level, $nama_user, $username, $password, $confirm, $foto, $redirect);
     }
@@ -70,7 +71,7 @@ if (isset($_GET['delete'])) {
                             <form method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label>ID User</label>
-                                    <input style="color: red; font-weight: bold;" class="au-input au-input--full" type="text" name="id_user" disabled value="<?= $autokode; ?>">
+                                    <input style="color: red; font-weight: bold;" class="au-input au-input--full" type="text" name="id_user" readonly value="<?= $autokode; ?>">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -105,7 +106,7 @@ if (isset($_GET['delete'])) {
                                                 <div class="col-md-5">
                                                     <label for="preview_foto_karyawan" class="control-label mb-1">Preview Foto</label>
                                                     <div style="padding-bottom: 5px;">
-                                                    <img alt="" width="110" class="img-responsive" id="pict">
+                                                        <img alt="" width="110" class="img-responsive" id="pict">
                                                     </div>
                                                 </div>
                                             </div>
@@ -177,7 +178,7 @@ if (isset($_GET['delete'])) {
                                                 <td><img width="60" src="assets/img/avatar/<?= $dp['foto_user'] ?>" alt=""></td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                    <a href="?page=editUser&edit&id=<?= $dmb['id_user'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                                        <a href="?page=editUser&edit&id=<?= $dmb['id_user'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                                                         <button data-toggle="tooltip" id="btnDelete<?php echo $no; ?>" data-placement="top" title="Delete" class="btn btn-danger">
                                                             <i class="fa fa-trash"></i>
                                                         </button>

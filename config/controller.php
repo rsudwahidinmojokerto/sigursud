@@ -96,7 +96,7 @@ class lsp
         return $bigData;
     }
 
-    public function register($id_user, $id_ruangan, $id_level, $name, $username, $password, $confirm, $foto, $level, $redirect)
+    public function register($id_user, $id_ruangan, $id_level, $name, $username, $password, $confirm, $foto, $redirect)
     {
 
         global $con;
@@ -133,7 +133,6 @@ class lsp
                     return ['response' => 'negative', 'alert' => 'Registrasi Error'];
                 }
             } else {
-
                 return ['response' => 'negative', 'alert' => 'Password Tidak Cocok'];
             }
         } else if ($rows == 1) {
@@ -355,7 +354,7 @@ class lsp
                 mkdir('img', 0563);
             }
         }
-        $name = random_int(1, 999);
+        $name = rand(1, 999);
         $name = time() . $name . "." . $ekstensiBelakang;
         move_uploaded_file($tmpName, $folder . $name);
 

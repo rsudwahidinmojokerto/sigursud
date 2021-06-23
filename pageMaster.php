@@ -84,7 +84,7 @@ include "app/views/_layout/_css.php";
                         <div class="header-wrap2">
                             <div class="logo d-block d-lg-none">
                                 <a href="#">
-                                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                                    <img src="assets/images/icon/logo-sigu-white.png" width="340" aalt="CoolAdmin" />
                                 </a>
                             </div>
                             <div class="header-button2">
@@ -164,13 +164,13 @@ include "app/views/_layout/_css.php";
             <aside class="menu-sidebar2 js-right-sidebar d-block d-lg-none">
                 <div class="logo">
                     <a href="#">
-                        <img src="assets/images/icon/logo-white.png" alt="Cool Admin" />
+                        <img src="assets/images/icon/logo-sigu-white.png" lt="Cool Admin" />
                     </a>
                 </div>
                 <div class="menu-sidebar2__content js-scrollbar2">
                     <div class="account2">
                         <div class="image img-cir img-120">
-                            <img src="assets/img/<?= $auth['foto_user'] ?>" alt="John Doe" />
+                            <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" alt="John Doe" />
                         </div>
                         <h4 class="name"><?= $auth['nama_user'] ?></h4>
                         <a href="#">Sign out</a>
