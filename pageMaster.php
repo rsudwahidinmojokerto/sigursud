@@ -25,6 +25,7 @@ include "app/views/_layout/_css.php";
                         <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" />
                     </div>
                     <h4 class="name"><?= $auth['nama_user']; ?></h4>
+                    <h6 class="email" style="color: #808080;"><?= $auth['nama_ruangan']; ?></h6>
                 </div>
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
@@ -261,6 +262,8 @@ include "app/views/_layout/_css.php";
         </div>
     </div>
 
+    <!-- <script src="assets/vendor/jquery-3.2.1.min.js"></script> -->
+
     <!-- Footer - JS  -->
     <?php include "app/views/_layout/_js.php" ?>
 
@@ -325,6 +328,7 @@ include "app/views/_layout/_css.php";
             $('#example').DataTable();
         });
     </script>
+    
     <?php include "helpers/alert.php"; ?>
 </body>
 

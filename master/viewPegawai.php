@@ -3,26 +3,28 @@
 $rg = new lsp();
 $table_user = "tm_user";
 $table_level = "tm_level_user";
+$table_ruangan = "tm_ruangan";
 
 $autokode = $rg->autokodeLimaDigit($table_user, "id_user", "US");
-$dataUser = $rg->select($table_user);
+$dataPegawai = $rg->selectPegawai();
 $dataLevel = $rg->select($table_level);
+$dataRuangan = $rg->select($table_ruangan);
 
 if (isset($_POST['btnInput'])) {
     $id_user = $_POST['id_user'];
+    $id_ruangan = $_POST['id_ruangan'];
+    $id_level = $_POST['id_level'];
     $nama_user = $_POST['nama_user'];
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm = $_POST['confirm'];
     $foto = $_FILES['foto'];
-    $level = $_POST['level'];
     $redirect = "?page=viewPegawai";
 
-
-    if ($nama_user == "" || $username == "" || $password == "" || $confirm == "" || $level == "") {
+    if ($id_level == "" || $id_ruangan == "" || $nama_user == "" || $username == "" || $password == "" || $confirm == "") {
         $response = ['response' => 'negative', 'alert' => 'Lengkapi Field !!!'];
     } else {
-        $response = $rg->register($id_user, $nama_user, $username, $password, $confirm, $foto, $level, $redirect);
+        $response = $rg->register($id_user, $id_ruangan, $id_level, $nama_user, $username, $password, $confirm, $foto, $redirect);
     }
 }
 
@@ -67,7 +69,7 @@ if (isset($_GET['delete'])) {
                         <div class="card-body">
                             <form method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label>Kode User</label>
+                                    <label>ID User</label>
                                     <input style="color: red; font-weight: bold;" class="au-input au-input--full" type="text" name="id_user" disabled value="<?= $autokode; ?>">
                                 </div>
                                 <div class="row">
@@ -103,7 +105,7 @@ if (isset($_GET['delete'])) {
                                                 <div class="col-md-5">
                                                     <label for="preview_foto_karyawan" class="control-label mb-1">Preview Foto</label>
                                                     <div style="padding-bottom: 5px;">
-                                                    <img alt="" width="90" class="img-responsive" id="pict">
+                                                    <img alt="" width="110" class="img-responsive" id="pict">
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,6 +118,15 @@ if (isset($_GET['delete'])) {
                                                 <option value=" ">Pilih level</option>
                                                 <?php foreach ($dataLevel as $dl) { ?>
                                                     <option value="<?= $dl['id_level_user'] ?>"><?= $dl['nama_level_user'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="level" class="control-label mb-1">Ruangan</label>
+                                            <select name="id_ruangan" class="form-control mb-1">
+                                                <option value=" ">Pilih ruangan</option>
+                                                <?php foreach ($dataRuangan as $dr) { ?>
+                                                    <option value="<?= $dr['id_ruangan'] ?>"><?= $dr['nama_ruangan'] ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -139,11 +150,13 @@ if (isset($_GET['delete'])) {
                                 <table id="example" class="table table-borderless table-striped table-earning">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Kode Pegawai</th>
+                                            <!-- <th>No</th> -->
+                                            <th>ID Pegawai</th>
+                                            <th>Ruangan</th>
+                                            <th>Level</th>
                                             <th>Nama</th>
                                             <th>Username</th>
-                                            <th>Level</th>
+                                            <!-- <th>Level</th> -->
                                             <th>Foto</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -151,15 +164,17 @@ if (isset($_GET['delete'])) {
                                     <tbody>
                                         <?php
                                         $no = 1;
-                                        foreach ($dataUser as $du) {
+                                        foreach ($dataPegawai as $dp) {
                                         ?>
                                             <tr>
-                                                <td><?= $no; ?></td>
-                                                <td><?= $du['id_user']; ?></td>
-                                                <td><?= $du['nama_user'] ?></td>
-                                                <td><?= $du['username'] ?></td>
-                                                <td><?= $du['level'] ?></td>
-                                                <td><img width="60" src="assets/img/avatar/<?= $du['foto_user'] ?>" alt=""></td>
+                                                <!-- <td><?= $no; ?></td> -->
+                                                <td><?= $dp['id_user']; ?></td>
+                                                <td><?= $dp['nama_ruangan']; ?></td>
+                                                <td><?= $dp['level']; ?></td>
+                                                <td><?= $dp['nama_user'] ?></td>
+                                                <td><?= $dp['username'] ?></td>
+                                                <!-- <td><?= $dp['level'] ?></td> -->
+                                                <td><img width="60" src="assets/img/avatar/<?= $dp['foto_user'] ?>" alt=""></td>
                                                 <td>
                                                     <div class="table-data-feature">
                                                     <a href="?page=editUser&edit&id=<?= $dmb['id_user'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
@@ -174,6 +189,10 @@ if (isset($_GET['delete'])) {
                                             </tr>
                                             <script src="assets/vendor/jquery-3.2.1.min.js"></script>
                                             <script>
+                                                $(document).ready(function() {
+                                                    $('#id_ruangan').select2();
+                                                });
+
                                                 $('#btnDelete<?php echo $no; ?>').click(function(e) {
                                                     e.preventDefault();
                                                     swal({
@@ -187,7 +206,7 @@ if (isset($_GET['delete'])) {
                                                         closeOnCancel: true
                                                     }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href = "?page=viewPegawai&delete&id=<?php echo $du['id_user'] ?>";
+                                                            window.location.href = "?page=viewPegawai&delete&id=<?php echo $dp['id_user'] ?>";
                                                         }
                                                     });
                                                 });
