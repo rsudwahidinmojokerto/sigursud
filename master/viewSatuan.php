@@ -1,6 +1,6 @@
 <?php 
     $me       = new lsp();
-    if ($_SESSION['level'] != "Admin") {
+    if ($_SESSION['level'] != "Master") {
     header("location:../index.php");
     }
     $table            = "tm_satuan";

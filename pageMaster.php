@@ -22,7 +22,7 @@ include "app/views/_layout/_css.php";
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src="assets/img/<?= $auth['foto_user'] ?>" />
+                        <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" />
                     </div>
                     <h4 class="name"><?= $auth['nama_user']; ?></h4>
                 </div>
@@ -44,24 +44,24 @@ include "app/views/_layout/_css.php";
                             </ul>
                         </li>
                         <li>
-                            <a href="?page=viewBarang">
+                            <a href="?page=viewStokBarang">
                                 <i class="fas fa-archive"></i>Stock Barang</a>
                         </li>
                         <li>
-                            <a href="?page=viewMasterBarang">
+                            <a href="?page=viewMasterBarangBhp">
                                 <i class="fas fa-archive"></i>Master Barang</a>
                         </li>
                         <li>
                             <a href="?page=viewDistributor">
-                                <i class="fas fa-truck"></i>Distributor</a>
+                                <i class="fas fa-truck"></i>Master Distributor</a>
                         </li>
                         <li>
                             <a href="?page=viewRuangan">
-                                <i class="fas fa-users"></i>Ruangan</a>
+                                <i class="fas fa-users"></i>Master Ruangan</a>
                         </li>
                         <li>
-                            <a href="?page=kelolaPegawai">
-                                <i class="fas fa-users"></i>Master User</a>
+                            <a href="?page=viewPegawai">
+                                <i class="fas fa-users"></i>Master Pegawai</a>
                         </li>
                         <li>
                             <a href="?page=viewSatuan">
@@ -207,14 +207,17 @@ include "app/views/_layout/_css.php";
                 case 'viewBarang':
                     include "master/viewBarang.php";
                     break;
+                case 'viewStokBarang':
+                    include "master/viewStokBarang.php";
+                    break;
                 case 'viewSatuan':
                     include "master/viewSatuan.php";
                     break;
-                case 'kelolaPegawai':
-                    include "master/kelolaPegawai.php";
+                case 'viewPegawai':
+                    include "master/viewPegawai.php";
                     break;
-                case 'viewMasterBarang':
-                    include "master/viewMasterBarang.php";
+                case 'viewMasterBarangBhp':
+                    include "master/viewMasterBarangBhp.php";
                     break;
                 case 'viewDistributor':
                     include "master/viewDistributor.php";
@@ -231,8 +234,14 @@ include "app/views/_layout/_css.php";
                 case 'viewKategoriAset':
                     include "master/viewKategoriAset.php";
                     break;
-                case 'addBarang':
-                    include "master/addBarang.php";
+                case 'addBarangBhp':
+                    include "master/addBarangBhp.php";
+                    break;
+                case 'addStokBarangMasuk':
+                    include "master/addStokBarangMasuk.php";
+                    break;
+                case 'editBarangBhp':
+                    include "master/editBarangBhp.php";
                     break;
                 case 'viewBarangDetail':
                     include "master/viewBarangDetail.php";

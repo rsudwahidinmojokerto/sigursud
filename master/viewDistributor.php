@@ -5,7 +5,7 @@
     }
     $table = "tm_distributor";
     $dataDis = $dis->select($table);
-    $autokode = $dis->autokode($table,"id_distributor","DS");
+    $autokode = $dis->autokodeLimaDigit($table,"id_distributor","DS");
 
     if (isset($_GET['delete'])) {
         $where = "id_distributor";
@@ -20,22 +20,22 @@
         $autokode = $editData['id_distributor'];
     }
     if (isset($_POST['getSave'])) {
-        $id_distributor   = $dis->validateHtml($_POST['kode_distributor']);
+        $id_distributor   = $dis->validateHtml($_POST['id_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
-        $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
+        $telp             = $dis->validateHtml($_POST['telp']);
 
-        if ($id_distributor == " " || empty($id_distributor) || $nama_distributor == " " || empty($nama_distributor) || $nohp_distributor == " " || empty($nohp_distributor) || $alamat == " " || empty($alamat)) {
+        if ($id_distributor == " " || empty($id_distributor) || $nama_distributor == " " || empty($nama_distributor) || $alamat == " " || empty($alamat) || $telp == " " || empty($telp)) {
             $response = ['response'=>'negative','alert'=>'Lengkapi field'];
-        }else{
-            $validno = substr($nohp_distributor, 0,2);
+        } else {
+            $validno = substr($telp, 0,2);
             if ($validno != "08") {
                 $response = ['response'=>'negative','alert'=>'Masukan nomor HP yang valid'];
-            }else{
-                if (strlen($nohp_distributor) < 12) {
+            } else {
+                if (strlen($telp) < 12) {
                     $response = ['response'=>'negative','alert'=>'Masukan 12 digit nomor HP'];
                 }else{
-                    $value = "'$id_distributor','$nama_distributor','$alamat','$nohp_distributor'";
+                    $value = "'$id_distributor','$nama_distributor','$alamat','$telp'";
                     $response = $dis->insert($table,$value,"?page=viewDistributor");
                 }
             }
@@ -45,26 +45,27 @@
     if (isset($_POST['getUpdate'])) {
         $id_distributor   = $dis->validateHtml($_POST['kode_distributor']);
         $nama_distributor = $dis->validateHtml($_POST['nama_distributor']);
-        $nohp_distributor = $dis->validateHtml($_POST['nohp_distributor']);
+        $telp             = $dis->validateHtml($_POST['telp']);
         $alamat           = $dis->validateHtml($_POST['alamat']);
 
-        if ($id_distributor == "" || $nama_distributor == "" || $nohp_distributor == "" || $alamat == "") {
+        if ($id_distributor == "" || $nama_distributor == "" || $telp == "" || $alamat == "") {
             $response = ['response'=>'negative','alert'=>'lengkapi field'];
         }else{
-            $validno = substr($nohp_distributor, 0,2);
+            $validno = substr($telp, 0,2);
             if ($validno != "08") {
                 $response = ['response'=>'negative','alert'=>'Masukan nohp yang valid'];
             }else{
-                if (strlen($nohp_distributor) < 11) {
+                if (strlen($telp) < 11) {
                     $response = ['response'=>'negative','alert'=>'Masukan 11 digit nohp'];
                 }else{
-                    $value = "id_distributor='$id_distributor', nama_distributor='$nama_distributor', alamat='$alamat', telp='$nohp_distributor'";
+                    $value = "id_distributor='$id_distributor', nama_distributor='$nama_distributor', alamat='$alamat', telp='$telp'";
                     $response = $dis->update($table, $value,"id_distributor",$_GET['id'], "?page=viewDistributor");
                 }
             }
         }
     }
  ?>
+
 <section class="au-breadcrumb m-t-75">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
@@ -110,7 +111,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">No.HP distributor</label>
-                                    <input type="text" class="form-control form-control-sm" name="nohp_distributor" value="<?php echo @$editData['telp']; ?>">
+                                    <input type="text" class="form-control form-control-sm" name="telp" value="<?php echo @$editData['telp']; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Alamat</label>
