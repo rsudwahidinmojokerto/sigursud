@@ -17,19 +17,19 @@
 		$id_level       = $br->validateHtml($_POST['id_level']);
 		$ket          = $_POST['ket'];
 
-		if ($Id_user == " " || $nama_user == " " || $username == " " || $password == " " || $confirm == " " || $id_level == " ") {
+		if ($id_user == " " || $nama_user == " " || $username == " " || $password == " " || $confirm == " " || $id_level == " ") {
 			$response = ['response'=>'negative','alert'=>'lengkapi field'];
 		}else{
 			// if ($harga < 0 || $stok < 0) {
 			//  	$response = ['response'=>'negative','alert'=>'harga atau stok tidak boleh mines'];
 			// }else{
 				if ($_FILES['foto']['name'] == "") {
-					$value = "id_user='$Id_user', nama_user='$nama_user', username='$username', password='$password', tanggal_masuk='$waktu',harga_barang='$harga',stok_barang='$stok',keterangan='$ket'";
+					$value = "id_user='$id_user', nama_user='$nama_user', username='$username', password='$password', tanggal_masuk='$waktu',harga_barang='$harga',stok_barang='$stok',keterangan='$ket'";
 					$response = $br->update($table, $value, "id_user", $_GET['id'], "?page=viewPegawai");
 				}else{
 					$response = $br->validateImage();
 					if ($response['types'] == "true") {
-						$value = "id_user='$Id_user',nama_user='$nama_user',username='$username',password='$password',tanggal_masuk='$waktu',harga_barang='$harga',stok_barang='$stok',keterangan='$ket', gambar='$response[image]'";
+						$value = "id_user='$id_user',nama_user='$nama_user',username='$username',password='$password',tanggal_masuk='$waktu',harga_barang='$harga',stok_barang='$stok',keterangan='$ket', gambar='$response[image]'";
 						$response = $br->update($table, $value, "id_user", $_GET['id'], "?page=viewPegawai");
 					}else{
 						$response = ['response'=>'negative','alert'=>'gambar error'];

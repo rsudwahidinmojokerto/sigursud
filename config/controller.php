@@ -12,7 +12,9 @@ class lsp
     {
         global $con;
 
-        $sql = "SELECT * FROM tm_user WHERE username ='$username'";
+        // $sql = "SELECT * FROM tm_user WHERE username ='$username'";
+        $sql = "SELECT tm_user.id_user as id_user, tm_ruangan.nama_ruangan as nama_ruangan, tm_level_user.nama_level_user as level, tm_user.nama_user as nama_user, tm_user.username as username, tm_user.password as password, tm_user.foto_user as foto_user FROM tm_user LEFT JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan LEFT JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user WHERE tm_user.username = '$username'";
+        // $sql = "SELECT * FROM tm_user INNER JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan INNER JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user WHERE tm_user.username = '$username'";
         $query = mysqli_query($con, $sql);
         $rows  = mysqli_num_rows($query);
         $assoc = mysqli_fetch_assoc($query);
@@ -87,25 +89,25 @@ class lsp
     public function AuthUser($sessionUser)
     {
         global $con;
-        $sql = "SELECT * FROM tm_user WHERE username = '$sessionUser'";
+        // $sql = "SELECT * FROM tm_user WHERE username = '$sessionUser'";
+        $sql = "SELECT tm_user.id_user as id_user, tm_ruangan.nama_ruangan as nama_ruangan, tm_level_user.nama_level_user as level, tm_user.nama_user as nama_user, tm_user.username as username, tm_user.password as password, tm_user.foto_user as foto_user FROM tm_user LEFT JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan LEFT JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user WHERE tm_user.username = '$sessionUser'";
         $query = mysqli_query($con, $sql);
         $bigData = mysqli_fetch_assoc($query);
         return $bigData;
     }
 
-    public function register($kd_user, $name, $username, $password, $confirm, $foto, $level, $redirect)
+    public function register($id_user, $id_ruangan, $id_level, $name, $username, $password, $confirm, $foto, $redirect)
     {
 
         global $con;
         global $rg;
 
-        if ($kd_user == " " || empty($kd_user) ||  empty($name) || $name == " " || empty($username) || $username == " " || empty($password) || $password == " ") {
+        if ($id_user == " " || empty($id_user) ||  $id_ruangan == " " || empty($id_ruangan) ||  $id_level == " " || empty($id_level) ||  $name == " " || empty($name) || $username == " " || empty($username) || $password == " " || empty($password) || $confirm == " " || empty($confirm)) {
             return ['response' => 'negative', 'alert' => 'Lengkapi Form'];
         }
 
         $sql     = "SELECT * FROM tm_user WHERE username = '$username'";
         $query   = mysqli_query($con, $sql);
-
         $rows    = mysqli_num_rows($query);
 
         if (strlen($username) < 6) {
@@ -122,16 +124,14 @@ class lsp
             if ($password == $confirm) {
                 $password = base64_encode($password);
                 $response = $rg->validateImage();
-                $sql = "INSERT INTO tm_user VALUES('$kd_user','$name','$username','$password','$response[image]', '$level')";
+                $sql = "INSERT INTO tm_user VALUES('$id_user', '$id_ruangan', '$id_level', '$name', '$username', '$password', '$response[image]')";
                 $query   = mysqli_query($con, $sql);
                 if ($query) {
                     return ['response' => 'positive', 'alert' => 'Registrasi Berhasil', 'redirect' => $redirect];
                 } else {
-
                     return ['response' => 'negative', 'alert' => 'Registrasi Error'];
                 }
             } else {
-
                 return ['response' => 'negative', 'alert' => 'Password Tidak Cocok'];
             }
         } else if ($rows == 1) {
@@ -266,7 +266,7 @@ class lsp
             return ['response' => 'positive', 'alert' => 'Berhasil update data', 'redirect' => $redirect];
         } else {
             echo mysqli_error($con);
-            return ['response' => 'negative', 'alert' => 'Gagaal Update Data'];
+            return ['response' => 'negative', 'alert' => 'Gagal Update Data'];
         }
     }
 
@@ -280,6 +280,26 @@ class lsp
             $data[] = $bigData;
         }
         return $data;
+    }
+
+    public function selectPegawai()
+    {
+        global $con;
+        $sql = "SELECT tm_user.id_user as id_user, tm_ruangan.nama_ruangan as nama_ruangan, tm_level_user.nama_level_user as level, tm_user.nama_user as nama_user, tm_user.username as username, tm_user.password as password, tm_user.foto_user as foto_user FROM tm_user LEFT JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan LEFT JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user";
+        $query = mysqli_query($con, $sql);
+        $data = [];
+        while ($bigData = mysqli_fetch_assoc($query)) {
+            $data[] = $bigData;
+        }
+        return $data;
+    }
+
+    public function selectPegawaiWhere($id_user)
+    {
+        global $con;
+        $sql = "SELECT tm_user.id_user as id_user, tm_ruangan.nama_ruangan as nama_ruangan, tm_level_user.nama_level_user as level, tm_user.nama_user as nama_user, tm_user.username as username, tm_user.password as password, tm_user.foto_user as foto_user FROM tm_user LEFT JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan LEFT JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user WHERE tm_user.id_user='$id_user'";
+        $query = mysqli_query($con, $sql);
+        return $data = mysqli_fetch_assoc($query);
     }
 
     public function selectBhp($table1, $table2)
@@ -318,7 +338,7 @@ class lsp
         $tmpName    = $_FILES['foto']['tmp_name'];
 
 
-        $folder = 'img/';
+        $folder = 'assets/img/';
 
         $ekstensiGambar = explode('.', $name);
         $namaGambar = $ekstensiGambar[0];
@@ -341,7 +361,7 @@ class lsp
                 mkdir('img', 0563);
             }
         }
-        $name = random_int(1, 999);
+        $name = rand(1, 999);
         $name = time() . $name . "." . $ekstensiBelakang;
         move_uploaded_file($tmpName, $folder . $name);
 
