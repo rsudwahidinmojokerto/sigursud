@@ -1,6 +1,4 @@
-# Sistem Informasi Gudang Logistik RSUD dr. Wahidin Sudiro Husodo
-
-Merupakan aplikasi untuk memudahkan dalam melakukan managemen gudang logistik di RSUD dr. Wahidin Sudiro Husodo.
+# Proyek Wahidin Sudiro Husodo
 
 # Login screen
 <p align="center">
