@@ -129,7 +129,6 @@ class lsp
                 if ($query) {
                     return ['response' => 'positive', 'alert' => 'Registrasi Berhasil', 'redirect' => $redirect];
                 } else {
-
                     return ['response' => 'negative', 'alert' => 'Registrasi Error'];
                 }
             } else {
@@ -267,7 +266,7 @@ class lsp
             return ['response' => 'positive', 'alert' => 'Berhasil update data', 'redirect' => $redirect];
         } else {
             echo mysqli_error($con);
-            return ['response' => 'negative', 'alert' => 'Gagaal Update Data'];
+            return ['response' => 'negative', 'alert' => 'Gagal Update Data'];
         }
     }
 
@@ -293,6 +292,14 @@ class lsp
             $data[] = $bigData;
         }
         return $data;
+    }
+
+    public function selectPegawaiWhere($id_user)
+    {
+        global $con;
+        $sql = "SELECT tm_user.id_user as id_user, tm_ruangan.nama_ruangan as nama_ruangan, tm_level_user.nama_level_user as level, tm_user.nama_user as nama_user, tm_user.username as username, tm_user.password as password, tm_user.foto_user as foto_user FROM tm_user LEFT JOIN tm_ruangan ON tm_ruangan.id_ruangan=tm_user.id_ruangan LEFT JOIN tm_level_user ON tm_level_user.id_level_user=tm_user.id_level_user WHERE tm_user.id_user='$id_user'";
+        $query = mysqli_query($con, $sql);
+        return $data = mysqli_fetch_assoc($query);
     }
 
     public function selectBhp($table1, $table2)
