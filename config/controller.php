@@ -331,7 +331,7 @@ class lsp
         $tmpName    = $_FILES['foto']['tmp_name'];
 
 
-        $folder = 'img/';
+        $folder = 'assets/img/';
 
         $ekstensiGambar = explode('.', $name);
         $namaGambar = $ekstensiGambar[0];

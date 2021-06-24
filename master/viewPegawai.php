@@ -175,7 +175,7 @@ if (isset($_GET['delete'])) {
                                                 <td><?= $dp['nama_user'] ?></td>
                                                 <td><?= $dp['username'] ?></td>
                                                 <!-- <td><?= $dp['level'] ?></td> -->
-                                                <td><img width="60" src="assets/img/avatar/<?= $dp['foto_user'] ?>" alt=""></td>
+                                                <td><img width="60" src="assets/img/<?= $dp['foto_user'] ?>" alt=""></td>
                                                 <td>
                                                     <div class="table-data-feature">
                                                         <a href="?page=editUser&edit&id=<?= $dmb['id_user'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>

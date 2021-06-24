@@ -22,7 +22,7 @@ include "app/views/_layout/_css.php";
             <div class="menu-sidebar2__content js-scrollbar1">
                 <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src="assets/img/avatar/<?= $auth['foto_user'] ?>" />
+                        <img src="assets/img/<?= $auth['foto_user'] ?>" />
                     </div>
                     <h4 class="name"><?= $auth['nama_user']; ?></h4>
                     <h6 class="email" style="color: #FF8C00;"><?= $auth['nama_ruangan']; ?></h6>
