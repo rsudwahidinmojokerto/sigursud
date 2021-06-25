@@ -11,7 +11,7 @@ include "app/views/_layout/_meta.php";
 include "app/views/_layout/_css.php";
 ?>
 
-<body class="animsition">
+<body>
     <div class="page-wrapper">
         <aside class="menu-sidebar2">
             <div class="logo">

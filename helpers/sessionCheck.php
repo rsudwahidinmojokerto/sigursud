@@ -1,5 +1,7 @@
 <?php
+date_default_timezone_set("Asia/Bangkok");
 include "config/controller.php";
+
 $function = new lsp();
 session_start();
 

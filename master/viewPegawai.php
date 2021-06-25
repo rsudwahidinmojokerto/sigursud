@@ -12,7 +12,7 @@ $dataLevel = $rg->select($table_level);
 $dataRuangan = $rg->select($table_ruangan);
 
 $autokodeTanggal = $rg->autokodeTanggal($table_riwayat, 'id_riwayat', 'TMP');
-$user = $_SESSION['id_user'];
+// var_dump($_SESSION);
 
 if (isset($_POST['getSave'])) {
     $id_user = $_POST['id_user'];
@@ -30,13 +30,16 @@ if (isset($_POST['getSave'])) {
     } else if ($password != $confirm) {
         $response = ['response' => 'negative', 'alert' => 'Password dan konfirmasi password tidak sama !!!'];
     } else {
+        //Table riwayat
+        $value1    = "'$autokodeTanggal', '" . $_SESSION['id_user'] . "', '$id_user', 'Tambah User " . "$nama_user', '" . date("Y-m-d H:i:s") . "'";
+        $rg->insertRiwayat($table_riwayat, $value1);
+
         $response = $rg->register($id_user, $id_ruangan, $id_level, $nama_user, $username, $password, $confirm, $foto, $redirect);
     }
 }
 
 if (isset($_POST['getUpdate'])) {
     // $id_ruangan   = $dis->validateHtml($_POST['kode_ruangan']);
-    // $nama_ruangan = $dis->validateHtml($_POST['nama_ruangan']);
 
     $id_user = $_POST['id_user'];
     $id_ruangan = $_POST['id_ruangan'];
@@ -50,33 +53,34 @@ if (isset($_POST['getUpdate'])) {
 
     if ($id_level == "" || $id_ruangan == "" || $nama_user == "" || $username == "" || $password == "" || $confirm == "") {
         $response = ['response' => 'negative', 'alert' => 'Lengkapi Field !!!'];
-        // var_dump($foto);
     } else if ($password != $confirm) {
         $response = ['response' => 'negative', 'alert' => 'Password tidak cocok !!!'];
     } else {
+        //Table riwayat
+        $value1    = "'$autokodeTanggal', '" . $_SESSION['id_user'] . "', '$id_user', 'Ubah User " . "$nama_user', '" . date("Y-m-d H:i:s") . "'";
+        $rg->insertRiwayat($table_riwayat, $value1);
+
         $hasil_foto = $rg->validateImage();
-        // $response = $rg->register($id_user, $id_ruangan, $id_level, $nama_user, $username, $password, $confirm, $foto, $redirect);
         $value = "id_user='$id_user', id_ruangan='$id_ruangan', id_level_user='$id_level', nama_user='$nama_user', username='$username', password='$password', foto_user='$hasil_foto[image]'";
         $response = $rg->update($table_user, $value, "id_user", $_GET['id'], "?page=viewPegawai");
-
-        //Table riwayat
-        $sekarang  = date("Y-m-d H:i:s");
-        $value1    = "id_riwayat='$autokodeTanggal', id_user='$user', id_objek='$id_user', keterangan='Buat user ', tanggal='$sekarang'";
-        $response1 = $rg->insertRiwayat($table_riwayat, $value1);
-        var_dump($value1);
     }
 }
 
 if (isset($_GET['edit'])) {
     $id_user = $_GET['id'];
-    // $editData = $rg->selectPegawaiWhere($id_user);
     $editData = $rg->selectWhere($table_user, "id_user", $id_user);
     $autokode = $editData['id_user'];
-    // var_dump($editData);
 }
 
 if (isset($_GET['delete'])) {
+    $id_user = $_GET['id'];
+    $nama_user = $rg->selectWhere($table_user, "id_user", $id_user)['nama_user'];
+
     $response = $rg->delete($table_user, "id_user", $_GET['id'], "?page=viewPegawai");
+
+    //Table riwayat
+    $value1    = "'$autokodeTanggal', '" . $_SESSION['id_user'] . "', '$id_user', 'Delete User " . "$nama_user', '" . date("Y-m-d H:i:s") . "'";
+    $rg->insertRiwayat($table_riwayat, $value1);
 }
 
 ?>
@@ -118,7 +122,7 @@ if (isset($_GET['delete'])) {
                                 <div class="form-group">
                                     <label>ID User</label>
                                     <input style="color: red; font-weight: bold;" class="au-input au-input--full" type="text" name="id_user" readonly value="<?= @$autokode; ?>">
-                                    <?php var_dump(@$user);?>
+                                    <!-- <?php echo @$_SESSION['level']; ?> -->
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

@@ -20,7 +20,7 @@ class lsp
         $assoc = mysqli_fetch_assoc($query);
         if ($rows > 0) {
             if (base64_decode($assoc['password']) == $password) {
-                return ['response' => 'positive', 'alert' => 'Berhasil Login', 'level' => $assoc['level']];
+                return ['response' => 'positive', 'alert' => 'Berhasil Login', 'id_user' => $assoc['id_user'], 'nama_ruangan' => $assoc['nama_ruangan'], 'level' => $assoc['level'], 'nama_user' => $assoc['nama_user'], 'username' => $assoc['username'], 'password' => $assoc['password'], 'foto_user' => $assoc['foto_user']];
             } else {
                 return ['response' => 'negative', 'alert' => 'Password Salah'];
             }

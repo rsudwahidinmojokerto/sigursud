@@ -21,8 +21,13 @@ if (isset($_POST['btnLogin'])) {
     $password = $_POST['password'];
     if ($response = $lg->login($username, $password)) {
         if ($response['response'] == "positive") {
-            $_SESSION['username'] = $_POST['username'];
+            $_SESSION['id_user'] = $response['id_user'];
+            $_SESSION['nama_ruangan'] = $response['nama_ruangan'];
             $_SESSION['level'] = $response['level'];
+            $_SESSION['nama_user'] = $response['nama_user'];
+            $_SESSION['username'] = $response['username'];
+            $_SESSION['password'] = $response['password'];
+            $_SESSION['foto_user'] = $response['foto_user'];
             if ($response['level'] == "Admin") {
                 $response = $lg->redirect("pageAdmin.php");
             } else if ($response['level'] == "Manager") {
