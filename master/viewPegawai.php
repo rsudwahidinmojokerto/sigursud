@@ -4,11 +4,15 @@ $rg = new lsp();
 $table_user = "tm_user";
 $table_level = "tm_level_user";
 $table_ruangan = "tm_ruangan";
+$table_riwayat = "riwayat";
 
 $autokode = $rg->autokodeLimaDigit($table_user, "id_user", "US");
 $dataPegawai = $rg->selectPegawai();
 $dataLevel = $rg->select($table_level);
 $dataRuangan = $rg->select($table_ruangan);
+
+$autokodeTanggal = $rg->autokodeTanggal($table_riwayat, 'id_riwayat', 'TMP');
+$user = $_SESSION['id_user'];
 
 if (isset($_POST['getSave'])) {
     $id_user = $_POST['id_user'];
@@ -23,7 +27,6 @@ if (isset($_POST['getSave'])) {
 
     if ($id_level == "" || $id_ruangan == "" || $nama_user == "" || $username == "" || $password == "" || $confirm == "") {
         $response = ['response' => 'negative', 'alert' => 'Lengkapi Field !!!'];
-        // var_dump($foto);
     } else if ($password != $confirm) {
         $response = ['response' => 'negative', 'alert' => 'Password dan konfirmasi password tidak sama !!!'];
     } else {
@@ -55,6 +58,12 @@ if (isset($_POST['getUpdate'])) {
         // $response = $rg->register($id_user, $id_ruangan, $id_level, $nama_user, $username, $password, $confirm, $foto, $redirect);
         $value = "id_user='$id_user', id_ruangan='$id_ruangan', id_level_user='$id_level', nama_user='$nama_user', username='$username', password='$password', foto_user='$hasil_foto[image]'";
         $response = $rg->update($table_user, $value, "id_user", $_GET['id'], "?page=viewPegawai");
+
+        //Table riwayat
+        $sekarang  = date("Y-m-d H:i:s");
+        $value1    = "id_riwayat='$autokodeTanggal', id_user='$user', id_objek='$id_user', keterangan='Buat user ', tanggal='$sekarang'";
+        $response1 = $rg->insertRiwayat($table_riwayat, $value1);
+        var_dump($value1);
     }
 }
 
@@ -109,6 +118,7 @@ if (isset($_GET['delete'])) {
                                 <div class="form-group">
                                     <label>ID User</label>
                                     <input style="color: red; font-weight: bold;" class="au-input au-input--full" type="text" name="id_user" readonly value="<?= @$autokode; ?>">
+                                    <?php var_dump(@$user);?>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">

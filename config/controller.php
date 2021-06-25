@@ -193,6 +193,35 @@ class lsp
         return $kode;
     }
 
+    public function autokodeTanggal($table, $field, $pre)
+    {
+        global $con;
+        $tanggal = date('ymd');
+
+        $sqlc   = "SELECT COUNT($field) as jumlah FROM $table";
+        $querys = mysqli_query($con, $sqlc);
+        $number = mysqli_fetch_assoc($querys);
+        if ($number['jumlah'] > 0) {
+            $sql    = "SELECT MAX($field) as kode FROM $table";
+            $query  = mysqli_query($con, $sql);
+            $number = mysqli_fetch_assoc($query);
+            $strnum = substr($number['kode'], 2, 4);
+            $strnum = $strnum + 1;
+            if (strlen($strnum) == 4) {
+                $kode = $pre . $tanggal . $strnum;
+            } else if (strlen($strnum) == 3) {
+                $kode = $pre . $tanggal .  "0" . $strnum;
+            } else if (strlen($strnum) == 2) {
+                $kode = $pre . $tanggal . "00" . $strnum;
+            } else if (strlen($strnum) == 1) {
+                $kode = $pre . $tanggal . "000" . $strnum;
+            }
+        } else {
+            $kode = $pre . $tanggal . "0001";
+        }
+        return $kode;
+    }
+
     public function querySelect($sql)
     {
         global $con;
@@ -255,6 +284,13 @@ class lsp
             echo mysqli_error($con);
             return ['response' => 'negative', 'alert' => 'Gagal Menambahkan Data'];
         }
+    }
+
+    public function insertRiwayat($table, $values)
+    {
+        global $con;
+        $sql   = "INSERT INTO $table VALUES($values)";
+        $query = mysqli_query($con, $sql);
     }
 
     public function update($table, $values, $where, $whereValues, $redirect)

@@ -1,11 +1,11 @@
 <?php 
     $trans     = new lsp();
-    $transkode = $trans->autokode("table_transaksi","kd_transaksi","TR");
-    $antrian   = $trans->autokode("table_pretransaksi","kd_pretransaksi","AN");
+    $transkode = $trans->autokode("tr_transaksi_masuk","id_transaksi_masuk","TRM");
+    $antrian   = $trans->autokode("tr_pretransaksi_masuk","id_pretransaksi_masuk","ANM");
     $barangs   = $trans->select("table_barang");
     if (isset($_GET['getItem'])) {
         $id = $_GET['id'];
-        $dataR = $trans->selectWhere("table_barang","kd_barang",$id);
+        $dataR = $trans->selectWhere("tm_barang_bhp","id_barang_bhp",$id);
     }
     $sum       = $trans->selectSum("table_pretransaksi","sub_total");
     $sql2      = "SELECT COUNT(kd_pretransaksi) as count FROM table_pretransaksi WHERE kd_transaksi = '$transkode'";
@@ -21,7 +21,6 @@
         $barang          = $_POST['kd_barang'];
         $jumlah          = $_POST['jumlah'];
         $total           = $_POST['total'];
-
 
         if ($kd_transaksi == "" || $kd_pretransaksi == "" || $barang == "" || $jumlah == "" || $total == "") {
             $response = ['response'=>'negative','alert'=>'Lengkapi field'];
