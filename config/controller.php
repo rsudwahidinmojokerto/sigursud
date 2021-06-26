@@ -205,7 +205,7 @@ class lsp
             $sql    = "SELECT MAX($field) as kode FROM $table";
             $query  = mysqli_query($con, $sql);
             $number = mysqli_fetch_assoc($query);
-            $strnum = substr($number['kode'], 2, 4);
+            $strnum = substr($number['kode'], 9, 4);
             $strnum = $strnum + 1;
             if (strlen($strnum) == 4) {
                 $kode = $pre . $tanggal . $strnum;
