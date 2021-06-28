@@ -253,7 +253,7 @@ if (isset($_GET['delete'])) {
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-borderless table-striped table-earning" id="example">
+                    <table class="table table-striped table-bordered" style="width: 100%" id="example">
                         <thead>
                             <tr>
                                 <td>Kode Barang</td>
