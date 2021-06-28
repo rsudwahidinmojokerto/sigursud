@@ -11,7 +11,7 @@ include "app/views/_layout/_meta.php";
 include "app/views/_layout/_css.php";
 ?>
 
-<body class="animsition">
+<body>
     <div class="page-wrapper">
         <aside class="menu-sidebar2">
             <div class="logo">
@@ -34,39 +34,41 @@ include "app/views/_layout/_css.php";
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="#"><i class="fas fa-cogs"></i>Kategori Barang</a>
+                            <a class="js-arrow" href="#"><i class="fas fa-cogs"></i>Master</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="?page=viewKategoriBhp">Kategori BHP</a>
+                                    <a href="?page=viewKategoriBhp">
+                                        <i class="fas fa-list-ul"></i>Kategori BHP</a>
                                 </li>
                                 <li>
-                                    <a href="?page=viewKategoriAset">Kategori ASET</a>
+                                    <a href="?page=viewKategoriAset">
+                                        <i class="fas fa-list-alt"></i>Kategori Aset</a>
+                                </li>
+                                <li>
+                                    <a href="?page=viewMasterBarangBhp">
+                                        <i class="fas fa-archive"></i>Barang</a>
+                                </li>
+                                <li>
+                                    <a href="?page=viewSatuan">
+                                        <i class="fas fa-tags"></i>Satuan Barang</a>
+                                </li>
+                                <li>
+                                    <a href="?page=viewRuangan">
+                                        <i class="fas fa-building"></i>Ruangan</a>
+                                </li>
+                                <li>
+                                    <a href="?page=viewDistributor">
+                                        <i class="fas fa-truck"></i>Distributor</a>
+                                </li>
+                                <li>
+                                    <a href="?page=viewPegawai">
+                                        <i class="fas fa-users"></i>Pegawai</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <a href="?page=viewStokBarang">
-                                <i class="fas fa-archive"></i>Stock Barang</a>
-                        </li>
-                        <li>
-                            <a href="?page=viewMasterBarangBhp">
-                                <i class="fas fa-archive"></i>Master Barang</a>
-                        </li>
-                        <li>
-                            <a href="?page=viewDistributor">
-                                <i class="fas fa-truck"></i>Master Distributor</a>
-                        </li>
-                        <li>
-                            <a href="?page=viewRuangan">
-                                <i class="fas fa-users"></i>Master Ruangan</a>
-                        </li>
-                        <li>
-                            <a href="?page=viewPegawai">
-                                <i class="fas fa-users"></i>Master Pegawai</a>
-                        </li>
-                        <li>
-                            <a href="?page=viewSatuan">
-                                <i class="fas fa-users"></i>Master Satuan</a>
+                                <i class="fas fa-archive"></i>Stok Barang</a>
                         </li>
                         <!-- <li>
                             <a href="?page=viewJenisbarang">

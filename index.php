@@ -66,7 +66,7 @@ if (isset($_POST['btnLogin'])) {
     <link href="assets/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
-    <link href="assets/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <!-- <link href="assets/vendor/animsition/animsition.min.css" rel="stylesheet" media="all"> -->
     <link href="assets/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="assets/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="assets/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
@@ -80,7 +80,7 @@ if (isset($_POST['btnLogin'])) {
 
 </head>
 
-<body class="animsition" style="background: url(assets/images/rsud.jpeg) no-repeat; background-size: cover;">
+<body style="background: url(assets/images/rsud.jpeg) no-repeat; background-size: cover;">
     <div class="page-wrapper">
         <div class="page-content">
             <div class="container">
@@ -126,7 +126,7 @@ if (isset($_POST['btnLogin'])) {
     <script src="assets/vendor/slick/slick.min.js">
     </script>
     <script src="assets/vendor/wow/wow.min.js"></script>
-    <script src="assets/vendor/animsition/animsition.min.js"></script>
+    <!-- <script src="assets/vendor/animsition/animsition.min.js"></script> -->
     <script src="assets/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
     </script>
     <script src="assets/vendor/counter-up/jquery.waypoints.min.js"></script>
