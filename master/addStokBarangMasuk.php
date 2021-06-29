@@ -1,11 +1,14 @@
 <?php
 $tr     = new lsp();
-$transId = $tr->autokodeTanggal("tr_transaksi_stok_masuk", "id_transaksi_stok_masuk", "TRM");
-$antrian   = $tr->autokodeTanggal("tr_pretransaksi_stok_masuk", "id_pretransaksi_stok_masuk", "ANM");
+$transId = $tr->autokodeTanggal("tr_transaksi_stok_masuk", "id_transaksi_stok_masuk", "TR");
+$antrian   = $tr->autokodeTanggal("tr_pretransaksi_stok_masuk", "id_pretransaksi_stok_masuk", "DM");
 $dataBarang   = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
 if (isset($_GET['getItem'])) {
     $id = $_GET['id'];
     $dataBarangBhp = $tr->selectWhere("tm_barang_bhp", "id_barang_bhp", $id);
+    // $dataBarangBhp = $tr->
+    $cekDataBhp = $tr->selectCountWhere('tr_barang_bhp_riwayat_harga_stok', 'id_barang_bhp', $id);
+    var_dump($cekDataBhp);
 }
 $sum       = $tr->selectSum("table_pretransaksi", "sub_total");
 $sql2      = "SELECT COUNT(kd_pretransaksi) as count FROM table_pretransaksi WHERE kd_transaksi = '$transId'";
@@ -102,7 +105,7 @@ if (isset($_GET['delete'])) {
                                         <input style="font-weight: bold; color: red;" type="text" class="form-control" value="<?= $transId; ?>" readonly name="kd_transaksi">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="">Kode Antrian</label>
+                                        <label for="">Kode Detail</label>
                                         <input style="font-weight: bold; color: red;" type="text" class="form-control" value="<?= $antrian; ?>" readonly name="kd_pretransaksi" id="antrian">
                                     </div>
                                 </div>
@@ -130,31 +133,31 @@ if (isset($_GET['delete'])) {
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Harga Lama</label>
-                                                    <input type="text" class="form-control currency" name="Hlama"  id="Hlama" >
+                                                    <input type="text" class="form-control currency" name="Hlama" id="Hlama" <?php if ($cekDataBhp['count'] < 1) { ?> value="1000" readonly <?php } else { ?> value="" readonly <?php } ?>>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Harga Baru</label>
-                                                    <input type="text" class="form-control currency" name="Hbaru"  id="Hbaru" >
+                                                    <input type="text" class="form-control currency" name="Hbaru" id="Hbaru">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Stok Lama</label>
-                                                    <input type="text" id="lama" class="form-control stok" >
+                                                    <input type="text" id="lama" class="form-control stok" <?php if ($cekDataBhp['count'] < 1) { ?> value="10" readonly <?php } else { ?> value="" readonly <?php } ?>>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Stok Baru</label>
-                                                    <input type="text" id="baru" class="form-control stok" >
+                                                    <input type="text" id="baru" class="form-control stok">
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="">Jumlah stok</label>
-                                            <input type="text" id="jumlahstok" class="form-control" readonly="">
+                                            <input type="text" id="jumlahstok" class="form-control stok" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Harga rata-rata</label>
-                                            <input type="text" id="Hrata1" class="form-control" readonly="">
+                                            <input type="text" id="Hrata1" class="form-control currency" readonly="">
                                         </div>
                                         <button class="btn btn-primary" name="btnAdd"><i class="fa fa-cart-plus"></i> Tambahkan ke Antrian</button>
                                     </div>
@@ -166,7 +169,7 @@ if (isset($_GET['delete'])) {
                 <div class="col-md-7">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Antrian Barang</h3>
+                            <h3>Detail Barang</h3>
                         </div>
                         <div class="card-body">
                             <?php if ($assoc2['count'] > 0 || isset($_POST['btnAdd'])) : ?>
@@ -184,7 +187,7 @@ if (isset($_GET['delete'])) {
                             ?>
                             <table class="table table-striped table-bordered">
                                 <tr>
-                                    <th>Kode Antrian</th>
+                                    <th>ID Detail</th>
                                     <th>Nama Barang</th>
                                     <th>Jumlah</th>
                                     <th>Sub Total</th>
@@ -304,23 +307,23 @@ if (isset($_GET['delete'])) {
         //     var kali = jumlah + 100;
         //     $("#jumlahStok").val(kali);
         // });
-        
 
-        $('#lama, #baru').keyup(function() {
-            var sl = $('#lama').val();
-            var sb = $('#baru').val();
-            var jml = parseInt(sl) + parseInt(sb);
-            $('#jumlahStok').val(jml);
-        });
 
-        $('#jumjum').keyup(function() {
-            var jumlah = $(this).val();
-            var harba = $('#hargaBaru').val();
-            var kali = harba * jumlah;
-            $("#totals").val(kali);
-        });
+        // $('#lama, #baru').keyup(function() {
+        //     var sl = $('#lama').val();
+        //     var sb = $('#baru').val();
+        //     var jml = parseInt(sl) + parseInt(sb);
+        //     $('#jumlahStok').val(jml);
+        // });
 
-        $("#lama, #baru").keyup(function() {
+        // $('#jumjum').keyup(function() {
+        //     var jumlah = $(this).val();
+        //     var harba = $('#hargaBaru').val();
+        //     var kali = harba * jumlah;
+        //     $("#totals").val(kali);
+        // });
+
+        $("#baru").keyup(function() {
             var lama = $("#lama").val();
             var baru = $("#baru").val();
 
@@ -328,17 +331,27 @@ if (isset($_GET['delete'])) {
             $("#jumlahstok").val(jumlahstok);
         });
 
-        $("#Hlama, #Hbaru").keyup(function() {
+        // $("#Hlama, #Hbaru").keyup(function() {
+        //     var Hlama = $("#Hlama").val();
+        //     var Hbaru = $("#Hbaru").val();
+        //     var lama = $("#lama").val();
+        //     var baru = $("#baru").val();
+
+        //     // var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (lama + baru);
+        //     var Hrata1 = (Hlama * lama) + (Hbaru * baru);
+        //     $("#Hrata1").val(Hrata1);
+        //     // var Hrata1 = Hrata/2;
+        //     // $("#Hrata1").val(Hrata1);
+        // });
+
+        $("#Hbaru").keyup(function() {
             var Hlama = $("#Hlama").val();
             var Hbaru = $("#Hbaru").val();
             var lama = $("#lama").val();
             var baru = $("#baru").val();
 
-            // var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (lama + baru);
-            var Hrata1 = (Hlama * lama) + (Hbaru * baru);
+            var Hrata1 = (((Hlama * lama) + (Hbaru * baru)) / (lama + baru));
             $("#Hrata1").val(Hrata1);
-            // var Hrata1 = Hrata/2;
-            // $("#Hrata1").val(Hrata1);
         });
 
         // $('#bayar').keyup(function() {
@@ -383,14 +396,14 @@ if (isset($_GET['delete'])) {
         //         $('#kem').val(kembalian);
         //     })
 
-        $(".currency").parseInt('init', {
-            aSign: 'Rp. ',
-            aSep: '.',
-            aDec: ',',
-            aForm: true,
-            vMax: '999999999',
-            vMin: '0'
-        });
+        // $(".currency").autoNumeric('init', {
+        //     aSign: 'Rp. ',
+        //     aSep: '.',
+        //     aDec: ',',
+        //     aForm: true,
+        //     vMax: '999999999',
+        //     vMin: '0'
+        // });
 
         // $(".stok").autoNumeric('init', {
         //     aSep: '.',

@@ -354,7 +354,7 @@ class lsp
     public function selectCountWhere($table, $namaField, $where)
     {
         global $con;
-        $sql = "SELECT COUNT($namaField) as count FROM $table WHERE $where";
+        $sql = "SELECT COUNT($namaField) as count FROM $table WHERE $namaField='$where'";
         $query = mysqli_query($con, $sql);
         return $data = mysqli_fetch_assoc($query);
     }
@@ -415,5 +415,11 @@ class lsp
             echo mysqli_error($con);
             return ['response' => 'negative', 'alert' => 'Gagal Menghapus Data'];
         }
+    }
+
+    public function cekDataBhp($table, $status, $id)
+    {
+        global $con;
+        $sql = "SELECT COUNT($id) as cek FROM $table WHERE $id='$id'";
     }
 }
