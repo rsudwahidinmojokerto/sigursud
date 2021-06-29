@@ -130,31 +130,31 @@ if (isset($_GET['delete'])) {
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Harga Lama</label>
-                                                    <input type="text" class="form-control currency" name="hargaLama" value="<?php echo @$dataBarangBhp['harga_lama']; ?>" id="hargaLama">
+                                                    <input type="text" class="form-control currency" name="Hlama"  id="Hlama" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Harga Baru</label>
-                                                    <input type="text" class="form-control currency" name="hargaBaru" value="<?php echo @$dataBarangBhp['harga_baru']; ?>" id="hargaBaru" readonly="">
+                                                    <input type="text" class="form-control currency" name="Hbaru"  id="Hbaru" >
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Stok Lama</label>
-                                                    <input type="text" class="form-control stok" name="stokLama" value="<?php echo @$dataBarangBhp['stok_lama']; ?>" id="stokLama">
+                                                    <input type="text" id="lama" class="form-control stok" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Stok Baru</label>
-                                                    <input type="text" class="form-control stok" name="stokBaru" value="<?php echo @$dataBarangBhp['stok_baru']; ?>" id="stokBaru" readonly="">
+                                                    <input type="text" id="baru" class="form-control stok" >
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </div>
                                         <div class="form-group">
                                             <label for="">Jumlah stok</label>
-                                            <input type="number" class="form-control" name="jumlah" value="" id="jumstok" min="0" autocomplete="off" readonly>
+                                            <input type="text" id="jumlahstok" class="form-control" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label for="">Harga rata-rata</label>
-                                            <input type="number" class="form-control" value="" id="jumjum" min="0" autocomplete="off" max="100" name="total" readonly id="totals">
+                                            <input type="text" id="Hrata1" class="form-control" readonly="">
                                         </div>
                                         <button class="btn btn-primary" name="btnAdd"><i class="fa fa-cart-plus"></i> Tambahkan ke Antrian</button>
                                     </div>
@@ -259,8 +259,6 @@ if (isset($_GET['delete'])) {
                                 <td>Kode Barang</td>
                                 <td>Kategori Barang</td>
                                 <td>Nama Barang</td>
-                                <!-- <td>Harga</td>
-                            <td>Stok</td> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -269,8 +267,6 @@ if (isset($_GET['delete'])) {
                                     <td><a href="pageMaster.php?page=addStokBarangMasuk&getItem&id=<?php echo $db['id_barang_bhp'] ?>"><?php echo $db['id_barang_bhp'] ?></a></td>
                                     <td><?php echo $db['nama_kategori_bhp'] ?></td>
                                     <td><?php echo $db['nama_barang_bhp'] ?></td>
-                                    <!-- <td><?php echo $db['harga_barang'] ?></td>
-                            <td><?php echo $db['stok_barang'] ?></td> -->
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -284,39 +280,73 @@ if (isset($_GET['delete'])) {
 <script src="assets/vendor/jquery-3.2.1.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#barang_nama').change(function() {
-            var barang = $(this).val();
-            $.ajax({
-                type: "POST",
-                url: 'ajaxTransaksi.php',
-                data: {
-                    'selectData': barang
-                },
-                success: function(data) {
-                    $("#harba").val(data);
-                    $("#jumjum").val();
-                    var jum = $("#jumjum").val();
-                    var kali = data * jum;
-                    $("#totals").val(kali);
-                }
-            })
-        });
+        // $('#nama_barang').change(function() {
+        //     var barang = $(this).val();
+        //     $.ajax({
+        //         type: "POST",
+        //         url: 'ajaxTransaksi.php',
+        //         data: {
+        //             'selectData': barang
+        //         },
+        //         success: function(data) {
+        //             $("#hargaBaru").val(data);
+        //             $("#jumjum").val();
+        //             var jum = $("#jumjum").val();
+        //             var kali = data * jum;
+        //             $("#totals").val(kali);
+        //         }
+        //     })
+        // });
 
+        // $('#stokLama').keyup(function() {
+        //     var jumlah = $(this).val();
+        //     // var harba = $('#hargaBaru').val();
+        //     var kali = jumlah + 100;
+        //     $("#jumlahStok").val(kali);
+        // });
+        
+
+        $('#lama, #baru').keyup(function() {
+            var sl = $('#lama').val();
+            var sb = $('#baru').val();
+            var jml = parseInt(sl) + parseInt(sb);
+            $('#jumlahStok').val(jml);
+        });
 
         $('#jumjum').keyup(function() {
             var jumlah = $(this).val();
-            var harba = $('#harba').val();
+            var harba = $('#hargaBaru').val();
             var kali = harba * jumlah;
             $("#totals").val(kali);
         });
 
+        $("#lama, #baru").keyup(function() {
+            var lama = $("#lama").val();
+            var baru = $("#baru").val();
 
-        $('#bayar').keyup(function() {
-            var bayar = $(this).val();
-            var total = $('#tot').val();
-            var kembalian = bayar - total;
-            $('#kem').val(kembalian);
-        })
+            var jumlahstok = parseInt(lama) + parseInt(baru);
+            $("#jumlahstok").val(jumlahstok);
+        });
+
+        $("#Hlama, #Hbaru").keyup(function() {
+            var Hlama = $("#Hlama").val();
+            var Hbaru = $("#Hbaru").val();
+            var lama = $("#lama").val();
+            var baru = $("#baru").val();
+
+            // var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (lama + baru);
+            var Hrata1 = (Hlama * lama) + (Hbaru * baru);
+            $("#Hrata1").val(Hrata1);
+            // var Hrata1 = Hrata/2;
+            // $("#Hrata1").val(Hrata1);
+        });
+
+        // $('#bayar').keyup(function() {
+        //     var bayar = $(this).val();
+        //     var total = $('#tot').val();
+        //     var kembalian = bayar - total;
+        //     $('#kem').val(kembalian);
+        // });
 
         // $(document).ready(function() {
         //     $('#barang_nama').change(function() {
@@ -353,7 +383,7 @@ if (isset($_GET['delete'])) {
         //         $('#kem').val(kembalian);
         //     })
 
-        $(".currency").autoNumeric('init', {
+        $(".currency").parseInt('init', {
             aSign: 'Rp. ',
             aSep: '.',
             aDec: ',',
@@ -362,12 +392,12 @@ if (isset($_GET['delete'])) {
             vMin: '0'
         });
 
-        $(".stok").autoNumeric('init', {
-            aSep: '.',
-            aDec: ',',
-            aForm: true,
-            vMax: '999999999',
-            vMin: '0'
-        });
+        // $(".stok").autoNumeric('init', {
+        //     aSep: '.',
+        //     aDec: ',',
+        //     aForm: true,
+        //     vMax: '999999999',
+        //     vMin: '0'
+        // });
     })
 </script>
