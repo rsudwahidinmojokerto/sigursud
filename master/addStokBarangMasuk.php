@@ -8,7 +8,7 @@ if (isset($_GET['getItem'])) {
     $dataBarangBhp = $tr->selectWhere("tm_barang_bhp", "id_barang_bhp", $id);
     // $dataBarangBhp = $tr->
     $cekDataBhp = $tr->selectCountWhere('tr_barang_bhp_riwayat_harga_stok', 'id_barang_bhp', $id);
-    var_dump($cekDataBhp);
+    // var_dump($cekDataBhp);
 }
 $sum       = $tr->selectSum("table_pretransaksi", "sub_total");
 $sql2      = "SELECT COUNT(kd_pretransaksi) as count FROM table_pretransaksi WHERE kd_transaksi = '$transId'";
@@ -133,7 +133,7 @@ if (isset($_GET['delete'])) {
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Harga Lama</label>
-                                                    <input type="text" class="form-control currency" name="Hlama" id="Hlama" <?php if ($cekDataBhp['count'] < 1) { ?> value="1000" readonly <?php } else { ?> value="" readonly <?php } ?>>
+                                                    <input type="text" class="form-control currency" name="Hlama" id="Hlama" <?php if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php } ?>>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Harga Baru</label>
@@ -143,7 +143,7 @@ if (isset($_GET['delete'])) {
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Stok Lama</label>
-                                                    <input type="text" id="lama" class="form-control stok" <?php if ($cekDataBhp['count'] < 1) { ?> value="10" readonly <?php } else { ?> value="" readonly <?php } ?>>
+                                                    <input type="text" id="lama" class="form-control stok" <?php if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php } ?>>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Stok Baru</label>
@@ -189,7 +189,7 @@ if (isset($_GET['delete'])) {
                                 <tr>
                                     <th>ID Detail</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah</th>
+                                    <th>Jumlah Stok</th>
                                     <th>Sub Total</th>
                                     <td>Batal beli</td>
                                 </tr>
@@ -283,6 +283,20 @@ if (isset($_GET['delete'])) {
 <script src="assets/vendor/jquery-3.2.1.min.js"></script>
 <script>
     $(document).ready(function() {
+        $("#Hbaru, #baru").keyup(function() {
+            var Hlama = $("#Hlama").val();
+            var Hbaru = $("#Hbaru").val();
+            var lama = $("#lama").val();
+            var baru = $("#baru").val();
+
+            var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (parseInt(lama) + parseInt(baru));
+
+            $("#Hrata1").val(parseInt(Hrata1));
+
+            var jumlahstok = parseInt(lama) + parseInt(baru);
+            $("#jumlahstok").val(jumlahstok);
+        });
+
         // $('#nama_barang').change(function() {
         //     var barang = $(this).val();
         //     $.ajax({
@@ -323,13 +337,13 @@ if (isset($_GET['delete'])) {
         //     $("#totals").val(kali);
         // });
 
-        $("#baru").keyup(function() {
-            var lama = $("#lama").val();
-            var baru = $("#baru").val();
+        // $("#baru").keyup(function() {
+        //     var lama = $("#lama").val();
+        //     var baru = $("#baru").val();
 
-            var jumlahstok = parseInt(lama) + parseInt(baru);
-            $("#jumlahstok").val(jumlahstok);
-        });
+        //     var jumlahstok = parseInt(lama) + parseInt(baru);
+        //     $("#jumlahstok").val(jumlahstok);
+        // });
 
         // $("#Hlama, #Hbaru").keyup(function() {
         //     var Hlama = $("#Hlama").val();
@@ -344,15 +358,6 @@ if (isset($_GET['delete'])) {
         //     // $("#Hrata1").val(Hrata1);
         // });
 
-        $("#Hbaru").keyup(function() {
-            var Hlama = $("#Hlama").val();
-            var Hbaru = $("#Hbaru").val();
-            var lama = $("#lama").val();
-            var baru = $("#baru").val();
-
-            var Hrata1 = (((Hlama * lama) + (Hbaru * baru)) / (lama + baru));
-            $("#Hrata1").val(Hrata1);
-        });
 
         // $('#bayar').keyup(function() {
         //     var bayar = $(this).val();
