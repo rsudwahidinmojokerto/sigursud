@@ -1,63 +1,77 @@
 <?php
-$tr     = new lsp();
-$transId = $tr->autokodeTanggal("tr_transaksi_stok_masuk", "id_transaksi_stok_masuk", "TR");
-$antrian   = $tr->autokodeTanggal("tr_pretransaksi_stok_masuk", "id_pretransaksi_stok_masuk", "DM");
-$dataBarang   = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
+$tr             = new lsp();
+$transId        = $tr->autokodeTanggal("riwayat", "id_objek", "TR");
+$daftar_masuk   = $tr->autokodeTanggal("riwayat", "id_objek", "DM");
+$dataBarang     = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
+$autokodeTanggalRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+$sub = 0;
+
 if (isset($_GET['getItem'])) {
     $id = $_GET['id'];
     $dataBarangBhp = $tr->selectWhere("tm_barang_bhp", "id_barang_bhp", $id);
-    // $dataBarangBhp = $tr->
+    $dataDistributor = $tr->select("tm_distributor");
     $cekDataBhp = $tr->selectCountWhere('tr_barang_bhp_riwayat_harga_stok', 'id_barang_bhp', $id);
-    // var_dump($cekDataBhp);
 }
-$sum       = $tr->selectSum("table_pretransaksi", "sub_total");
-$sql2      = "SELECT COUNT(kd_pretransaksi) as count FROM table_pretransaksi WHERE kd_transaksi = '$transId'";
-$exec2     = mysqli_query($con, $sql2);
-$assoc2    = mysqli_fetch_assoc($exec2);
 
 if (isset($_POST['btnAdd'])) {
-    if (!isset($_SESSION['transaksi'])) {
-        $_SESSION['transaksi'] = true;
-    }
-    $kd_transaksi    = $_POST['kd_transaksi'];
-    $kd_pretransaksi = $_POST['kd_pretransaksi'];
-    $barang          = $_POST['kd_barang'];
-    $jumlah          = $_POST['jumlah'];
-    $total           = $_POST['total'];
+    // if (!isset($_SESSION['transaksi'])) {
+    //     $_SESSION['transaksi'] = true;
+    // }
+    $id_transaksi    = $_POST['id_transaksi'];
+    $id_bhp_masuk    = $_POST['id_daftar_masuk'];
+    $id_barang_bhp   = $_POST['id_barang_bhp'];
+    $id_distributor  = $_POST['id_distributor'];
+    $harga_lama      = $_POST['harga_lama'];
+    $harga_baru      = $_POST['harga_baru'];
+    $stok_lama       = $_POST['stok_lama'];
+    $stok_baru       = $_POST['stok_baru'];
 
-    if ($kd_transaksi == "" || $kd_pretransaksi == "" || $barang == "" || $jumlah == "" || $total == "") {
+    if ($id_transaksi == "" || $id_bhp_masuk == "" || $id_barang_bhp == "" || $id_distributor == "" || $harga_lama == "" || $harga_baru == "" || $stok_lama == "" || $stok_baru == "") {
         $response = ['response' => 'negative', 'alert' => 'Lengkapi field'];
     } else {
-        if ($jumlah < 1) {
-            $response = ['response' => 'negative', 'alert' => 'Pembelian minimal 1'];
+        if ($harga_baru < 1) {
+            $response = ['response' => 'negative', 'alert' => 'Masukkan harga baru yang valid'];
+        } else if ($stok_baru < 1) {
+            $response = ['response' => 'negative', 'alert' => 'Stok masuk minimal 1 pcs'];
         } else {
-            $sisa = $tr->selectWhere("tm_barang_bhp", "kd_barang", $barang);
-            if ($sisa['stok_barang'] < $jumlah) {
-                $response = ['response' => 'negative', 'alert' => 'Stok tersisa ' . $sisa['stok_barang']];
-            } else {
-                $sql = "SELECT * FROM table_pretransaksi WHERE kd_transaksi = '$kd_transaksi' AND kd_barang = '$barang'";
-                $exe = mysqli_query($con, $sql);
-                $num = mysqli_num_rows($exe);
-                $dta = mysqli_fetch_assoc($exe);
-                if ($num > 0) {
-                    $jumlah = $dta['jumlah'] + $jumlah;
-                    $value = "jumlah='$jumlah'";
-                    $insert = $tr->update("table_pretransaksi", $value, "kd_transaksi = '$kd_transaksi' AND kd_barang", $barang, "?page=kasirTransaksi");
-                    header("location:PageKasir.php?page=kasirTransaksi");
-                } else {
-                    $value = "'$kd_pretransaksi','$kd_transaksi','$barang','$jumlah','$total'";
-                    $insert = $tr->insert("table_pretransaksi", $value, "?page=kasirTransaksi");
-                    header("location:PageKasir.php?page=kasirTransaksi");
-                }
-            }
+            $value = "'$id_bhp_masuk', '$id_transaksi', '$id_barang_bhp', '$id_distributor', '$harga_baru', '$stok_baru', '" . date("Y-m-d H:i:s") . "'";
+            $insert = $tr->insert("tr_barang_bhp_masuk_detail", $value, "?page=addStokBarangMasuk");
+
+            $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_bhp_masuk', 'Tambah daftar BHP $id_barang_bhp, harga $harga_baru, stok $stok_baru', '" . date("Y-m-d H:i:s") . "'";
+            $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+
+            $response = ['response' => 'positive', 'alert' => 'Data berhasil di daftarkan', 'redirect' => '?page=addStokBarangMasuk'];
+            // $sisa = $tr->selectWhere("tm_barang_bhp", "id_barang_bhp", $id_barang_bhp);
+            // if ($sisa['stok_barang'] < $jumlah) {
+            //     $response = ['response' => 'negative', 'alert' => 'Stok tersisa ' . $sisa['stok_barang']];
+            // } else {
+            // $sql = "SELECT * FROM table_pretransaksi WHERE id_transaksi = '$id_transaksi' AND id_barang_bhp = '$id_barang_bhp'";
+            // $exe = mysqli_query($con, $sql);
+            // $num = mysqli_num_rows($exe);
+            // $dta = mysqli_fetch_assoc($exe);
+            // if ($num > 0) {
+            //     $jumlah = $dta['jumlah'] + $jumlah;
+            //     $value = "jumlah='$jumlah'";
+            //     $insert = $tr->update("table_pretransaksi", $value, "id_transaksi = '$id_transaksi' AND id_barang_bhp", $id_barang_bhp, "?page=kasirTransaksi");
+            //     header("location:PageKasir.php?page=kasirTransaksi");
+            // } else {
+            //     $value = "'$id_daftar_masuk','$id_transaksi','$id_barang_bhp','$jumlah','$total'";
+            //     $insert = $tr->insert("table_pretransaksi", $value, "?page=kasirTransaksi");
+            //     header("location:PageKasir.php?page=kasirTransaksi");
+            // }
+            // }
         }
     }
 }
 
 if (isset($_GET['delete'])) {
-    $id       = $_GET['id'];
-    $where    = "kd_pretransaksi";
-    $response = $tr->delete("table_pretransaksi", $where, $id, "?page=kasirTransaksi");
+    $id_bhp_masuk   = $_GET['id'];
+    $id_barang_bhp  = $_GET['kb'];
+    $where          = "id_bhp_masuk";
+    $response       = $tr->delete("tr_barang_bhp_masuk_detail", $where, $id_bhp_masuk, "?page=addStokBarangMasuk");
+
+    $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_bhp_masuk', 'Hapus daftar BHP $id_barang_bhp', '" . date("Y-m-d H:i:s") . "'";
+    $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
 }
 
 ?>
@@ -75,11 +89,11 @@ if (isset($_GET['delete'])) {
                                 <li class="list-inline-item seprate">
                                     <span>/</span>
                                 </li>
-                                <li class="list-inline-item">Stok Barang</li>
+                                <li class="list-inline-item">Data BHP Masuk</li>
                                 <li class="list-inline-item seprate">
                                     <span>/</span>
                                 </li>
-                                <li class="list-inline-item">Tambah Stok Barang</li>
+                                <li class="list-inline-item">Tambah BHP Masuk</li>
                             </ul>
                         </div>
                     </div>
@@ -92,121 +106,165 @@ if (isset($_GET['delete'])) {
     <div class="section__content section__content--p30">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Pilih Barang</h3>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3>Data Barang</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <a class="btn btn-primary btn-block" href="#modal_barang_bhp" data-toggle="modal"><i class="fa fa-list-ul"></i> Pilih Barang</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <form method="post">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="">Kode Transaksi</label>
-                                        <input style="font-weight: bold; color: red;" type="text" class="form-control" value="<?= $transId; ?>" readonly name="kd_transaksi">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">Kode Detail</label>
-                                        <input style="font-weight: bold; color: red;" type="text" class="form-control" value="<?= $antrian; ?>" readonly name="kd_pretransaksi" id="antrian">
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-sm-8">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" name="kd_barang" readonly placeholder="Kode barang" value="<?php echo @$dataBarangBhp['id_barang_bhp'] ?>">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <a class="btn btn-primary btn-block" href="#fajarmodal" data-toggle="modal">Pilih Barang</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4"></div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="">ID Transaksi</label>
+                                            <input style="font-weight: bold; color: red;" type="text" class="form-control" name="id_transaksi" value="<?= $transId; ?>" readonly>
                                         </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="">ID Daftar</label>
+                                            <input style="font-weight: bold; color: red;" type="text" class="form-control" name="id_daftar_masuk" id="daftar_masuk" value="<?= $daftar_masuk; ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="">ID Barang</label>
+                                            <input type="text" class="form-control" name="id_barang_bhp" style="font-weight: bold;" value="<?php echo @$dataBarangBhp['id_barang_bhp'] ?>" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
                                         <div class="form-group">
                                             <label for="">Nama Barang</label>
-                                            <input type="text" class="form-control" name="nama_barang" value="<?php echo @$dataBarangBhp['nama_barang_bhp']; ?>" readonly>
+                                            <input type="text" class="form-control" name="nama_barang" style="font-weight: bold;" value="<?php echo @$dataBarangBhp['nama_barang_bhp']; ?>" readonly>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="">Harga Lama</label>
-                                                    <input type="text" class="form-control currency" name="Hlama" id="Hlama" <?php if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php } ?>>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">Harga Baru</label>
-                                                    <input type="text" class="form-control currency" name="Hbaru" id="Hbaru">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="">Stok Lama</label>
-                                                    <input type="text" id="lama" class="form-control stok" <?php if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php } ?>>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">Stok Baru</label>
-                                                    <input type="text" id="baru" class="form-control stok">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Jumlah stok</label>
-                                            <input type="text" id="jumlahstok" class="form-control stok" readonly="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Harga rata-rata</label>
-                                            <input type="text" id="Hrata1" class="form-control currency" readonly="">
-                                        </div>
-                                        <button class="btn btn-primary" name="btnAdd"><i class="fa fa-cart-plus"></i> Tambahkan ke Antrian</button>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="">Harga Lama</label>
+                                            <input type="text" class="form-control currency" name="harga_lama" id="harga_lama" <?php if (isset($_GET['getItem'])) {
+                                                                                                                                    if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php }
+                                                                                                                                                                                                                        } else { ?> value="" readonly <?php } ?>>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Harga Baru</label>
+                                            <input type="text" class="form-control currency" name="harga_baru" id="harga_baru" <?php if (!isset($_GET['getItem'])) { ?> readonly <?php } ?>>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><b>Harga rata-rata</b></label>
+                                            <input type="text" name="harga_rata" id="harga_rata" class="form-control currency" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="">Stok lama (pcs)</label>
+                                            <input type="text" name="stok_lama" id="stok_lama" class="form-control stok" <?php if (isset($_GET['getItem'])) {
+                                                                                                                                if (@$cekDataBhp['count'] < 1) { ?> value="0" readonly <?php } else { ?> value="" readonly <?php }
+                                                                                                                                                                                                                    } else { ?> value="" readonly <?php } ?>>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Stok baru (pcs)</label>
+                                            <input type="text" name="stok_baru" id="stok_baru" class="form-control stok" <?php if (!isset($_GET['getItem'])) { ?> readonly <?php } ?>>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><b>Stok total (pcs)</b></label>
+                                            <input type="text" name="jumlah_stok" id="jumlah_stok" class="form-control stok" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="" class="control-label mb-1">Distributor</label>
+                                            <select name="id_distributor" class="form-control mb-1" <?php if (!isset($_GET['getItem'])) { ?> disabled <?php } ?>>
+                                                <option value=""><?php if (isset($_GET['getItem'])) { ?> Pilih distributor <?php } ?></option>
+                                                <?php foreach ($dataDistributor as $dd) { ?>
+                                                    <option value="<?= $dd['id_distributor'] ?>"><?= $dd['nama_distributor'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <?php if (isset($_GET['getItem'])) { ?> <button class="btn btn-primary btn-block" name="btnAdd"><i class="fa fa-check"></i> Tambah ke daftar</button> <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div>
+                                </div> -->
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
+            </div>
+
+            <?php
+            $datas     = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail LEFT JOIN tm_barang_bhp ON tr_barang_bhp_masuk_detail.id_barang_bhp = tm_barang_bhp.id_barang_bhp LEFT JOIN tm_distributor ON tr_barang_bhp_masuk_detail.id_distributor = tm_distributor.id_distributor WHERE id_transaksi = '$transId'");
+            ?>
+
+            <div class="row">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Detail Barang</h3>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3>Daftar Barang Masuk</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <?php if (count($datas) > 0) : ?>
+                                        <a class="btn btn-success btn-block" id="cetak_bhp_masuk" href="?page=#"><i class="fa fa-book"></i> Rekap masuk</a>
+                                    <?php endif ?>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
-                            <?php if ($assoc2['count'] > 0 || isset($_POST['btnAdd'])) : ?>
-                                <a class="btn btn-success" id="pembayaran" href="?page=kasirPembayaran">Lanjutkan ke pembayaran <i class="fa fa-cart-arrow-down"></i></a>
-                            <?php endif ?>
-                            <br><br>
+                            <!-- <?php if (isset($_POST['btnAdd'])) : ?>
+                                <a class="btn btn-success" id="pembayaran" href="?page=addStokBarangMasuk">Lanjutkan ke pembayaran <i class="fa fa-cart-arrow-down"></i></a>
+                            <?php endif ?> -->
+                            <!-- <br><br> -->
                             <?php
-                            $kr        = new lsp();
-                            $transId = $kr->autokode("table_transaksi", "kd_transaksi", "TR");
-                            $datas     = $kr->querySelect("SELECT * FROM transaksi WHERE kd_transaksi = '$transId'");
-                            $sql       = "SELECT SUM(sub_total) as sub FROM table_pretransaksi WHERE kd_transaksi = '$transId'";
-                            $exec      = mysqli_query($con, $sql);
-                            $assoc     = mysqli_fetch_assoc($exec);
+                            // $kr        = new lsp();
+                            // $transId   = $kr->autokode("table_transaksi", "id_transaksi", "TR");
+                            // $datas     = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail LEFT JOIN tm_barang_bhp ON tr_barang_bhp_masuk_detail.id_barang_bhp = tm_barang_bhp.id_barang_bhp LEFT JOIN tm_distributor ON tr_barang_bhp_masuk_detail.id_distributor = tm_distributor.id_distributor WHERE id_transaksi = '$transId'");
+                            // $sql       = "SELECT SUM(sub_total) as sub FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$transId'";
+                            // $exec      = mysqli_query($con, $sql);
+                            // $assoc     = mysqli_fetch_assoc($exec);
 
                             ?>
                             <table class="table table-striped table-bordered">
                                 <tr>
-                                    <th>ID Detail</th>
+                                    <th>ID Daftar</th>
                                     <th>Nama Barang</th>
+                                    <th>Distributor</th>
                                     <th>Jumlah Stok</th>
+                                    <th>Harga</th>
                                     <th>Sub Total</th>
-                                    <td>Batal beli</td>
+                                    <td>Aksi</td>
                                 </tr>
                                 <?php
                                 if (count($datas) > 0) {
                                     $no = 1;
                                     foreach ($datas as $dd) { ?>
                                         <tr>
-                                            <td><?= $dd['kd_pretransaksi']; ?></td>
-                                            <td><?= $dd['nama_barang']; ?></td>
+                                            <td><?= $dd['id_bhp_masuk']; ?></td>
+                                            <td><?= $dd['nama_barang_bhp']; ?></td>
+                                            <td><?= $dd['nama_distributor']; ?></td>
                                             <td><?= $dd['jumlah']; ?></td>
-                                            <td><?= $dd['sub_total']; ?></td>
+                                            <td><?= $dd['harga']; ?></td>
+                                            <td><?= $dd['harga'] * $dd['jumlah']; ?></td>
                                             <td class="text-center">
                                                 <a href="#" id="btdelete<?php echo $no; ?>" class="btn btn-danger">Batal</a>
                                             </td>
                                         </tr>
-                                        <script src="vendor/jquery-3.2.1.min.js"></script>
+                                        <script src="assets/vendor/jquery-3.2.1.min.js"></script>
                                         <script>
                                             $("#btdelete<?php echo $no; ?>").click(function() {
                                                 swal({
@@ -220,21 +278,24 @@ if (isset($_GET['delete'])) {
                                                     closeOnCancel: true
                                                 }, function(isConfirm) {
                                                     if (isConfirm) {
-                                                        window.location.href = "?page=kasirTransaksi&delete&id=<?= $dd['kd_pretransaksi']; ?>";
+                                                        window.location.href = "?page=addStokBarangMasuk&delete&id=<?= $dd['id_bhp_masuk']; ?>&kb=<?= $dd['id_barang_bhp']; ?>";
                                                     }
                                                 })
                                             })
                                         </script>
                                     <?php $no++;
+                                        $sub += $dd['harga'] * $dd['jumlah'];
                                     } ?>
-                                    <?php if (!$assoc['sub'] == "") : ?>
+                                    <!-- if (!$assoc['sub'] == "") : -->
+                                    <?php if (count($datas) > 0) : ?>
                                         <tr>
-                                            <td colspan="4">Total Harga</td>
-                                            <td><?php echo $assoc['sub'] ?></td>
+                                            <td colspan="5">Total Harga</td>
+                                            <!-- echo $assoc['sub'] -->
+                                            <td><?= $sub; ?></td>
                                         </tr>
                                     <?php endif ?>
                                 <?php } else { ?>
-                                    <td colspan="5" class="text-center">Tidak ada antrian</td>
+                                    <td colspan="7" class="text-center">Tidak ada daftar</td>
                                 <?php } ?>
                             </table>
                         </div>
@@ -245,7 +306,7 @@ if (isset($_GET['delete'])) {
     </div>
 </div>
 
-<div class="modal fade" id="fajarmodal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="modal_barang_bhp" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -259,7 +320,7 @@ if (isset($_GET['delete'])) {
                     <table class="table table-striped table-bordered" style="width: 100%" id="example">
                         <thead>
                             <tr>
-                                <td>Kode Barang</td>
+                                <td>ID Barang</td>
                                 <td>Kategori Barang</td>
                                 <td>Nama Barang</td>
                             </tr>
@@ -283,18 +344,17 @@ if (isset($_GET['delete'])) {
 <script src="assets/vendor/jquery-3.2.1.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("#Hbaru, #baru").keyup(function() {
-            var Hlama = $("#Hlama").val();
-            var Hbaru = $("#Hbaru").val();
-            var lama = $("#lama").val();
-            var baru = $("#baru").val();
+        $("#harga_baru, #stok_baru").keyup(function() {
+            var harga_lama = $("#harga_lama").val();
+            var harga_baru = $("#harga_baru").val();
+            var stok_lama = $("#stok_lama").val();
+            var stok_baru = $("#stok_baru").val();
 
-            var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (parseInt(lama) + parseInt(baru));
+            var harga_rata = ((parseInt(harga_lama) * parseInt(stok_lama)) + (parseInt(harga_baru) * parseInt(stok_baru))) / (parseInt(stok_lama) + parseInt(stok_baru));
+            $("#harga_rata").val(parseInt(harga_rata));
 
-            $("#Hrata1").val(parseInt(Hrata1));
-
-            var jumlahstok = parseInt(lama) + parseInt(baru);
-            $("#jumlahstok").val(jumlahstok);
+            var jumlah_stok = parseInt(stok_lama) + parseInt(stok_baru);
+            $("#jumlah_stok").val(jumlah_stok);
         });
 
         // $('#nama_barang').change(function() {
@@ -306,7 +366,7 @@ if (isset($_GET['delete'])) {
         //             'selectData': barang
         //         },
         //         success: function(data) {
-        //             $("#hargaBaru").val(data);
+        //             $("#harga_baru").val(data);
         //             $("#jumjum").val();
         //             var jum = $("#jumjum").val();
         //             var kali = data * jum;
@@ -314,92 +374,6 @@ if (isset($_GET['delete'])) {
         //         }
         //     })
         // });
-
-        // $('#stokLama').keyup(function() {
-        //     var jumlah = $(this).val();
-        //     // var harba = $('#hargaBaru').val();
-        //     var kali = jumlah + 100;
-        //     $("#jumlahStok").val(kali);
-        // });
-
-
-        // $('#lama, #baru').keyup(function() {
-        //     var sl = $('#lama').val();
-        //     var sb = $('#baru').val();
-        //     var jml = parseInt(sl) + parseInt(sb);
-        //     $('#jumlahStok').val(jml);
-        // });
-
-        // $('#jumjum').keyup(function() {
-        //     var jumlah = $(this).val();
-        //     var harba = $('#hargaBaru').val();
-        //     var kali = harba * jumlah;
-        //     $("#totals").val(kali);
-        // });
-
-        // $("#baru").keyup(function() {
-        //     var lama = $("#lama").val();
-        //     var baru = $("#baru").val();
-
-        //     var jumlahstok = parseInt(lama) + parseInt(baru);
-        //     $("#jumlahstok").val(jumlahstok);
-        // });
-
-        // $("#Hlama, #Hbaru").keyup(function() {
-        //     var Hlama = $("#Hlama").val();
-        //     var Hbaru = $("#Hbaru").val();
-        //     var lama = $("#lama").val();
-        //     var baru = $("#baru").val();
-
-        //     // var Hrata1 = ((parseInt(Hlama) * parseInt(lama)) + (parseInt(Hbaru) * parseInt(baru))) / (lama + baru);
-        //     var Hrata1 = (Hlama * lama) + (Hbaru * baru);
-        //     $("#Hrata1").val(Hrata1);
-        //     // var Hrata1 = Hrata/2;
-        //     // $("#Hrata1").val(Hrata1);
-        // });
-
-
-        // $('#bayar').keyup(function() {
-        //     var bayar = $(this).val();
-        //     var total = $('#tot').val();
-        //     var kembalian = bayar - total;
-        //     $('#kem').val(kembalian);
-        // });
-
-        // $(document).ready(function() {
-        //     $('#barang_nama').change(function() {
-        //         var barang = $(this).val();
-        //         $.ajax({
-        //             type: "POST",
-        //             url: 'ajaxTransaksi.php',
-        //             data: {
-        //                 'selectData': barang
-        //             },
-        //             success: function(data) {
-        //                 $("#harba").val(data);
-        //                 $("#jumjum").val();
-        //                 var jum = $("#jumjum").val();
-        //                 var kali = data * jum;
-        //                 $("#totals").val(kali);
-        //             }
-        //         })
-        //     });
-
-
-        //     $('#jumjum').keyup(function() {
-        //         var jumlah = $(this).val();
-        //         var harba = $('#harba').val();
-        //         var kali = harba * jumlah;
-        //         $("#totals").val(kali);
-        //     });
-
-
-        //     $('#bayar').keyup(function() {
-        //         var bayar = $(this).val();
-        //         var total = $('#tot').val();
-        //         var kembalian = bayar - total;
-        //         $('#kem').val(kembalian);
-        //     })
 
         // $(".currency").autoNumeric('init', {
         //     aSign: 'Rp. ',

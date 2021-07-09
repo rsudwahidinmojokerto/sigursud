@@ -42,7 +42,7 @@ include "app/views/_layout/_css.php";
                                 </li>
                                 <li>
                                     <a href="?page=viewKategoriAset">
-                                        <i class="fas fa-list-alt"></i>Kategori Aset</a>
+                                        <i class="fas fa-list-alt"></i>Kategori Aset <b style="font-size: 5.7pt; color: red;">(Come Soon)</b></a>
                                 </li>
                                 <li>
                                     <a href="?page=viewMasterBarangBhp">
@@ -67,8 +67,12 @@ include "app/views/_layout/_css.php";
                             </ul>
                         </li>
                         <li>
-                            <a href="?page=viewStokBarang">
-                                <i class="fas fa-archive"></i>Stok Barang</a>
+                            <a href="?page=viewBhpMasuk">
+                                <i class="fas fa-sign-in-alt"></i>Transaksi BHP Masuk</a>
+                        </li>
+                        <li>
+                            <a href="?page=viewBhpKeluar">
+                                <i class="fas fa-sign-out-alt"></i>Transaksi BHP Keluar</a>
                         </li>
                         <!-- <li>
                             <a href="?page=viewJenisbarang">
@@ -210,8 +214,11 @@ include "app/views/_layout/_css.php";
                 case 'viewBarang':
                     include "master/viewBarang.php";
                     break;
-                case 'viewStokBarang':
-                    include "master/viewStokBarang.php";
+                case 'viewBhpMasuk':
+                    include "master/viewBhpMasuk.php";
+                    break;
+                case 'viewBhpKeluar':
+                    include "master/viewBhpKeluar.php";
                     break;
                 case 'viewSatuan':
                     include "master/viewSatuan.php";

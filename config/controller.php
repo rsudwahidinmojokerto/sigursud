@@ -197,12 +197,12 @@ class lsp
     {
         global $con;
         $tanggal = date('ymd');
-
-        $sqlc   = "SELECT COUNT($field) as jumlah FROM $table";
+        $sqlc   = "SELECT CONVERT(SUBSTRING(MAX($field), -4, 4), INTEGER) as urutan FROM $table WHERE $field LIKE '$pre$tanggal%'";
+        // $sqlc   = "SELECT COUNT($field) as urutan FROM $table WHERE $field LIKE '%$tanggal%'";
         $querys = mysqli_query($con, $sqlc);
         $number = mysqli_fetch_assoc($querys);
-        if ($number['jumlah'] > 0) {
-            $sql    = "SELECT MAX($field) as kode FROM $table";
+        if ($number['urutan'] > 0) {
+            $sql    = "SELECT MAX($field) as kode FROM $table WHERE $field LIKE '$pre$tanggal%'";
             $query  = mysqli_query($con, $sql);
             $number = mysqli_fetch_assoc($query);
             $strnum = substr($number['kode'], 9, 4);
