@@ -1,6 +1,6 @@
 <?php
 $qb = new lsp();
-$dataB = $qb->select("tr_stok_barang_bhp");
+$dataTrxMasuk = $qb->querySelect("SELECT * FROM tr_barang_bhp WHERE status = 'masuk'");
 if ($_SESSION['level'] != "Master") {
     header("location:../index.php");
 }
@@ -54,42 +54,26 @@ if (isset($_GET['delete'])) {
                                 <table id="example" class="table table-borderless table-striped table-earning">
                                     <thead>
                                         <tr>
-                                            <th>Kode barang</th>
-                                            <th>Nama barang</th>
-                                            <th>kategori Barang</th>
-                                            <th>Harga lama</th>
-                                            <th>Stok lama</th>
-                                            <th>Harga baru</th>
-                                            <th>Stok baru</th>
-                                            <th>Harga rata-rata</th>
-                                            <th>Stok total</th>
-                                            <th>Tanggal Masuk</th>
-                                            <th>Distributor</th>
-                                            <th>Action</th>
+                                            <th>ID Transaksi</th>
+                                            <th>Harga Total Masuk</th>
+                                            <th>Tanggal Transaksi</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         $no = 1;
-                                        foreach ($dataB as $ds) {
+                                        foreach ($dataTrxMasuk as $dm) {
                                         ?>
                                             <tr>
-                                                <td><?= $ds['kd_barang'] ?></td>
-                                                <td><?= $ds['nama_barang'] ?></td>
-                                                <td><?= $ds['jenis_barang'] ?></td>
-                                                <td><?= $ds['tanggal_masuk'] ?></td>
-                                                <td><?= number_format($ds['harga_barang']) ?></td>
-                                                <td><?= $ds['stok_barang'] ?></td>
-                                                <td><?= $ds['nama_distributor'] ?></td>
+                                                <td><?= $dm['id_transaksi'] ?></td>
+                                                <td><?= number_format($dm['harga_total']) ?></td>
+                                                <td><?= $dm['tanggal_transaksi'] ?></td>
                                                 <td class="text-center">
                                                     <div class="btn-group">
-                                                        <a href="?page=viewBarangDetail&id=<?php echo $ds['kd_barang'] ?>" data-toggle="tooltip" data-placement="top" title="Detail" class="btn btn-warning"><i class="fa fa-search">
-
-                                                            </i></a>
-                                                        <a href="?page=viewBarangEdit&edit&id=<?= $ds['kd_barang'] ?>" data-toggle="tooltip" data-placement="top" title="Edit" class="btn btn-info"><i class="fa fa-edit"></i></a>
-                                                        <button data-toggle="tooltip" data-placement="top" title="Delete" class="btn btn-danger">
-                                                            <i class="fa fa-trash" id="btdelete<?php echo $no; ?>"></i>
-                                                        </button>
+                                                        <a href="?page=viewBhpDetail&id=<?php echo $dm['id_transaksi'] ?>&status=masuk" data-toggle="tooltip" data-placement="top" title="Detail" class="btn btn-primary"><i class="fa fa-search"></i></a>
+                                                        <a href="?page=printBhpMasuk&id=<?= $dm['id_transaksi'] ?>&status=masuk" data-toggle="tooltip" data-placement="top" title="Cetak" class="btn btn-success"><i class="fa fa-print"></i></a>
+                                                        <!-- <button data-toggle="tooltip" data-placement="top" title="Delete" class="btn btn-danger"><i class="fa fa-trash" id="btdelete<?php echo $no; ?>"></i></button> -->
                                                     </div>
                                                 </td>
                                             </tr>
@@ -108,7 +92,7 @@ if (isset($_GET['delete'])) {
                                                         closeOnCancel: true
                                                     }, function(isConfirm) {
                                                         if (isConfirm) {
-                                                            window.location.href = "?page=viewBarang&delete&id=<?php echo $ds['kd_barang'] ?>";
+                                                            window.location.href = "?page=viewBarang&delete&id=<?php echo $dm['kd_barang'] ?>";
                                                         }
                                                     });
                                                 });

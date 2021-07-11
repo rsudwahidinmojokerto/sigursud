@@ -198,8 +198,6 @@ if (isset($_GET['delete'])) {
                                         </div>
                                     </div>
                                 </div>
-                                <!-- </div>
-                                </div> -->
                             </form>
                         </div>
                     </div>
@@ -220,7 +218,7 @@ if (isset($_GET['delete'])) {
                                 </div>
                                 <div class="col-sm-3">
                                     <?php if (count($datas) > 0) : ?>
-                                        <a class="btn btn-success btn-block" id="cetak_bhp_masuk" href="?page=#"><i class="fa fa-book"></i> Rekap masuk</a>
+                                        <a href="#" class="btn btn-success btn-block" id="transaksi_masuk_selesai"><i class="fa fa-check"></i> Selesaikan Transaksi</a>
                                     <?php endif ?>
                                 </div>
                             </div>
@@ -257,9 +255,9 @@ if (isset($_GET['delete'])) {
                                             <td><?= $dd['id_bhp_masuk']; ?></td>
                                             <td><?= $dd['nama_barang_bhp']; ?></td>
                                             <td><?= $dd['nama_distributor']; ?></td>
-                                            <td><?= $dd['jumlah']; ?></td>
-                                            <td><?= $dd['harga']; ?></td>
-                                            <td><?= $dd['harga'] * $dd['jumlah']; ?></td>
+                                            <td><?= number_format($dd['jumlah']); ?></td>
+                                            <td><?= number_format($dd['harga']); ?></td>
+                                            <td><?= number_format($dd['harga'] * $dd['jumlah']); ?></td>
                                             <td class="text-center">
                                                 <a href="#" id="btdelete<?php echo $no; ?>" class="btn btn-danger">Batal</a>
                                             </td>
@@ -291,7 +289,7 @@ if (isset($_GET['delete'])) {
                                         <tr>
                                             <td colspan="5">Total Harga</td>
                                             <!-- echo $assoc['sub'] -->
-                                            <td><?= $sub; ?></td>
+                                            <td><?= number_format($sub); ?></td>
                                         </tr>
                                     <?php endif ?>
                                 <?php } else { ?>
@@ -357,39 +355,70 @@ if (isset($_GET['delete'])) {
             $("#jumlah_stok").val(jumlah_stok);
         });
 
+        $("#transaksi_masuk_selesai").click(function(e) {
+            e.preventDefault();
+            swal({
+                title: "Transaksi akan disimpan",
+                text: "Lanjutkan untuk mencetak?",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Tidak, hanya simpan",
+                confirmButtonText: "Ya",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    window.location.href = "?page=printBhpMasuk";
+                } else {
+                    swal({
+                        title: "Transaksi berhasil",
+                        text: "",
+                        type: "success",
+                        showCancelButton: false,
+                        showConfirmButton: true,
+                        confirmButtonText: "Lanjut",
+                        closeOnConfirm: false,
+                        closeOnCancel: true,
+                    }, function() {
+                        window.location.href = "?page=viewBhpMasuk";
+                    })
+                }
+            })
+        })
+
         // $('#nama_barang').change(function() {
-        //     var barang = $(this).val();
-        //     $.ajax({
-        //         type: "POST",
-        //         url: 'ajaxTransaksi.php',
-        //         data: {
-        //             'selectData': barang
-        //         },
-        //         success: function(data) {
-        //             $("#harga_baru").val(data);
-        //             $("#jumjum").val();
-        //             var jum = $("#jumjum").val();
-        //             var kali = data * jum;
-        //             $("#totals").val(kali);
-        //         }
-        //     })
+        // var barang = $(this).val();
+        // $.ajax({
+        // type: "POST",
+        // url: 'ajaxTransaksi.php',
+        // data: {
+        // 'selectData': barang
+        // },
+        // success: function(data) {
+        // $("#harga_baru").val(data);
+        // $("#jumjum").val();
+        // var jum = $("#jumjum").val();
+        // var kali = data * jum;
+        // $("#totals").val(kali);
+        // }
+        // })
         // });
 
         // $(".currency").autoNumeric('init', {
-        //     aSign: 'Rp. ',
-        //     aSep: '.',
-        //     aDec: ',',
-        //     aForm: true,
-        //     vMax: '999999999',
-        //     vMin: '0'
+        // aSign: 'Rp. ',
+        // aSep: '.',
+        // aDec: ',',
+        // aForm: true,
+        // vMax: '999999999',
+        // vMin: '0'
         // });
 
         // $(".stok").autoNumeric('init', {
-        //     aSep: '.',
-        //     aDec: ',',
-        //     aForm: true,
-        //     vMax: '999999999',
-        //     vMin: '0'
+        // aSep: '.',
+        // aDec: ',',
+        // aForm: true,
+        // vMax: '999999999',
+        // vMin: '0'
         // });
     })
 </script>

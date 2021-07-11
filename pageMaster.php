@@ -211,6 +211,9 @@ include "app/views/_layout/_css.php";
             <?php
             @$page = $_GET['page'];
             switch ($page) {
+                case 'printBhpMasuk':
+                    include "master/printBhpMasuk.php";
+                    break;
                 case 'viewBarang':
                     include "master/viewBarang.php";
                     break;
@@ -253,11 +256,14 @@ include "app/views/_layout/_css.php";
                 case 'editBarangBhp':
                     include "master/editBarangBhp.php";
                     break;
-                case 'viewBarangDetail':
-                    include "master/viewBarangDetail.php";
+                case 'viewBhpDetail':
+                    include "master/viewBhpDetail.php";
                     break;
-                case 'viewBarangEdit':
-                    include "master/viewBarangEdit.php";
+                case 'viewBhpCetak':
+                    include "master/viewBhpCetak.php";
+                    break;
+                case 'viewBhpEdit':
+                    include "master/viewBhpEdit.php";
                     break;
                 case 'profile':
                     include "profile.php";
