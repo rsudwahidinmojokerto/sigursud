@@ -4,6 +4,7 @@ $transId        = $tr->autokodeTanggal("riwayat", "id_objek", "TR");
 $daftar_masuk   = $tr->autokodeTanggal("riwayat", "id_objek", "DM");
 $dataBarang     = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
 $autokodeTanggalRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+$tanggal        = date("Y-m-d H:i:s");
 $sub = 0;
 
 if (isset($_GET['getItem'])) {
@@ -34,7 +35,7 @@ if (isset($_POST['btnAdd'])) {
         } else if ($stok_baru < 1) {
             $response = ['response' => 'negative', 'alert' => 'Stok masuk minimal 1 pcs'];
         } else {
-            $value = "'$id_bhp_masuk', '$id_transaksi', '$id_barang_bhp', '$id_distributor', '$harga_baru', '$stok_baru', '" . date("Y-m-d H:i:s") . "'";
+            $value = "'$id_bhp_masuk', '$id_transaksi', '$id_barang_bhp', '$id_distributor', '$harga_baru', '$stok_baru', '$tanggal'";
             $insert = $tr->insert("tr_barang_bhp_masuk_detail", $value, "?page=addStokBarangMasuk");
 
             $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_bhp_masuk', 'Tambah daftar BHP $id_barang_bhp, harga $harga_baru, stok $stok_baru', '" . date("Y-m-d H:i:s") . "'";
@@ -70,8 +71,15 @@ if (isset($_GET['delete'])) {
     $where          = "id_bhp_masuk";
     $response       = $tr->delete("tr_barang_bhp_masuk_detail", $where, $id_bhp_masuk, "?page=addStokBarangMasuk");
 
-    $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_bhp_masuk', 'Hapus daftar BHP $id_barang_bhp', '" . date("Y-m-d H:i:s") . "'";
+    $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_bhp_masuk', 'Hapus daftar BHP $id_barang_bhp', '$tanggal'";
     $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+}
+
+if (isset($_GET['masuk'])) {
+    $id_transaksi = $_GET['idtrx'];
+    $harga_total = $tr->querySelect("SELECT SUM(harga*jumlah) as total_harga FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$id_transaksi'");
+    $value = "'$id_transaksi', $harga_total, 'masuk', $tanggal";
+    $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
 }
 
 ?>
@@ -341,6 +349,7 @@ if (isset($_GET['delete'])) {
 
 <script src="assets/vendor/jquery-3.2.1.min.js"></script>
 <script>
+    $.noConflict();
     $(document).ready(function() {
         $("#harga_baru, #stok_baru").keyup(function() {
             var harga_lama = $("#harga_lama").val();
@@ -363,6 +372,7 @@ if (isset($_GET['delete'])) {
                 type: "warning",
                 showCancelButton: true,
                 cancelButtonText: "Tidak, hanya simpan",
+                // cancelButtonColor: '#d33',
                 confirmButtonText: "Ya",
                 closeOnConfirm: false,
                 closeOnCancel: false
@@ -370,6 +380,7 @@ if (isset($_GET['delete'])) {
                 if (isConfirm) {
                     window.location.href = "?page=printBhpMasuk";
                 } else {
+                    // window.location.href = "?page=viewBhpMasuk&masuk&idtrx=<?= $transId; ?>";
                     swal({
                         title: "Transaksi berhasil",
                         text: "",
@@ -379,8 +390,20 @@ if (isset($_GET['delete'])) {
                         confirmButtonText: "Lanjut",
                         closeOnConfirm: false,
                         closeOnCancel: true,
-                    }, function() {
-                        window.location.href = "?page=viewBhpMasuk";
+                    }, function(isConfirm) {
+                        if (isConfirm) {
+                            var a = '<?php
+                                        // if (isset($_GET['masuk'])) {
+                                        // $total_harga = $tr->querySelect("SELECT SUM(harga*jumlah) as total_harga FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$transId'");
+                                        // $nilai_harga = $total_harga[0]['total_harga'];
+                                        // $value = "'$transId', $nilai_harga, 'masuk', '$tanggal'";
+                                        // $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
+
+                                        // $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$transId', 'Tambah transaksi masuk $transId', '$tanggal'";
+                                        // $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+                                        // }
+                                        ?>';
+                        }
                     })
                 }
             })

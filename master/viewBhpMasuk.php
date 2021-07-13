@@ -55,7 +55,7 @@ if (isset($_GET['delete'])) {
                                     <thead>
                                         <tr>
                                             <th>ID Transaksi</th>
-                                            <th>Harga Total Masuk</th>
+                                            <th>Total Harga Masuk</th>
                                             <th>Tanggal Transaksi</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -77,7 +77,7 @@ if (isset($_GET['delete'])) {
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <script src="vendor/jquery-3.2.1.min.js"></script>
+                                            <!-- <script src="assets/vendor/jquery-3.2.1.min.js"></script>
                                             <script>
                                                 $('#btdelete<?php echo $no; ?>').click(function(e) {
                                                     e.preventDefault();
@@ -96,7 +96,7 @@ if (isset($_GET['delete'])) {
                                                         }
                                                     });
                                                 });
-                                            </script>
+                                            </script> -->
                                         <?php $no++;
                                         } ?>
                                     </tbody>

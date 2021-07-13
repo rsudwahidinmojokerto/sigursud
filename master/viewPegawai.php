@@ -12,7 +12,6 @@ $dataLevel = $rg->select($table_level);
 $dataRuangan = $rg->select($table_ruangan);
 
 $autokodeTanggal = $rg->autokodeTanggal($table_riwayat, 'id_riwayat', 'TMP');
-// var_dump($_SESSION);
 
 if (isset($_POST['getSave'])) {
     $id_user = $_POST['id_user'];
