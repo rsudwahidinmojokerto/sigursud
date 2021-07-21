@@ -80,27 +80,17 @@ if (isset($_GET['masuk'])) {
     $total_harga = $tr->querySelect("SELECT SUM(harga*jumlah) as total_harga FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$id_transaksi'");
     $nilai_harga = $total_harga[0]['total_harga'];
     $value = "'$id_transaksi', $nilai_harga, 'masuk', '$tanggal'";
-    $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
-
-    $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
-    $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
-}
-
-function tambah_transaksi()
-{
-    $tr = new lsp();
-    $transId        = $tr->autokodeTanggal("riwayat", "id_objek", "TR");
-    $autokodeTanggalRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
-    $tanggal        = date("Y-m-d H:i:s");
-
-    $total_harga = $tr->querySelect("SELECT SUM(harga*jumlah) as total_harga FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$transId'");
-    $nilai_harga = $total_harga[0]['total_harga'];
-    // $parsed_harga = floatval(preg_replace('/[^\d.]/', '', $nilai_harga));
-    $value = "'$transId', $nilai_harga, 'masuk', '$tanggal'";
-    $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
-
-    $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$transId', 'Tambah transaksi masuk $transId', '$tanggal'";
-    $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+    if (isset($_GET['nocetak'])){
+        $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
+    
+        $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
+        $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+    } else if (isset($_GET['cetak'])){
+        $response = $tr->insert('tr_barang_bhp', $value, "?page=printBhpMasuk&id=".$id_transaksi."&status=masuk");
+    
+        $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
+        $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
+    }
 }
 
 ?>
@@ -370,19 +360,19 @@ function tambah_transaksi()
 
 <script src="assets/vendor/jquery-3.2.1.min.js"></script>
 <script>
-    mySwal = function() {
-        swal(arguments[0]);
-        if (arguments[0].showCloseButton) {
-            closeButton = document.createElement('button');
-            closeButton.className = 'swal2-close';
-            closeButton.onclick = function() {
-                swal.close();
-            };
-            closeButton.textContent = '×';
-            modal = document.querySelector('.swal-modal');
-            modal.appendChild(closeButton);
-        }
-    }
+    // mySwal = function() {
+    //     swal(arguments[0]);
+    //     if (arguments[0].showCloseButton) {
+    //         closeButton = document.createElement('button');
+    //         closeButton.className = 'swal2-close';
+    //         closeButton.onclick = function() {
+    //             swal.close();
+    //         };
+    //         closeButton.textContent = '×';
+    //         modal = document.querySelector('.swal-modal');
+    //         modal.appendChild(closeButton);
+    //     }
+    // }
 
     $(document).ready(function() {
         $("#harga_baru, #stok_baru").keyup(function() {
@@ -447,11 +437,11 @@ function tambah_transaksi()
             confirmButtonText: "Ya",
             closeOnConfirm: false,
             closeOnCancel: false,
-            showCloseButton: true,
+            showCloseButton: true
             // allowOutsideClick: true
         }, function(isConfirm) {
             if (isConfirm) {
-                window.location.href = "?page=printBhpMasuk";
+                window.location.href = "?page=addStokBarangMasuk&masuk&cetak&idtrx=<?= $transId; ?>";
             } else {
                 swal({
                     title: "Transaksi berhasil",
@@ -462,12 +452,10 @@ function tambah_transaksi()
                     confirmButtonText: "Lanjut",
                     closeOnConfirm: false,
                     closeOnCancel: true
-                    // allowOutsideClick: true
                 }, function() {
-                    window.location.href = "?page=addStokBarangMasuk&masuk&idtrx=<?= $transId; ?>";
+                    window.location.href = "?page=addStokBarangMasuk&masuk&nocetak&idtrx=<?= $transId; ?>";
                 })
             }
         })
-        // e.preventDefault();
     })
 </script>

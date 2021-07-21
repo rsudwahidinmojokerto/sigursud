@@ -50,7 +50,7 @@
 								<tr>
 									<td>Kode Antrian</td>
 									<td>Nama Barang</td>
-					                        <td>Harga Satuan</td>
+					                <td>Harga Satuan</td>
 									<td>Jumlah</td>
 									<td>Sub Total</td>
 								</tr>
@@ -58,7 +58,7 @@
 								<tr>
 									<td><?= $dd['kd_pretransaksi'] ?></td>
 									<td><?= $dd['nama_barang'] ?></td>
-					                        <td><?= $dd['harga_barang'] ?></td>
+					                <td><?= $dd['harga_barang'] ?></td>
 									<td><?= $dd['jumlah'] ?></td>
 									<td><?= "Rp.".number_format($dd['sub_total']).",-" ?></td>
 								</tr>
@@ -79,7 +79,7 @@
 					            <p>Tanggal Beli : <?php echo $dd['tanggal_beli']; ?></p>
 								<br>
 								<a href="#" class="btn btn-info ds" onclick="window.print()"><i class="fa fa-print"></i> Cetak Struk</a>
-								<a href="?" class="btn btn-danger ds">Kembali</a>
+								<a href="pageMaster.php?page=viewBhpMasuk" class="btn btn-danger ds">Kembali</a>
             			</div>
             		</div>
             	</div>
