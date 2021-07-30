@@ -175,7 +175,7 @@ if (isset($_GET['masuk'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="">Harga Baru</label>
-                                            <input type="text" class="form-control currency" name="harga_baru" id="harga_baru" <?php if (!isset($_GET['getItem'])) { ?> readonly <?php } ?>>
+                                            <input type="text" name="harga_baru" id="harga_baru" class="form-control currency" <?php if (!isset($_GET['getItem'])) { ?> readonly <?php } ?>>
                                         </div>
                                         <div class="form-group">
                                             <label for=""><b>Harga rata-rata</b></label>
@@ -213,7 +213,7 @@ if (isset($_GET['masuk'])) {
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <?php if (isset($_GET['getItem'])) { ?> <button class="btn btn-primary btn-block" name="btnAdd"><i class="fa fa-check"></i> Tambah ke daftar</button> <?php } ?>
+                                            <?php if (isset($_GET['getItem'])) { ?> <table> <tr> <td> <button class="btn btn-primary btn-block" name="btnAdd"><i class="fa fa-check"></i> Tambah ke daftar</button> </td> <td> </td> <td> <button type="reset" class="btn btn-danger"><i class="fa fa-eraser"></i> Reset</button></td></tr></table><?php } ?>
                                         </div>
                                     </div>
                                 </div>

@@ -4,6 +4,7 @@ $status = $_GET['status'];
 $id_transaksi = $_GET['id'];
 $detail = $dt->querySelect("SELECT * FROM tr_barang_bhp_" . $status . "_detail LEFT JOIN tm_barang_bhp ON tr_barang_bhp_" . $status . "_detail.id_barang_bhp = tm_barang_bhp.id_barang_bhp LEFT JOIN tm_distributor ON tr_barang_bhp_" . $status . "_detail.id_distributor = tm_distributor.id_distributor WHERE id_transaksi = '" . $id_transaksi . "'");
 $sub = 0;
+$stok_total = 0;
 if ($_SESSION['level'] != "Master") {
 	header("location:../index.php");
 }
@@ -74,11 +75,17 @@ if ($_SESSION['level'] != "Master") {
 											</tr>
 										<?php $no++;
 											$sub += $dd['harga'] * $dd['jumlah'];
+											$stok_total += $dd['jumlah'];
 										} ?>
 										<?php if (count($detail) > 0) : ?>
 											<tr>
-												<td colspan="5">Total Harga</td>
+												<td colspan="1"></td>
+												<td></td>
+												<td colspan="1">Total pembelian barang</td>
+												<td><?= number_format($stok_total); ?></td>
+												<td colspan="1">Total Harga</td>
 												<td><?= number_format($sub); ?></td>
+												
 											</tr>
 										<?php endif ?>
 									<?php } else { ?>
@@ -94,7 +101,7 @@ if ($_SESSION['level'] != "Master") {
 								</div>
 								<div class="col-sm-8"></div>
 								<div class="col-sm-2">
-									<a href="?page=printBhp<?= ucfirst($status); ?>" class="btn btn-success btn-block"><i class="fa fa-print"></i> Cetak</a>
+									<a href="?page=printBhpMasuk&id=<?= $id_transaksi; ?>&status=masuk" class="btn btn-success btn-block"><i class="fa fa-print"></i> Cetak</a>
 								</div>
 							</div>
 						</div>

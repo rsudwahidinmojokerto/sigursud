@@ -11,6 +11,7 @@ $id_transaksi = $_GET['id'];
 
 $detail = $dt->querySelect("SELECT * FROM tr_barang_bhp_" . $status . "_detail LEFT JOIN tm_barang_bhp ON tr_barang_bhp_" . $status . "_detail.id_barang_bhp = tm_barang_bhp.id_barang_bhp LEFT JOIN tm_distributor ON tr_barang_bhp_" . $status . "_detail.id_distributor = tm_distributor.id_distributor WHERE id_transaksi = '" . $id_transaksi . "'");
 $sub = 0;
+$stok_total = 0;
  ?>
  <style>
  	.col-sm-8{
@@ -61,7 +62,7 @@ $sub = 0;
 									<td>Sub Total</td>
 								</tr>
 								<?php 
-								foreach ($detail as $dd): ?>
+								foreach ($detail as $dd){ ?>
 								<tr>
 								<td><?= $dd['id_bhp_masuk']; ?></td>
 												<td><?= $dd['nama_barang_bhp']; ?></td>
@@ -69,14 +70,16 @@ $sub = 0;
 												<td><?= number_format($dd['harga']); ?></td>
 												<td><?= number_format($dd['harga'] * $dd['jumlah']); ?></td>
 								</tr>
-								<?php endforeach ?>
+								<?php 
+								$sub += $dd['harga'] * $dd['jumlah'];
+								$stok_total += $dd['jumlah'];} ?>
 								<tr>
 					                <td colspan="1"></td>
-								    <td>Jumlah Pembelian Barang</td>
-					                <td><?= number_format($sub); ?></td>
+								    <td >Total Pembelian Barang</td>
+					                <td><?= number_format($stok_total); ?></td>
 					              
 									<td colspan="1">Total</td>
-									<td><?php echo "Rp.".number_format($sub['sum']).",-" ?></td>
+									<td><?php echo "Rp.".number_format($sub).",-" ?></td>
 								</tr>
 							</table>
 							<br>
