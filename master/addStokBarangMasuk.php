@@ -4,6 +4,7 @@ $transId        = $tr->autokodeTanggal("riwayat", "id_objek", "TR");
 $daftar_masuk   = $tr->autokodeTanggal("riwayat", "id_objek", "DM");
 $dataBarang     = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
 $autokodeTanggalRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+$autokodeRiwayatHargaStok = $tr->autokodeTanggal('tr_barang_bhp_riwayat_harga_stok', 'id_riwayat_bhp', 'RB');
 $tanggal        = date("Y-m-d H:i:s");
 $sub = 0;
 
@@ -82,6 +83,17 @@ if (isset($_GET['masuk'])) {
     $value = "'$id_transaksi', $nilai_harga, 'masuk', '$tanggal'";
     if (isset($_GET['nocetak'])){
         $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
+        // $cekStok = $tr->selectWhere('tr_barang_bhp_riwayat_harga_stok', , '');
+        $cekStok = querySelect("SELECT * FROM ");
+
+        foreach($cekStok as $stok){
+            if ($cekStok == null){
+                $valueTambahStok = "'$autokodeRiwayatHargaStok', ";
+                $insertStok = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahStok, '#');
+            }
+        }
+
+        $response2 = $tr->
     
         $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
         $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);

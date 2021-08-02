@@ -265,10 +265,8 @@ class lsp
     public function sessionCheck()
     {
         if (!isset($_SESSION['username'])) {
-
             return "false";
         } else {
-
             return "true";
         }
     }
@@ -373,7 +371,6 @@ class lsp
         $error      = $_FILES['foto']['error'];
         $tmpName    = $_FILES['foto']['tmp_name'];
 
-
         $folder = 'assets/img/';
 
         $ekstensiGambar = explode('.', $name);
@@ -421,5 +418,11 @@ class lsp
     {
         global $con;
         $sql = "SELECT COUNT($id) as cek FROM $table WHERE $id='$id'";
+    }
+
+    public function cekHargaStok(){
+        global $con;
+        $sql = "SELECT * FROM ";
+        $query = mysqli_query($con, $sql);
     }
 }
