@@ -81,25 +81,40 @@ if (isset($_GET['masuk'])) {
     $total_harga = $tr->querySelect("SELECT SUM(harga*jumlah) as total_harga FROM tr_barang_bhp_masuk_detail WHERE id_transaksi = '$id_transaksi'");
     $nilai_harga = $total_harga[0]['total_harga'];
     $value = "'$id_transaksi', $nilai_harga, 'masuk', '$tanggal'";
-    if (isset($_GET['nocetak'])){
+    if (isset($_GET['nocetak'])) {
         $response = $tr->insert('tr_barang_bhp', $value, '?page=viewBhpMasuk');
-        // $cekStok = $tr->selectWhere('tr_barang_bhp_riwayat_harga_stok', , '');
-        $cekStok = querySelect("SELECT * FROM ");
 
-        foreach($cekStok as $stok){
-            if ($cekStok == null){
-                $valueTambahStok = "'$autokodeRiwayatHargaStok', ";
-                $insertStok = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahStok, '#');
+        $cekHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail WHERE id_transaksi='$id_transaksi'");
+        foreach ($cekHarga as $ch) {
+            $cekFlagHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_riwayat_harga_stok WHERE id_barang_bhp='" . $ch['id_barang_bhp'] . "'");
+            if ($cekFlagHarga['harga'] != $ch['harga']) {
+                $updateFlag = $tr->querySelect("UPDATE tr_barang_bhp_riwayat_harga_stok SET status = 'lama' WHERE id_barang_bhp = " . $ch['id_barang_bhp'] . " AND status = 'baru'");
+                $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['stok'] . ", 'baru', '$tanggal'";
+                $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueUbahFlagHarga, '#');
+            } else {
+                $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['stok'] . ", 'baru', '$tanggal'";
+                $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueUbahFlagHarga, '#');
             }
         }
 
-        $response2 = $tr->
-    
         $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
         $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
-    } else if (isset($_GET['cetak'])){
-        $response = $tr->insert('tr_barang_bhp', $value, "?page=printBhpMasuk&id=".$id_transaksi."&status=masuk");
-    
+    } else if (isset($_GET['cetak'])) {
+        $response = $tr->insert('tr_barang_bhp', $value, "?page=printBhpMasuk&id=" . $id_transaksi . "&status=masuk");
+
+        $cekHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail WHERE id_transaksi='$id_transaksi'");
+        foreach ($cekHarga as $ch) {
+            $cekFlagHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_riwayat_harga_stok WHERE id_barang_bhp='" . $ch['id_barang_bhp'] . "'");
+            if ($cekFlagHarga['harga'] != $ch['harga']) {
+                $updateFlag = $tr->querySelect("UPDATE tr_barang_bhp_riwayat_harga_stok SET status = 'lama' WHERE id_barang_bhp = " . $ch['id_barang_bhp'] . " AND status = 'baru'");
+                $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['stok'] . ", 'baru', '$tanggal'";
+                $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueUbahFlagHarga, '#');
+            } else {
+                $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['stok'] . ", 'baru', '$tanggal'";
+                $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueUbahFlagHarga, '#');
+            }
+        }
+
         $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
         $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
     }
@@ -225,7 +240,13 @@ if (isset($_GET['masuk'])) {
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <?php if (isset($_GET['getItem'])) { ?> <table> <tr> <td> <button class="btn btn-primary btn-block" name="btnAdd"><i class="fa fa-check"></i> Tambah ke daftar</button> </td> <td> </td> <td> <button type="reset" class="btn btn-danger"><i class="fa fa-eraser"></i> Reset</button></td></tr></table><?php } ?>
+                                            <?php if (isset($_GET['getItem'])) { ?> <table>
+                                                    <tr>
+                                                        <td> <button class="btn btn-primary btn-block" name="btnAdd"><i class="fa fa-check"></i> Tambah ke daftar</button> </td>
+                                                        <td> </td>
+                                                        <td> <button type="reset" class="btn btn-danger"><i class="fa fa-eraser"></i> Reset</button></td>
+                                                    </tr>
+                                                </table><?php } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -271,6 +292,7 @@ if (isset($_GET['masuk'])) {
                             <table class="table table-striped table-bordered">
                                 <tr>
                                     <th>ID Daftar</th>
+                                    <th>ID Barang</th>
                                     <th>Nama Barang</th>
                                     <th>Distributor</th>
                                     <th>Jumlah Stok</th>
@@ -284,6 +306,7 @@ if (isset($_GET['masuk'])) {
                                     foreach ($datas as $dd) { ?>
                                         <tr>
                                             <td><?= $dd['id_bhp_masuk']; ?></td>
+                                            <td><?= $dd['id_barang_bhp'] ?></td>
                                             <td><?= $dd['nama_barang_bhp']; ?></td>
                                             <td><?= $dd['nama_distributor']; ?></td>
                                             <td><?= number_format($dd['jumlah']); ?></td>
@@ -315,11 +338,9 @@ if (isset($_GET['masuk'])) {
                                     <?php $no++;
                                         $sub += $dd['harga'] * $dd['jumlah'];
                                     } ?>
-                                    <!-- if (!$assoc['sub'] == "") : -->
                                     <?php if (count($datas) > 0) : ?>
                                         <tr>
-                                            <td colspan="5">Total Harga</td>
-                                            <!-- echo $assoc['sub'] -->
+                                            <td colspan="6">Total Harga</td>
                                             <td><?= number_format($sub); ?></td>
                                         </tr>
                                     <?php endif ?>
@@ -355,13 +376,27 @@ if (isset($_GET['masuk'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($dataBarang as $db) { ?>
+                            <?php
+                            // $i = 0;
+                            // var_dump($cekDaftar);
+                            foreach ($dataBarang as $db) {
+                                $cekDaftar = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail WHERE id_transaksi='$transId' AND id_barang_bhp='" . $db['id_barang_bhp'] . "'");
+                            ?>
                                 <tr>
-                                    <td><a href="pageMaster.php?page=addStokBarangMasuk&getItem&id=<?php echo $db['id_barang_bhp'] ?>"><?php echo $db['id_barang_bhp'] ?></a></td>
+                                    <td><?php
+                                        if (isset($cekDaftar[0]['id_barang_bhp']) == $db['id_barang_bhp']) {
+                                            echo $db['id_barang_bhp'] . " (Terpilih)";
+                                        } else { ?><a href="pageMaster.php?page=addStokBarangMasuk&getItem&id=<?php echo $db['id_barang_bhp']; ?>"><?php echo $db['id_barang_bhp'] ?></a><?php }
+                                                                                                                                                                                            ?></td>
                                     <td><?php echo $db['nama_kategori_bhp'] ?></td>
                                     <td><?php echo $db['nama_barang_bhp'] ?></td>
                                 </tr>
-                            <?php } ?>
+                            <?php
+                                // $i++;
+                                // echo $i;
+
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
