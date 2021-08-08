@@ -233,6 +233,12 @@ class lsp
         return $data;
     }
 
+    public function queryUpdate($sql)
+    {
+        global $con;
+        $query = mysqli_query($con, $sql);
+    }
+
     public function selectWhere($table, $where, $whereValues)
     {
         global $con;
@@ -420,7 +426,8 @@ class lsp
         $sql = "SELECT COUNT($id) as cek FROM $table WHERE $id='$id'";
     }
 
-    public function cekHargaStok(){
+    public function cekHargaStok()
+    {
         global $con;
         $sql = "SELECT * FROM ";
         $query = mysqli_query($con, $sql);
