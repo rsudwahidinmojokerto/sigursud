@@ -4,7 +4,7 @@ $transId        = $tr->autokodeTanggal("riwayat", "id_objek", "TR");
 $daftar_masuk   = $tr->autokodeTanggal("riwayat", "id_objek", "DM");
 $dataBarang     = $tr->selectBhp("tm_barang_bhp", 'tm_kategori_bhp');
 $autokodeTanggalRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
-$autokodeRiwayatHargaStok = $tr->autokodeTanggal('tr_barang_bhp_riwayat_harga_stok', 'id_riwayat_bhp', 'RB');
+// $autokodeRiwayatHargaStok = $tr->autokodeTanggal('riwayat', 'id_objek', 'RB');
 $tanggal        = date("Y-m-d H:i:s");
 $sub = 0;
 
@@ -87,19 +87,30 @@ if (isset($_GET['masuk'])) {
         $cekHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail WHERE id_transaksi='$id_transaksi'");
         foreach ($cekHarga as $ch) {
             $i = 0;
+            $autokodeRiwayatHargaStok = $tr->autokodeTanggal('riwayat', 'id_objek', 'RB');
             $cekFlagHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_riwayat_harga_stok WHERE id_barang_bhp='" . $ch['id_barang_bhp'] . "'");
-            if ($cekFlagHarga != null || isset($cekFlagHarga[$i]['harga']) != isset($ch['harga'])) {
+            if ($cekFlagHarga != null && isset($cekFlagHarga[$i]['harga']) != isset($ch['harga'])) {
+                $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+
                 $updateFlag = $tr->queryUpdate("UPDATE tr_barang_bhp_riwayat_harga_stok SET status = 'lama' WHERE id_barang_bhp = " . $ch['id_barang_bhp'] . " AND status = 'baru'");
                 $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['jumlah'] . ", 'baru', '$tanggal'";
                 $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahFlagHarga, '#');
+
+                $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$autokodeRiwayatHargaStok', 'Update harga dan stok " . $ch['id_barang_bhp'] . " harga " . $ch['harga'] . " stok " . $ch['jumlah'] . "', '$tanggal'";
+                $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
             } else {
+                $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+
                 $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['jumlah'] . ", 'lama', '$tanggal'";
                 $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahFlagHarga, '#');
+
+                $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$autokodeRiwayatHargaStok', 'Tambah harga dan stok " . $ch['id_barang_bhp'] . " harga " . $ch['harga'] . " stok " . $ch['jumlah'] . "', '$tanggal'";
+                $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
             }
             $i++;
         }
-
-        $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
+        $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+        $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
         $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
     } else if (isset($_GET['cetak'])) {
         $response = $tr->insert('tr_barang_bhp', $value, "?page=printBhpMasuk&id=" . $id_transaksi . "&status=masuk");
@@ -107,19 +118,30 @@ if (isset($_GET['masuk'])) {
         $cekHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_masuk_detail WHERE id_transaksi='$id_transaksi'");
         foreach ($cekHarga as $ch) {
             $i = 0;
+            $autokodeRiwayatHargaStok = $tr->autokodeTanggal('riwayat', 'id_objek', 'RB');
             $cekFlagHarga = $tr->querySelect("SELECT * FROM tr_barang_bhp_riwayat_harga_stok WHERE id_barang_bhp='" . $ch['id_barang_bhp'] . "'");
-            if ($cekFlagHarga != null || isset($cekFlagHarga[$i]['harga']) != isset($ch['harga'])) {
+            if ($cekFlagHarga != null && isset($cekFlagHarga[$i]['harga']) != isset($ch['harga'])) {
+                $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+
                 $updateFlag = $tr->queryUpdate("UPDATE tr_barang_bhp_riwayat_harga_stok SET status = 'lama' WHERE id_barang_bhp = " . $ch['id_barang_bhp'] . " AND status = 'baru'");
                 $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['jumlah'] . ", 'baru', '$tanggal'";
                 $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahFlagHarga, '#');
+
+                $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$autokodeRiwayatHargaStok', 'Update harga dan stok " . $ch['id_barang_bhp'] . " harga " . $ch['harga'] . " stok " . $ch['jumlah'] . "', '$tanggal'";
+                $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
             } else {
+                $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+
                 $valueTambahFlagHarga = "'$autokodeRiwayatHargaStok', '" . $ch['id_barang_bhp'] . "', " . $ch['harga'] . ", " . $ch['jumlah'] . ", 'lama', '$tanggal'";
                 $insertFlag = $tr->insert('tr_barang_bhp_riwayat_harga_stok', $valueTambahFlagHarga, '#');
+
+                $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$autokodeRiwayatHargaStok', 'Tambah harga dan stok " . $ch['id_barang_bhp'] . " harga " . $ch['harga'] . " stok " . $ch['jumlah'] . "', '$tanggal'";
+                $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
             }
             $i++;
         }
-
-        $valueRiwayat    = "'$autokodeTanggalRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
+        $autokodeTglRiwayat = $tr->autokodeTanggal('riwayat', 'id_riwayat', 'TMP');
+        $valueRiwayat    = "'$autokodeTglRiwayat', '" . $_SESSION['id_user'] . "', '$id_transaksi', 'Tambah transaksi masuk $id_transaksi', '$tanggal'";
         $insertTemp = $tr->insertRiwayat('riwayat', $valueRiwayat);
     }
 }

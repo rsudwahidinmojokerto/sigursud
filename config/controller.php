@@ -210,7 +210,7 @@ class lsp
             if (strlen($strnum) == 4) {
                 $kode = $pre . $tanggal . $strnum;
             } else if (strlen($strnum) == 3) {
-                $kode = $pre . $tanggal .  "0" . $strnum;
+                $kode = $pre . $tanggal . "0" . $strnum;
             } else if (strlen($strnum) == 2) {
                 $kode = $pre . $tanggal . "00" . $strnum;
             } else if (strlen($strnum) == 1) {
