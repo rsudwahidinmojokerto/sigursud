@@ -237,6 +237,7 @@ class lsp
     {
         global $con;
         $query = mysqli_query($con, $sql);
+        return $query;
     }
 
     public function selectWhere($table, $where, $whereValues)
